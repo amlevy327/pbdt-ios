@@ -1,0 +1,6 @@
+framework module Pods_pbdtTests {
+  umbrella header "Pods-pbdtTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
