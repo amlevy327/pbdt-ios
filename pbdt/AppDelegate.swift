@@ -12,17 +12,22 @@ import IQKeyboardManagerSwift
 
 let appDelegate : AppDelegate = UIApplication.shared.delegate as! AppDelegate
 let context = appDelegate.persistentContainer.viewContext
-//var headers: [String:String]!
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
+    var dateFilter: Date!
+    var diaryEntries = [Food]()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         IQKeyboardManager.shared.enable = true
+        
+        dateFilter = Date()
+        print("dateFilter: \(dateFilter)")
         
         return true
     }

@@ -22,6 +22,7 @@ extension Item {
     @NSManaged public var ssUnitWt: String?
     @NSManaged public var ssAmtVol: Double
     @NSManaged public var ssUnitVol: String?
+    @NSManaged public var createdAt: Date?
     @NSManaged public var updatedAt: Date?
     @NSManaged public var beans: Double
     @NSManaged public var berries: Double

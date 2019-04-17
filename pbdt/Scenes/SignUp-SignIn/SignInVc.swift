@@ -17,7 +17,7 @@ class SignInVc: UIViewController {
     @IBOutlet weak var passwordTxt: UITextField!
     @IBOutlet weak var signInBtn: UIButton!
     
-    var food: Food!
+    let onboarding = Onboarding()
     
     // MARK: - functions
     
@@ -25,9 +25,6 @@ class SignInVc: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //food = Food()
-        food = Food(context: context)
         
         setupViews()
     }
@@ -50,17 +47,20 @@ class SignInVc: UIViewController {
         ]
         
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
-            print(response)
+            //print(response)
             
             switch response.result {
             case .success:
-                if let JSON = response.result.value as? [String: Any] {
+                //print("response.result.value: \(response.result.value)")
+                if let JSON = response.result.value as? [String: AnyObject] {
                     
-                    print("JSON: \(JSON)")
+                    //Onboarding().saveUserInfo(JSON)
+                    
+                    //print("JSON: \(JSON)")
                     
                     let name = JSON["name"] as! String
                     let email = JSON["email"] as! String
-                    let authorizationToken = JSON["authentication_token"] as! String
+                    let authenticationToken = JSON["authentication_token"] as! String
                     let beans = JSON["beans_g"] as! String
                     let berries = JSON["berries_g"] as! String
                     let otherFruits = JSON["other_fruits_g"] as! String
@@ -79,7 +79,7 @@ class SignInVc: UIViewController {
                     
                     UserDefaults.standard.set(name, forKey: "name")
                     UserDefaults.standard.set(email, forKey: "email")
-                    UserDefaults.standard.set(authorizationToken, forKey: "authenticationToken")
+                    UserDefaults.standard.set(authenticationToken, forKey: "authenticationToken")
                     UserDefaults.standard.set(beans, forKey: "beans")
                     UserDefaults.standard.set(berries, forKey: "berries")
                     UserDefaults.standard.set(otherFruits, forKey: "otherFruits")
@@ -96,23 +96,15 @@ class SignInVc: UIViewController {
                     UserDefaults.standard.set(carbs, forKey: "carbs")
                     UserDefaults.standard.set(protein, forKey: "protein")
                     
-                    
-                    // test
-                    
                     let userFoods = JSON["foods"] as! [[String: AnyObject]]
-                    print("userFoods.count: \(userFoods.count)")
-                    
                     for userFood in userFoods {
-                        let food = self.food.findOrCreateFromJSON(userFood, context: context)
-                        print("food: \(food)")
+                        Food.findOrCreateFromJSON(userFood, context: context)
                     }
                     
-                    //
-                    
-                    self.goToTabBarController()
+                    self.onboarding.loadItems()
                 }
             case .failure(let error):
-                print("response failure: \(error)")
+                print("response failure from post session: \(error)")
             }
         }
     }

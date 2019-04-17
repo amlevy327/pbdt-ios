@@ -15,6 +15,8 @@
 		D42581C42257BF0C007E0D72 /* DiaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D42581C22257BF0C007E0D72 /* DiaryCell.xib */; };
 		D42581C62257CC4A007E0D72 /* UpdateDiaryEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42581C52257CC4A007E0D72 /* UpdateDiaryEntryVC.swift */; };
 		D42581C82257CCBB007E0D72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42581C72257CCBB007E0D72 /* ViewController.swift */; };
+		D43772922263F4C0003F66DB /* DateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D43772912263F4C0003F66DB /* DateView.xib */; };
+		D43FEE9E225E992C00EDF6C8 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */; };
 		D441ED7822502BB400B9DB39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D441ED7722502BB400B9DB39 /* AppDelegate.swift */; };
 		D441ED7D22502BB400B9DB39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D441ED7B22502BB400B9DB39 /* Main.storyboard */; };
 		D441ED8022502BB400B9DB39 /* pbdt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D441ED7E22502BB400B9DB39 /* pbdt.xcdatamodeld */; };
@@ -29,11 +31,20 @@
 		D458BCC22251872700BD9F87 /* MoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458BCC12251872700BD9F87 /* MoreVC.swift */; };
 		D458BCC7225187CD00BD9F87 /* MoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458BCC5225187CD00BD9F87 /* MoreCell.swift */; };
 		D458BCC8225187CD00BD9F87 /* MoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D458BCC6225187CD00BD9F87 /* MoreCell.xib */; };
+		D45FE5BA225B59DE00BCA446 /* AddDiaryEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */; };
+		D45FE5BD225B5A1100BCA446 /* AddDiaryEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */; };
+		D45FE5BE225B5A1100BCA446 /* AddDiaryEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */; };
+		D4759E5B2266AFF00088CD63 /* SegmentedControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4759E5A2266AFF00088CD63 /* SegmentedControlView.xib */; };
+		D4759E5D2266B00B0088CD63 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4759E5C2266B00B0088CD63 /* SegmentedControlView.swift */; };
+		D4759E602266C1B60088CD63 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4759E5E2266C1B60088CD63 /* HomeCell.swift */; };
+		D4759E612266C1B60088CD63 /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4759E5F2266C1B60088CD63 /* HomeCell.xib */; };
+		D4BCE8CF2265261300F1DC88 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BCE8CE2265261300F1DC88 /* DateView.swift */; };
+		D4C32861225A72C7004BB713 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C32860225A72C7004BB713 /* Onboarding.swift */; };
+		D4C32863225A73E7004BB713 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C32862225A73E7004BB713 /* CustomTabBarController.swift */; };
 		D4D929772255BE3300D862EA /* Food+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D929752255BE3300D862EA /* Food+CoreDataProperties.swift */; };
 		D4D929782255BE3300D862EA /* Food+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D929762255BE3300D862EA /* Food+CoreDataClass.swift */; };
 		D4D9297B2255CAE800D862EA /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D929792255CAE800D862EA /* Item+CoreDataProperties.swift */; };
 		D4D9297C2255CAE800D862EA /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9297A2255CAE800D862EA /* Item+CoreDataClass.swift */; };
-		D4D9297F2255CDEF00D862EA /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9297E2255CDEF00D862EA /* OnboardingVC.swift */; };
 		D4E5DB3B2254486D00713887 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5DB3A2254486D00713887 /* HomeVC.swift */; };
 		D4E5DB3D2254487900713887 /* DiaryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5DB3C2254487900713887 /* DiaryVC.swift */; };
 		D4FECC7E2257104500AB0CC0 /* SignInVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FECC7D2257104500AB0CC0 /* SignInVc.swift */; };
@@ -72,6 +83,8 @@
 		D42581C22257BF0C007E0D72 /* DiaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiaryCell.xib; sourceTree = "<group>"; };
 		D42581C52257CC4A007E0D72 /* UpdateDiaryEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDiaryEntryVC.swift; sourceTree = "<group>"; };
 		D42581C72257CCBB007E0D72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D43772912263F4C0003F66DB /* DateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateView.xib; sourceTree = "<group>"; };
+		D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		D441ED7422502BB400B9DB39 /* pbdt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pbdt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D441ED7722502BB400B9DB39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D441ED7C22502BB400B9DB39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -92,11 +105,20 @@
 		D458BCC12251872700BD9F87 /* MoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreVC.swift; sourceTree = "<group>"; };
 		D458BCC5225187CD00BD9F87 /* MoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreCell.swift; sourceTree = "<group>"; };
 		D458BCC6225187CD00BD9F87 /* MoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoreCell.xib; sourceTree = "<group>"; };
+		D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiaryEntryVC.swift; sourceTree = "<group>"; };
+		D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiaryEntryCell.swift; sourceTree = "<group>"; };
+		D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddDiaryEntryCell.xib; sourceTree = "<group>"; };
+		D4759E5A2266AFF00088CD63 /* SegmentedControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedControlView.xib; sourceTree = "<group>"; };
+		D4759E5C2266B00B0088CD63 /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
+		D4759E5E2266C1B60088CD63 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		D4759E5F2266C1B60088CD63 /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
+		D4BCE8CE2265261300F1DC88 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		D4C32860225A72C7004BB713 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		D4C32862225A73E7004BB713 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D4D929752255BE3300D862EA /* Food+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Food+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D4D929762255BE3300D862EA /* Food+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Food+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D4D929792255CAE800D862EA /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D4D9297A2255CAE800D862EA /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D4D9297E2255CDEF00D862EA /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		D4E5DB3A2254486D00713887 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		D4E5DB3C2254487900713887 /* DiaryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryVC.swift; sourceTree = "<group>"; };
 		D4FECC7D2257104500AB0CC0 /* SignInVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVc.swift; sourceTree = "<group>"; };
@@ -165,6 +187,8 @@
 		D418C9FF22503D8900A4BAFE /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D4C32864225A73ED004BB713 /* CustomTabBarController */,
+				D43772902263F4A0003F66DB /* CustomViews */,
 				D4D9297D2255CDDF00D862EA /* Onboarding */,
 				D458BCC4225187B500BD9F87 /* SignUp-SignIn */,
 				D4E5DB382254484B00713887 /* Home */,
@@ -172,6 +196,17 @@
 				D458BCC3225187AA00BD9F87 /* More */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		D43772902263F4A0003F66DB /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				D43772912263F4C0003F66DB /* DateView.xib */,
+				D4BCE8CE2265261300F1DC88 /* DateView.swift */,
+				D4759E5A2266AFF00088CD63 /* SegmentedControlView.xib */,
+				D4759E5C2266B00B0088CD63 /* SegmentedControlView.swift */,
+			);
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 		D441ED6B22502BB400B9DB39 = {
@@ -235,6 +270,7 @@
 			children = (
 				D44A7FE22259516700842B31 /* Constants.swift */,
 				D458BCBF2251819900BD9F87 /* ColorHelpers.swift */,
+				D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -258,10 +294,18 @@
 			path = "SignUp-SignIn";
 			sourceTree = "<group>";
 		};
+		D4C32864225A73ED004BB713 /* CustomTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				D4C32862225A73E7004BB713 /* CustomTabBarController.swift */,
+			);
+			path = CustomTabBarController;
+			sourceTree = "<group>";
+		};
 		D4D9297D2255CDDF00D862EA /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				D4D9297E2255CDEF00D862EA /* OnboardingVC.swift */,
+				D4C32860225A72C7004BB713 /* Onboarding.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -270,6 +314,8 @@
 			isa = PBXGroup;
 			children = (
 				D4E5DB3A2254486D00713887 /* HomeVC.swift */,
+				D4759E5E2266C1B60088CD63 /* HomeCell.swift */,
+				D4759E5F2266C1B60088CD63 /* HomeCell.xib */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -283,6 +329,9 @@
 				D42581C52257CC4A007E0D72 /* UpdateDiaryEntryVC.swift */,
 				D44A7FE42259530000842B31 /* UpdateDiaryEntryCell.swift */,
 				D44A7FE52259530000842B31 /* UpdateDiaryEntryCell.xib */,
+				D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */,
+				D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */,
+				D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */,
 			);
 			path = Diary;
 			sourceTree = "<group>";
@@ -416,8 +465,12 @@
 				D458BCC8225187CD00BD9F87 /* MoreCell.xib in Resources */,
 				D44A7FE72259530000842B31 /* UpdateDiaryEntryCell.xib in Resources */,
 				D441ED8522502BB500B9DB39 /* LaunchScreen.storyboard in Resources */,
+				D45FE5BE225B5A1100BCA446 /* AddDiaryEntryCell.xib in Resources */,
+				D4759E612266C1B60088CD63 /* HomeCell.xib in Resources */,
 				D42581C42257BF0C007E0D72 /* DiaryCell.xib in Resources */,
 				D441ED8222502BB500B9DB39 /* Assets.xcassets in Resources */,
+				D43772922263F4C0003F66DB /* DateView.xib in Resources */,
+				D4759E5B2266AFF00088CD63 /* SegmentedControlView.xib in Resources */,
 				D441ED7D22502BB400B9DB39 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,15 +687,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4D9297C2255CAE800D862EA /* Item+CoreDataClass.swift in Sources */,
+				D4759E5D2266B00B0088CD63 /* SegmentedControlView.swift in Sources */,
 				D44A7FE32259516700842B31 /* Constants.swift in Sources */,
+				D45FE5BD225B5A1100BCA446 /* AddDiaryEntryCell.swift in Sources */,
+				D4C32861225A72C7004BB713 /* Onboarding.swift in Sources */,
 				D4D9297B2255CAE800D862EA /* Item+CoreDataProperties.swift in Sources */,
+				D43FEE9E225E992C00EDF6C8 /* DateHelpers.swift in Sources */,
+				D4759E602266C1B60088CD63 /* HomeCell.swift in Sources */,
 				D4D929782255BE3300D862EA /* Food+CoreDataClass.swift in Sources */,
 				D42581C32257BF0C007E0D72 /* DiaryCell.swift in Sources */,
 				D418C9FE2250368100A4BAFE /* Router.swift in Sources */,
+				D45FE5BA225B59DE00BCA446 /* AddDiaryEntryVC.swift in Sources */,
 				D4E5DB3D2254487900713887 /* DiaryVC.swift in Sources */,
+				D4C32863225A73E7004BB713 /* CustomTabBarController.swift in Sources */,
 				D441ED7822502BB400B9DB39 /* AppDelegate.swift in Sources */,
 				D4E5DB3B2254486D00713887 /* HomeVC.swift in Sources */,
-				D4D9297F2255CDEF00D862EA /* OnboardingVC.swift in Sources */,
+				D4BCE8CF2265261300F1DC88 /* DateView.swift in Sources */,
 				D458BCC22251872700BD9F87 /* MoreVC.swift in Sources */,
 				D458BCC7225187CD00BD9F87 /* MoreCell.swift in Sources */,
 				D418CA0122503DB300A4BAFE /* SignUpVC.swift in Sources */,

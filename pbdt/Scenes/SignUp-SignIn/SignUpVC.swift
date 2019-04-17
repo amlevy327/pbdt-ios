@@ -24,6 +24,8 @@ class SignUpVC: UIViewController {
     @IBOutlet weak var passwordConfirmationTxt: UITextField!
     @IBOutlet weak var signUpBtn: UIButton!
     
+    let onboarding = Onboarding()
+    
     // MARK: - functions
     
     // lifecycle
@@ -88,11 +90,11 @@ class SignUpVC: UIViewController {
             
             switch response.result {
             case .success:
-                if let JSON = response.result.value as? [String: Any] {
+                if let JSON = response.result.value as? [String: AnyObject] {
                     
                     let name = JSON["name"] as! String
                     let email = JSON["email"] as! String
-                    let authorizationToken = JSON["authentication_token"] as! String
+                    let authenticationToken = JSON["authentication_token"] as! String
                     let beans = JSON["beans_g"] as! String
                     let berries = JSON["berries_g"] as! String
                     let otherFruits = JSON["other_fruits_g"] as! String
@@ -111,7 +113,7 @@ class SignUpVC: UIViewController {
                     
                     UserDefaults.standard.set(name, forKey: "name")
                     UserDefaults.standard.set(email, forKey: "email")
-                    UserDefaults.standard.set(authorizationToken, forKey: "authenticationToken")
+                    UserDefaults.standard.set(authenticationToken, forKey: "authenticationToken")
                     UserDefaults.standard.set(beans, forKey: "beans")
                     UserDefaults.standard.set(berries, forKey: "berries")
                     UserDefaults.standard.set(otherFruits, forKey: "otherFruits")
@@ -128,10 +130,10 @@ class SignUpVC: UIViewController {
                     UserDefaults.standard.set(carbs, forKey: "carbs")
                     UserDefaults.standard.set(protein, forKey: "protein")
                     
-                    self.goToTabBarController()
+                    self.onboarding.loadItems()
                 }
             case .failure(let error):
-                print("response failure: \(error)")
+                print("response failure from post user: \(error)")
             }
         }
     }

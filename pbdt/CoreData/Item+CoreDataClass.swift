@@ -12,7 +12,7 @@ import CoreData
 @objc(Item)
 public class Item: NSManagedObject {
     
-    func findOrCreateFromJSON(_ itemJSON: [String: AnyObject], context: NSManagedObjectContext) -> Item? {
+    class func findOrCreateFromJSON(_ itemJSON: [String: AnyObject], context: NSManagedObjectContext) -> Item? {
         
         var item: Item?
         let fetchRequest: NSFetchRequest<Item> = NSFetchRequest(entityName: "Item")
@@ -36,80 +36,84 @@ public class Item: NSManagedObject {
                     newItem.objectId = objectId
                 }
                 
-                if let ssAmtWt = itemJSON["ss_amt_wt"] as? Double {
-                    newItem.ssAmtWt = ssAmtWt
+                if let name = itemJSON["name"] as? String {
+                    newItem.name = name
+                }
+                
+                if let ssAmtWt = itemJSON["ss_amt_wt"] as? NSString {
+                    newItem.ssAmtWt = ssAmtWt.doubleValue
                 }
                 
                 if let ssUnitWt = itemJSON["ss_unit_wt"] as? String {
                     newItem.ssUnitWt = ssUnitWt
                 }
                 
-                if let ssAmtVol = itemJSON["ss_amt_vol"] as? Double {
-                    newItem.ssAmtVol = ssAmtVol
+                if let ssAmtVol = itemJSON["ss_amt_vol"] as? NSString {
+                    newItem.ssAmtVol = ssAmtVol.doubleValue
                 }
                 
                 if let ssUnitVol = itemJSON["ss_unit_vol"] as? String {
                     newItem.ssUnitVol = ssUnitVol
                 }
                 
-                if let beans = itemJSON["beans"] as? Double {
-                    newItem.beans = beans
+                if let beans = itemJSON["beans"] as? NSString {
+                    newItem.beans = beans.doubleValue
                 }
                 
-                if let berries = itemJSON["berries"] as? Double {
-                    newItem.berries = berries
+                if let berries = itemJSON["berries"] as? NSString {
+                    newItem.berries = berries.doubleValue
                 }
                 
-                if let otherFruits = itemJSON["other_fruits"] as? Double {
-                    newItem.otherFruits = otherFruits
+                if let otherFruits = itemJSON["other_fruits"] as? NSString {
+                    newItem.otherFruits = otherFruits.doubleValue
                 }
                 
-                if let cruciferousVegetables = itemJSON["cruciferous_vegetables"] as? Double {
-                    newItem.cruciferousVegetables = cruciferousVegetables
+                if let cruciferousVegetables = itemJSON["cruciferous_vegetables"] as? NSString {
+                    newItem.cruciferousVegetables = cruciferousVegetables.doubleValue
                 }
                 
-                if let greens = itemJSON["greens"] as? Double {
-                    newItem.greens = greens
+                if let greens = itemJSON["greens"] as? NSString {
+                    newItem.greens = greens.doubleValue
                 }
                 
-                if let otherVegetables = itemJSON["other_vegetables"] as? Double {
-                    newItem.otherVegetables = otherVegetables
+                if let otherVegetables = itemJSON["other_vegetables"] as? NSString {
+                    newItem.otherVegetables = otherVegetables.doubleValue
                 }
                 
-                if let flaxseeds = itemJSON["flaxseeds"] as? Double {
-                    newItem.flaxseeds = flaxseeds
+                if let flaxseeds = itemJSON["flaxseeds"] as? NSString {
+                    newItem.flaxseeds = flaxseeds.doubleValue
                 }
                 
-                if let nuts = itemJSON["nuts"] as? Double {
-                    newItem.nuts = nuts
+                if let nuts = itemJSON["nuts"] as? NSString {
+                    newItem.nuts = nuts.doubleValue
                 }
                 
-                if let turmeric = itemJSON["turmeric"] as? Double {
-                    newItem.turmeric = turmeric
+                if let turmeric = itemJSON["turmeric"] as? NSString {
+                    newItem.turmeric = turmeric.doubleValue
                 }
                 
-                if let wholeGrains = itemJSON["whole_grains"] as? Double {
-                    newItem.wholeGrains = wholeGrains
+                if let wholeGrains = itemJSON["whole_grains"] as? NSString {
+                    newItem.wholeGrains = wholeGrains.doubleValue
                 }
                 
-                if let otherSeeds = itemJSON["other_seeds"] as? Double {
-                    newItem.otherSeeds = otherSeeds
+                if let otherSeeds = itemJSON["other_seeds"] as? NSString {
+                    newItem.otherSeeds = otherSeeds.doubleValue
                 }
                 
-                if let cals = itemJSON["cals"] as? Double {
-                    newItem.cals = cals
+                if let cals = itemJSON["cals"] as? NSString {
+                    newItem.cals = cals.doubleValue
                 }
                 
-                if let fat = itemJSON["fat"] as? Double {
-                    newItem.fat = fat
+                if let fat = itemJSON["fat"] as? NSString {
+                    newItem.fat = fat.doubleValue
                 }
                 
-                if let carbs = itemJSON["carbs"] as? Double {
-                    newItem.carbs = carbs
+                if let carbs = itemJSON["carbs"] as? NSString {
+                    newItem.carbs = carbs.doubleValue
                 }
                 
-                if let protein = itemJSON["protein"] as? Double {
-                    newItem.protein = protein
+                if let protein = itemJSON["protein"] as? NSString {
+                    newItem.protein = protein.doubleValue
                 }
                 
                 if let variety = itemJSON["variety"] as? String {
@@ -127,80 +131,84 @@ public class Item: NSManagedObject {
                 // update existing item
                 item = itemFetch.first!
                 
-                if let ssAmtWt = itemJSON["ss_amt_wt"] as? Double {
-                    item!.ssAmtWt = ssAmtWt
+                if let name = itemJSON["name"] as? String {
+                    item!.name = name
+                }
+                
+                if let ssAmtWt = itemJSON["ss_amt_wt"] as? NSString {
+                    item!.ssAmtWt = ssAmtWt.doubleValue
                 }
                 
                 if let ssUnitWt = itemJSON["ss_unit_wt"] as? String {
                     item!.ssUnitWt = ssUnitWt
                 }
                 
-                if let ssAmtVol = itemJSON["ss_amt_vol"] as? Double {
-                    item!.ssAmtVol = ssAmtVol
+                if let ssAmtVol = itemJSON["ss_amt_vol"] as? NSString {
+                    item!.ssAmtVol = ssAmtVol.doubleValue
                 }
                 
                 if let ssUnitVol = itemJSON["ss_unit_vol"] as? String {
                     item!.ssUnitVol = ssUnitVol
                 }
                 
-                if let beans = itemJSON["beans"] as? Double {
-                    item!.beans = beans
+                if let beans = itemJSON["beans"] as? NSString {
+                    item!.beans = beans.doubleValue
                 }
                 
-                if let berries = itemJSON["berries"] as? Double {
-                    item!.berries = berries
+                if let berries = itemJSON["berries"] as? NSString {
+                    item!.berries = berries.doubleValue
                 }
                 
-                if let otherFruits = itemJSON["other_fruits"] as? Double {
-                    item!.otherFruits = otherFruits
+                if let otherFruits = itemJSON["other_fruits"] as? NSString {
+                    item!.otherFruits = otherFruits.doubleValue
                 }
                 
-                if let cruciferousVegetables = itemJSON["cruciferous_vegetables"] as? Double {
-                    item!.cruciferousVegetables = cruciferousVegetables
+                if let cruciferousVegetables = itemJSON["cruciferous_vegetables"] as? NSString {
+                    item!.cruciferousVegetables = cruciferousVegetables.doubleValue
                 }
                 
-                if let greens = itemJSON["greens"] as? Double {
-                    item!.greens = greens
+                if let greens = itemJSON["greens"] as? NSString {
+                    item!.greens = greens.doubleValue
                 }
                 
-                if let otherVegetables = itemJSON["other_vegetables"] as? Double {
-                    item!.otherVegetables = otherVegetables
+                if let otherVegetables = itemJSON["other_vegetables"] as? NSString {
+                    item!.otherVegetables = otherVegetables.doubleValue
                 }
                 
-                if let flaxseeds = itemJSON["flaxseeds"] as? Double {
-                    item!.flaxseeds = flaxseeds
+                if let flaxseeds = itemJSON["flaxseeds"] as? NSString {
+                    item!.flaxseeds = flaxseeds.doubleValue
                 }
                 
-                if let nuts = itemJSON["nuts"] as? Double {
-                    item!.nuts = nuts
+                if let nuts = itemJSON["nuts"] as? NSString {
+                    item!.nuts = nuts.doubleValue
                 }
                 
-                if let turmeric = itemJSON["turmeric"] as? Double {
-                    item!.turmeric = turmeric
+                if let turmeric = itemJSON["turmeric"] as? NSString {
+                    item!.turmeric = turmeric.doubleValue
                 }
                 
-                if let wholeGrains = itemJSON["whole_grains"] as? Double {
-                    item!.wholeGrains = wholeGrains
+                if let wholeGrains = itemJSON["whole_grains"] as? NSString {
+                    item!.wholeGrains = wholeGrains.doubleValue
                 }
                 
-                if let otherSeeds = itemJSON["other_seeds"] as? Double {
-                    item!.otherSeeds = otherSeeds
+                if let otherSeeds = itemJSON["other_seeds"] as? NSString {
+                    item!.otherSeeds = otherSeeds.doubleValue
                 }
                 
-                if let cals = itemJSON["cals"] as? Double {
-                    item!.cals = cals
+                if let cals = itemJSON["cals"] as? NSString {
+                    item!.cals = cals.doubleValue
                 }
                 
-                if let fat = itemJSON["fat"] as? Double {
-                    item!.fat = fat
+                if let fat = itemJSON["fat"] as? NSString {
+                    item!.fat = fat.doubleValue
                 }
                 
-                if let carbs = itemJSON["carbs"] as? Double {
-                    item!.carbs = carbs
+                if let carbs = itemJSON["carbs"] as? NSString {
+                    item!.carbs = carbs.doubleValue
                 }
                 
-                if let protein = itemJSON["protein"] as? Double {
-                    item!.protein = protein
+                if let protein = itemJSON["protein"] as? NSString {
+                    item!.protein = protein.doubleValue
                 }
                 
                 if let variety = itemJSON["variety"] as? String {
@@ -221,6 +229,8 @@ public class Item: NSManagedObject {
             
             fatalError("Failed to fetch: \(error)")
         }
+        
+        appDelegate.saveContext()
         
         return item
     }

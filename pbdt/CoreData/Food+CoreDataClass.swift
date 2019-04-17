@@ -12,7 +12,7 @@ import CoreData
 @objc(Food)
 public class Food: NSManagedObject {
     
-    func findOrCreateFromJSON(_ foodJSON: [String: AnyObject], context: NSManagedObjectContext) -> Food? {
+    class func findOrCreateFromJSON(_ foodJSON: [String: AnyObject], context: NSManagedObjectContext) -> Food? {
         
         var food: Food?
         let fetchRequest: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
@@ -40,6 +40,10 @@ public class Food: NSManagedObject {
                 
                 if let name = foodJSON["name"] as? String {
                     newFood.name = name
+                }
+                
+                if let logDate = foodJSON["log_date"] as? String {
+                    newFood.logDate = logDate
                 }
                 
                 if let servingsT = foodJSON["servings_t"] as? NSString {
@@ -126,6 +130,10 @@ public class Food: NSManagedObject {
                     newFood.variety = variety
                 }
                 
+                if let createdAt = foodJSON["created_at"] as? String {
+                    newFood.createdAt = dateFormatter.date(from: createdAt)
+                }
+                
                 if let updatedAt = foodJSON["updated_at"] as? String {
                     newFood.updatedAt = dateFormatter.date(from: updatedAt)
                 }
@@ -141,6 +149,10 @@ public class Food: NSManagedObject {
                 
                 if let name = foodJSON["name"] as? String {
                     food!.name = name
+                }
+                
+                if let logDate = foodJSON["log_date"] as? String {
+                    food!.logDate = logDate
                 }
                 
                 if let servingsT = foodJSON["servings_t"] as? NSString {
@@ -225,6 +237,10 @@ public class Food: NSManagedObject {
                 
                 if let variety = foodJSON["variety"] as? String {
                     food!.variety = variety
+                }
+                
+                if let createdAt = foodJSON["created_at"] as? String {
+                    food!.createdAt = dateFormatter.date(from: createdAt)
                 }
                 
                 if let updatedAt = foodJSON["updated_at"] as? String {

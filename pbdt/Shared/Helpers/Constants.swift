@@ -30,4 +30,8 @@ struct StaticLists {
         "Carbs",
         "Protein"
     ]
+    
+    static let beansArray = [
+        "Beans"
+    ]
 }

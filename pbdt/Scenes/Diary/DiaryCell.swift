@@ -13,6 +13,7 @@ class DiaryCell: UITableViewCell {
     // MARK: - objects and vars
     @IBOutlet weak var idLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
+    @IBOutlet weak var detailLbl: UILabel!
     
     // MARK: - functions
 

@@ -12,15 +12,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiaryCell" id="KGk-i7-Jjw" customClass="DiaryCell" customModule="pbdt" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiaryCell" rowHeight="75" id="KGk-i7-Jjw" customClass="DiaryCell" customModule="pbdt" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="id" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8gG-zg-3EN">
-                        <rect key="frame" x="16" y="10" width="30" height="20"/>
+                        <rect key="frame" x="16" y="11" width="30" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="HKq-3f-2tE"/>
                             <constraint firstAttribute="width" constant="30" id="UN6-Wh-a82"/>
@@ -30,7 +30,16 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mi9-es-Jxr">
-                        <rect key="frame" x="54" y="10" width="305" height="20"/>
+                        <rect key="frame" x="54" y="11" width="305" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQa-9L-mxV">
+                        <rect key="frame" x="54" y="39" width="305" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="ON3-PX-JgX"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -39,18 +48,22 @@
                 <constraints>
                     <constraint firstItem="8gG-zg-3EN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="31G-Hu-uYT"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Mi9-es-Jxr" secondAttribute="trailing" id="3je-0b-zqB"/>
-                    <constraint firstItem="8gG-zg-3EN" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="MQY-Zf-2FN"/>
-                    <constraint firstItem="Mi9-es-Jxr" firstAttribute="centerY" secondItem="8gG-zg-3EN" secondAttribute="centerY" id="RUg-CN-Cix"/>
+                    <constraint firstItem="IQa-9L-mxV" firstAttribute="trailing" secondItem="Mi9-es-Jxr" secondAttribute="trailing" id="7Ga-N4-WNG"/>
+                    <constraint firstItem="IQa-9L-mxV" firstAttribute="top" secondItem="Mi9-es-Jxr" secondAttribute="bottom" constant="8" id="9WY-F9-e5N"/>
+                    <constraint firstItem="IQa-9L-mxV" firstAttribute="leading" secondItem="Mi9-es-Jxr" secondAttribute="leading" id="Luh-Gr-FYL"/>
+                    <constraint firstItem="Mi9-es-Jxr" firstAttribute="centerY" secondItem="8gG-zg-3EN" secondAttribute="centerY" id="NIo-fL-kKq"/>
                     <constraint firstItem="Mi9-es-Jxr" firstAttribute="height" secondItem="8gG-zg-3EN" secondAttribute="height" id="SyB-nh-sOL"/>
+                    <constraint firstItem="8gG-zg-3EN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="WrU-ds-djJ"/>
                     <constraint firstItem="Mi9-es-Jxr" firstAttribute="leading" secondItem="8gG-zg-3EN" secondAttribute="trailing" constant="8" id="tx3-pV-LRe"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="detailLbl" destination="IQa-9L-mxV" id="MRL-5R-bek"/>
                 <outlet property="idLbl" destination="8gG-zg-3EN" id="zzi-Pc-v1r"/>
                 <outlet property="nameLbl" destination="Mi9-es-Jxr" id="EI5-rz-8Pz"/>
             </connections>
-            <point key="canvasLocation" x="138.40000000000001" y="148.87556221889056"/>
+            <point key="canvasLocation" x="138.40000000000001" y="164.16791604197903"/>
         </tableViewCell>
     </objects>
 </document>

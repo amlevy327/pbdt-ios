@@ -38,7 +38,9 @@ extension Food {
     @NSManaged public var carbsT: Double
     @NSManaged public var proteinT: Double
     @NSManaged public var variety: String?
+    @NSManaged public var createdAt: Date?
     @NSManaged public var updatedAt: Date?
     @NSManaged public var objectId: NSNumber?
+    @NSManaged public var logDate: String?
 
 }
