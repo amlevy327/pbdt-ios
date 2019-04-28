@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,18 +17,24 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     // vars
-    let names = ["Sign Out"]
+    let names = ["Goals", "Sign Out"]
     
     // MARK: - functions
     
     // lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigation()
         setupTableView()
     }
     
-    // tableview
+    // setups
+    
+    func setupNavigation() {
+        navigationItem.title = "More"
+    }
     
     func setupTableView() {
         
@@ -37,6 +44,8 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
     }
+    
+    // tableview
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -63,34 +72,16 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0:
             print("0")
+            goToGoalsVC()
+        case 1:
+            print("1")
             showSignOutAlertController()
         default:
             print("switch default")
         }
     }
     
-    // alert controller
-    func showSignOutAlertController() {
-        
-        let alertController = UIAlertController(title: "Are you sure you want to sign out?", message: "", preferredStyle: .alert)
-        let signOutAction = UIAlertAction(title: "Sign Out", style: .default) { (response) in
-            print("sign out clicked")
-            self.clearUserDefaults()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { (response) in
-            print("cancel")
-        }
-        alertController.addAction(signOutAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true)
-    }
-    
-    func goToSignInVC() {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpVC
-        appDelegate.window?.rootViewController = signUpVC
-    }
+    // clear
     
     func clearUserDefaults() {
         
@@ -100,11 +91,86 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         goToSignInVC()
     }
     
+    func clearCoreData() {
+        
+        clearUser()
+        clearItem()
+        clearFood()
+        
+        goToSignInVC()
+    }
     
-
+    func clearUser() {
+        
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        
+        do {
+            try context.execute(deleteRequest)
+            appDelegate.saveContext()
+        } catch {
+            print ("Error deleting User")
+        }
+    }
+    
+    func clearItem() {
+        
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        
+        do {
+            try context.execute(deleteRequest)
+            appDelegate.saveContext()
+        } catch {
+            print ("Error deleting Item")
+        }
+    }
+    
+    func clearFood() {
+        
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Food")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        
+        do {
+            try context.execute(deleteRequest)
+            appDelegate.saveContext()
+        } catch {
+            print ("Error deleting Food")
+        }
+    }
+    
+    // alert controller
+    func showSignOutAlertController() {
+        
+        let alertController = UIAlertController(title: "Are you sure you want to sign out?", message: "", preferredStyle: .alert)
+        let signOutAction = UIAlertAction(title: "Sign Out", style: .default) { (response) in
+            print("sign out clicked")
+            //self.clearUserDefaults()
+            self.clearCoreData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { (response) in
+            print("cancel")
+        }
+        alertController.addAction(signOutAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+    
+    // MARK: - navigation
+    
+    func goToGoalsVC() {
+        self.performSegue(withIdentifier: "goToGoalsVC", sender: self)
+    }
+    
+    func goToSignInVC() {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpVC
+        appDelegate.window?.rootViewController = signUpVC
+    }
+    
+    
     /*
-    // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.

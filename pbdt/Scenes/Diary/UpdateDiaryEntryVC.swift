@@ -43,6 +43,7 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
     // MARK: - functions
     
     // lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,7 +127,9 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
     
     func setupViews() {
         
-        topView.backgroundColor = .yellow
+        view.backgroundColor = UIColor.mainViewBackground()
+        
+        topView.backgroundColor = UIColor.viewBackground()
         
         segmentedControlView.parentVc = "UpdateDiaryEntryVC"
         segmentedControlView.updateDiaryEntryVc = self
@@ -134,33 +137,21 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
     
     func setupLabels() {
         
+        nameLbl.font = UIFont.large()
+        nameLbl.textColor = UIColor.brandBlack()
+        
+        totalServingSizeLbl.font = UIFont.small()
+        totalServingSizeLbl.textColor = UIColor.brandGreyDark()
+        
+        servingSizeLbl.font = UIFont.large()
+        servingSizeLbl.textColor = UIColor.brandBlack()
         servingSizeLbl.text = "Serving size"
+        
+        numberOfServingsLbl.font = UIFont.large()
+        numberOfServingsLbl.textColor = UIColor.brandBlack()
         numberOfServingsLbl.text = "Number of servings"
         
-        switch previousVC {
-        case "DiaryVC":
-            print("setupLabels, previousVC = DiaryVC")
-            
-            if let name = entry.name {
-                nameLbl.text = "\(name)"
-            }
-            
-            if let ssUnitVolT = entry.ssUnitVolT, let ssUnitWtT = entry.ssUnitWtT {
-                totalServingSizeLbl.text = "\(ssAmtVolT_updated) \(ssUnitVolT), \(ssAmtWtT_updated) \(ssUnitWtT)"
-            }
-        case "AddDiaryEntryVC":
-            print("setupLabels, previousVC = AddDiaryEntryVC")
-            
-            if let name = item.name {
-                nameLbl.text = "\(name)"
-            }
-            
-            if let ssUnitVol = item.ssUnitVol, let ssUnitWt = item.ssUnitWt {
-                totalServingSizeLbl.text = "\(ssAmtVolT_new) \(ssUnitVol), \(ssAmtWtT_new) \(ssUnitWt)"
-            }
-        default:
-            print("setupLabels, previousVC = default")
-        }
+        updateLabels()
     }
     
     func setupTextFields() {
@@ -168,31 +159,60 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         servingSizeTxt.tag = 900
         servingSizeTxt.borderStyle = .none
         servingSizeTxt.isUserInteractionEnabled = false
+        servingSizeTxt.font = UIFont.large()
+        servingSizeTxt.textColor = UIColor.brandBlack()
         
         numberOfServingsTxt.tag = 901
         numberOfServingsTxt.borderStyle = .none
         numberOfServingsTxt.isUserInteractionEnabled = true
         numberOfServingsTxt.delegate = self
+        numberOfServingsTxt.font = UIFont.large()
+        numberOfServingsTxt.textColor = UIColor.brandSecondary()
         
         switch previousVC {
         case "DiaryVC":
             print("setupTextFields, previousVC = DiaryVC")
             
-            let ssAmtVol = entry.ssAmtVolT / entry.servingsT
-            let ssAmtWt = entry.ssAmtWtT / entry.servingsT
+            let ssAmtVol = appDelegate.round100(input: (entry.ssAmtVolT / entry.servingsT))
+            let ssAmtWt = appDelegate.round100(input: (entry.ssAmtWtT / entry.servingsT))
+            
             if let ssUnitVolT = entry.ssUnitVolT, let ssUnitWtT = entry.ssUnitWtT {
-                servingSizeTxt.text = "\(ssAmtVol) \(ssUnitVolT), \(ssAmtWt) \(ssUnitWtT)"
+                // round if int
+                if appDelegate.checkIfInt(input: ssAmtVol) && appDelegate.checkIfInt(input: ssAmtWt) {
+                    servingSizeTxt.text = "\(Int(ssAmtVol)) \(ssUnitVolT), \(Int(ssAmtWt)) \(ssUnitWtT)"
+                } else if !appDelegate.checkIfInt(input: ssAmtVol) && appDelegate.checkIfInt(input: ssAmtWt) {
+                    servingSizeTxt.text = "\(ssAmtVol) \(ssUnitVolT), \(Int(ssAmtWt)) \(ssUnitWtT)"
+                } else if appDelegate.checkIfInt(input: ssAmtVol) && !appDelegate.checkIfInt(input: ssAmtWt){
+                    servingSizeTxt.text = "\(Int(ssAmtVol)) \(ssUnitVolT), \(ssAmtWt) \(ssUnitWtT)"
+                } else {
+                    servingSizeTxt.text = "\(ssAmtVol) \(ssUnitVolT), \(ssAmtWt) \(ssUnitWtT)"
+                }
             }
             
             numberOfServingsTxt.text = "\(servingsT_updated)"
+            if appDelegate.checkIfInt(input: servingsT_updated) {
+                numberOfServingsTxt.text = "\(Int(servingsT_updated))"
+            }
         case "AddDiaryEntryVC":
             print("setupTextFields, previousVC = AddDiaryEntryVC")
             
             if let ssUnitVol = item.ssUnitVol, let ssUnitWt = item.ssUnitWt {
-                servingSizeTxt.text = "\(ssAmtVolT_new) \(ssUnitVol), \(ssAmtWtT_new) \(ssUnitWt)"
+                // round if int
+                if appDelegate.checkIfInt(input: ssAmtVolT_new) && appDelegate.checkIfInt(input: ssAmtWtT_new) {
+                    servingSizeTxt.text = "\(Int(ssAmtVolT_new)) \(ssUnitVol), \(Int(ssAmtWtT_new)) \(ssUnitWt)"
+                } else if !appDelegate.checkIfInt(input: ssAmtVolT_new) && appDelegate.checkIfInt(input: ssAmtWtT_new) {
+                    servingSizeTxt.text = "\(ssAmtVolT_new) \(ssUnitVol), \(Int(ssAmtWtT_new)) \(ssUnitWt)"
+                } else if appDelegate.checkIfInt(input: ssAmtVolT_new) && !appDelegate.checkIfInt(input: ssAmtWtT_new){
+                    servingSizeTxt.text = "\(Int(ssAmtVolT_new)) \(ssUnitVol), \(ssAmtWtT_new) \(ssUnitWt)"
+                } else {
+                    servingSizeTxt.text = "\(ssAmtVolT_new) \(ssUnitVol), \(ssAmtWtT_new) \(ssUnitWt)"
+                }
             }
             
             numberOfServingsTxt.text = "\(servingsT_new)"
+            if appDelegate.checkIfInt(input: servingsT_new) {
+                numberOfServingsTxt.text = "\(Int(servingsT_new))"
+            }
         default:
             print("setupTextFields, previousVC = default")
         }
@@ -212,6 +232,12 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         default:
             print("setupButtons, previousVC = default")
         }
+        
+        actionBtn.backgroundColor = UIColor.actionButtonBackground()
+        actionBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
+        actionBtn.titleLabel?.font = UIFont.actionButtonText()
+        actionBtn.layer.borderWidth = CGFloat(2)
+        actionBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
     }
     
     func setupTableView() {
@@ -223,6 +249,57 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         tableView.register(nib, forCellReuseIdentifier: "UpdateDiaryEntryCell")
         
         tableView.tableFooterView = UIView()
+    }
+    
+    // updates
+    
+    func updateLabels() {
+        print("updateLabels: start")
+        
+        switch previousVC {
+        case "DiaryVC":
+            print("updateLabels, previousVC = DiaryVC")
+            
+            if let name = entry.name {
+                nameLbl.text = "\(name.capitalized)"
+            }
+            
+            if let ssUnitVolT = entry.ssUnitVolT, let ssUnitWtT = entry.ssUnitWtT {
+                
+                // round if int
+                if appDelegate.checkIfInt(input: ssAmtVolT_updated) && appDelegate.checkIfInt(input: ssAmtWtT_updated) {
+                    totalServingSizeLbl.text = "\(Int(ssAmtVolT_updated)) \(ssUnitVolT), \(Int(ssAmtWtT_updated)) \(ssUnitWtT)"
+                } else if !appDelegate.checkIfInt(input: ssAmtVolT_updated) && appDelegate.checkIfInt(input: ssAmtWtT_updated) {
+                    totalServingSizeLbl.text = "\(ssAmtVolT_updated) \(ssUnitVolT), \(Int(ssAmtWtT_updated)) \(ssUnitWtT)"
+                } else if appDelegate.checkIfInt(input: ssAmtVolT_updated) && !appDelegate.checkIfInt(input: ssAmtWtT_updated){
+                    totalServingSizeLbl.text = "\(Int(ssAmtVolT_updated)) \(ssUnitVolT), \(ssAmtWtT_updated) \(ssUnitWtT)"
+                } else {
+                    totalServingSizeLbl.text = "\(ssAmtVolT_updated) \(ssUnitVolT), \(ssAmtWtT_updated) \(ssUnitWtT)"
+                }
+            }
+        case "AddDiaryEntryVC":
+            print("updateLabels, previousVC = AddDiaryEntryVC")
+            
+            if let name = item.name {
+                nameLbl.text = "\(name.capitalized)"
+            }
+            
+            if let ssUnitVol = item.ssUnitVol, let ssUnitWt = item.ssUnitWt {
+                
+                // round if int
+                if appDelegate.checkIfInt(input: ssAmtVolT_new) && appDelegate.checkIfInt(input: ssAmtWtT_new) {
+                    totalServingSizeLbl.text = "\(Int(ssAmtVolT_new)) \(ssUnitVol), \(Int(ssAmtWtT_new)) \(ssUnitWt)"
+                } else if !appDelegate.checkIfInt(input: ssAmtVolT_new) && appDelegate.checkIfInt(input: ssAmtWtT_new) {
+                    totalServingSizeLbl.text = "\(ssAmtVolT_new) \(ssUnitVol), \(Int(ssAmtWtT_new)) \(ssUnitWt)"
+                } else if appDelegate.checkIfInt(input: ssAmtVolT_new) && !appDelegate.checkIfInt(input: ssAmtWtT_new){
+                    totalServingSizeLbl.text = "\(Int(ssAmtVolT_new)) \(ssUnitVol), \(ssAmtWtT_new) \(ssUnitWt)"
+                } else {
+                    totalServingSizeLbl.text = "\(ssAmtVolT_new) \(ssUnitVol), \(ssAmtWtT_new) \(ssUnitWt)"
+                }
+            }
+        default:
+            print("updateLabels, previousVC = default")
+        }
     }
     
     // table view
@@ -253,12 +330,22 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         switch self.segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
             let name = namesServings[indexPath.row]
+            let amountServing = amountsServings[indexPath.row]
+            
             cell.nameLbl.text = name
-            cell.amountLbl.text = "\(amountsServings[indexPath.row])"
+            cell.amountLbl.text = "\(amountServing)"
+            if appDelegate.checkIfInt(input: amountServing) {
+                cell.amountLbl.text = "\(Int(amountServing))"
+            }
         case 1:
             let name = namesMacros[indexPath.row]
+            let amountServing = amountsMacros[indexPath.row]
+            
             cell.nameLbl.text = name
-            cell.amountLbl.text = "\(amountsMacros[indexPath.row])"
+            cell.amountLbl.text = "\(amountServing)"
+            if appDelegate.checkIfInt(input: amountServing) {
+                cell.amountLbl.text = "\(Int(amountServing))"
+            }
         default:
             print("d")
         }
@@ -267,6 +354,7 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
     }
     
     // text fields
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let textFieldText : NSString = (textField.text ?? "") as NSString
@@ -276,81 +364,111 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         case "DiaryVC":
             print("shouldChangeCharactersIn, previousVC = DiaryVC")
             
-            if let ssUnitVolT = entry.ssUnitVolT, let ssUnitWtT = entry.ssUnitWtT {
-                self.ssAmtVolT_updated = entry.ssAmtVolT / entry.servingsT * txtAfterUpdate.doubleValue
-                self.ssAmtWtT_updated = entry.ssAmtWtT / entry.servingsT * txtAfterUpdate.doubleValue
-                self.servingsT_updated = txtAfterUpdate.doubleValue
-                totalServingSizeLbl.text = "\(self.ssAmtVolT_updated) \(ssUnitVolT), \(self.ssAmtWtT_updated) \(ssUnitWtT)"
-                
-            }
+            self.ssAmtVolT_updated = appDelegate.round100(input: (entry.ssAmtVolT / entry.servingsT * txtAfterUpdate.doubleValue))
+            self.ssAmtWtT_updated = appDelegate.round100(input: (entry.ssAmtWtT / entry.servingsT * txtAfterUpdate.doubleValue))
+            self.servingsT_updated = appDelegate.round100(input: (txtAfterUpdate.doubleValue))
             
             amountsServings = [
-                (entry.beansT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.berriesT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.otherFruitsT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.cruciferousVegetablesT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.greensT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.otherVegetablesT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.flaxseedsT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.nutsT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.turmericT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.wholeGrainsT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.otherSeedsT / entry.servingsT) * txtAfterUpdate.doubleValue
+                appDelegate.round100(input: ((entry.beansT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.berriesT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.otherFruitsT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.cruciferousVegetablesT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.greensT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.otherVegetablesT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.flaxseedsT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.nutsT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.turmericT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.wholeGrainsT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.otherSeedsT / entry.servingsT) * txtAfterUpdate.doubleValue))
             ]
             
             amountsMacros = [
-                (entry.calsT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.fatT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.carbsT / entry.servingsT) * txtAfterUpdate.doubleValue,
-                (entry.proteinT / entry.servingsT) * txtAfterUpdate.doubleValue
+                appDelegate.round100(input: ((entry.calsT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.fatT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.carbsT / entry.servingsT) * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: ((entry.proteinT / entry.servingsT) * txtAfterUpdate.doubleValue))
             ]
             
-            //print("amountsServings after update: \(amountsServings)")
-            //print("self.ssAmtWtT_updated: \(self.ssAmtWtT_updated)")
-            //print("self.ssAmtVolT_updated: \(self.ssAmtVolT_updated)")
+            print("rounded: \(appDelegate.round100(input: (entry.calsT / entry.servingsT) * txtAfterUpdate.doubleValue))")
+            
         case "AddDiaryEntryVC":
             print("shouldChangeCharactersIn, previousVC = AddDiaryEntryVC")
             
-            if let ssUnitVol = item.ssUnitVol, let ssUnitWt = item.ssUnitWt {
-                self.ssAmtVolT_new = item.ssAmtVol * txtAfterUpdate.doubleValue
-                self.ssAmtWtT_new = item.ssAmtWt * txtAfterUpdate.doubleValue
-                self.servingsT_new = txtAfterUpdate.doubleValue
-                totalServingSizeLbl.text = "\(self.ssAmtVolT_new) \(ssUnitVol), \(self.ssAmtWtT_new) \(ssUnitWt)"
-                
-            }
+            self.ssAmtVolT_new = appDelegate.round100(input: (item.ssAmtVol * txtAfterUpdate.doubleValue))
+            self.ssAmtWtT_new = appDelegate.round100(input: (item.ssAmtWt * txtAfterUpdate.doubleValue))
+            self.servingsT_new = appDelegate.round100(input: (txtAfterUpdate.doubleValue))
             
             amountsServings = [
-                item.beans * txtAfterUpdate.doubleValue,
-                item.berries * txtAfterUpdate.doubleValue,
-                item.otherFruits * txtAfterUpdate.doubleValue,
-                item.cruciferousVegetables * txtAfterUpdate.doubleValue,
-                item.greens * txtAfterUpdate.doubleValue,
-                item.otherVegetables * txtAfterUpdate.doubleValue,
-                item.flaxseeds * txtAfterUpdate.doubleValue,
-                item.nuts * txtAfterUpdate.doubleValue,
-                item.turmeric * txtAfterUpdate.doubleValue,
-                item.wholeGrains * txtAfterUpdate.doubleValue,
-                item.otherSeeds * txtAfterUpdate.doubleValue
+                appDelegate.round100(input: (item.beans * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.berries * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.otherFruits * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.cruciferousVegetables * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.greens * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.otherVegetables * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.flaxseeds * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.nuts * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.turmeric * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.wholeGrains * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.otherSeeds * txtAfterUpdate.doubleValue))
             ]
             
             amountsMacros = [
-                item.cals * txtAfterUpdate.doubleValue,
-                item.fat * txtAfterUpdate.doubleValue,
-                item.carbs * txtAfterUpdate.doubleValue,
-                item.protein * txtAfterUpdate.doubleValue
+                appDelegate.round100(input: (item.cals * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.fat * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.carbs * txtAfterUpdate.doubleValue)),
+                appDelegate.round100(input: (item.protein * txtAfterUpdate.doubleValue))
             ]
-            
-            //print("self.ssAmtWt_new: \(self.ssAmtWtT_new)")
-            //print("self.ssAmtVol_new: \(self.ssAmtVolT_new)")
         default:
             print("shouldChangeCharactersIn, previousVC = default")
         }
+        
+        updateLabels()
         
         tableView.reloadData()
         
         return true
     }
     
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        
+        if appDelegate.dotsCount(inputString: "\(textField.text)") > 1 {
+            appDelegate.showInfoView(message: UIMessages.kInputFormatIncorrect, color: UIColor.popUpFailure())
+            return false
+        }
+        
+        if textField.text == "" {
+            appDelegate.showInfoView(message: UIMessages.kInputBlank, color: UIColor.popUpFailure())
+            return false
+        }
+        
+        if textField.text == "0" || textField.text == "0.0" {
+            appDelegate.showInfoView(message: UIMessages.kInputZero, color: UIColor.popUpFailure())
+            return false
+        }
+        
+        switch previousVC {
+        case "DiaryVC":
+            textField.text = "\(servingsT_updated)"
+            if appDelegate.checkIfInt(input: servingsT_updated) {
+                numberOfServingsTxt.text = "\(Int(servingsT_updated))"
+            }
+        case "AddDiaryEntryVC":
+            textField.text = "\(servingsT_new)"
+            if appDelegate.checkIfInt(input: servingsT_new) {
+                numberOfServingsTxt.text = "\(Int(servingsT_new))"
+            }
+        default:
+            print("d")
+        }
+        return true
+    }
+    
+    // notifications
+    
+    func postNotificationFoodModification() {
+        print("postNotificationFoodModification")
+        NotificationCenter.default.post(name: NSNotification.Name("FoodModification"), object: nil)
+    }
     
     // MARK: - actions
     
@@ -377,8 +495,8 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         let proteinT = "\(amountsMacros[3])"
         //let logDate = "\(appDelegate.dateFilter.toString(format: "yyyy-MM-dd"))"
         
-        let email = "\(UserDefaults.standard.string(forKey: "email")!)"
-        let authenticationToken = "\(UserDefaults.standard.string(forKey: "authenticationToken")!)"
+        let email = "\(appDelegate.currentUser.email!)"
+        let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
         let url = "http://localhost:3000/v1/foods/\(id)"
         let params = ["food": [
@@ -417,10 +535,13 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
                     for food in JSON {
                         Food.findOrCreateFromJSON(food, context: context)
                     }
+                    appDelegate.showInfoView(message: UIMessages.kEntryUpdated, color: UIColor.popUpSuccess())
+                    self.postNotificationFoodModification()
+                    self.dismiss(animated: true, completion: nil)
                 }
-                self.dismiss(animated: true, completion: nil)
             case .failure(let error):
                 print("response failure: \(error)")
+                appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
         }
     }
@@ -451,8 +572,8 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
         let proteinT = "\(amountsMacros[3])"
         let logDate = "\(appDelegate.dateFilter.toString(format: "yyyy-MM-dd"))"
         
-        let email = "\(UserDefaults.standard.string(forKey: "email")!)"
-        let authenticationToken = "\(UserDefaults.standard.string(forKey: "authenticationToken")!)"
+        let email = "\(appDelegate.currentUser.email!)"
+        let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
         let url = "http://localhost:3000/v1/foods"
         let params = ["food": [
@@ -497,11 +618,13 @@ class UpdateDiaryEntryVC: UIViewController, UITextFieldDelegate, UITableViewDele
                 if let JSON = response.result.value as? [String: AnyObject] {
                     //print("JSON: \(JSON)")
                     Food.findOrCreateFromJSON(JSON, context: context)
+                    appDelegate.showInfoView(message: UIMessages.kEntryAdded, color: UIColor.popUpSuccess())
+                    self.postNotificationFoodModification()
+                    self.dismiss(animated: true, completion: nil)
                 }
-                
-                self.dismiss(animated: true, completion: nil)
             case .failure(let error):
                 print("response failure: \(error)")
+                appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
         }
     }

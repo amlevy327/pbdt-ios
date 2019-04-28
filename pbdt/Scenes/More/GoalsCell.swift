@@ -1,30 +1,38 @@
 //
-//  DiaryCell.swift
+//  GoalsCell.swift
 //  pbdt
 //
-//  Created by Andrew M Levy on 4/5/19.
+//  Created by Andrew M Levy on 4/26/19.
 //  Copyright © 2019 Andrew-M-Levy. All rights reserved.
 //
 
 import UIKit
 
-class DiaryCell: UITableViewCell {
+class GoalsCell: UITableViewCell {
     
     // MARK: - objects and vars
-    @IBOutlet weak var idLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
-    @IBOutlet weak var detailLbl: UILabel!
+    @IBOutlet weak var goalTxt: UITextField!
+    
+    // objects
+    
+    // vars
     
     // MARK: - functions
-
+    
+    // lifecycle
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         nameLbl.font = UIFont.cellLarge()
-        nameLbl.textColor = UIColor.cellPrimaryText()
+        nameLbl.textColor = UIColor.brandBlack()
         
-        detailLbl.font = UIFont.cellSmall()
-        detailLbl.textColor = UIColor.cellSecondaryText()
+        goalTxt.font = UIFont.cellLarge()
+        goalTxt.textColor = UIColor.brandSecondary()
+        goalTxt.keyboardType = .decimalPad
+        
+        self.selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

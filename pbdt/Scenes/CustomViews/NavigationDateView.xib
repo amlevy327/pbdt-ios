@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NavigationDateView" customModule="pbdt" customModuleProvider="target">
+            <connections>
+                <outlet property="navDateLbl" destination="Tl9-OH-2WE" id="JvW-cg-4bI"/>
+                <outlet property="navNextBtn" destination="St1-h5-d1C" id="V1y-2H-zqq"/>
+                <outlet property="navPreviousBtn" destination="un5-Yg-iXa" id="l0e-et-nXM"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ND" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tl9-OH-2WE">
+                    <rect key="frame" x="38.5" y="10" width="23" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="un5-Yg-iXa">
+                    <rect key="frame" x="-1.5" y="4" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="un5-Yg-iXa" secondAttribute="height" multiplier="1:1" id="7QY-O9-vnC"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="&lt;"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="St1-h5-d1C">
+                    <rect key="frame" x="69.5" y="4" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="St1-h5-d1C" secondAttribute="height" multiplier="1:1" id="3Yy-BO-Hr1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="&gt;"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="St1-h5-d1C" firstAttribute="leading" secondItem="Tl9-OH-2WE" secondAttribute="trailing" constant="8" id="AE0-GS-6z2"/>
+                <constraint firstItem="Tl9-OH-2WE" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NY8-i6-6dE"/>
+                <constraint firstItem="Tl9-OH-2WE" firstAttribute="centerY" secondItem="un5-Yg-iXa" secondAttribute="centerY" id="Ti2-3v-Kz0"/>
+                <constraint firstItem="St1-h5-d1C" firstAttribute="centerY" secondItem="un5-Yg-iXa" secondAttribute="centerY" id="Weq-m1-43g"/>
+                <constraint firstItem="Tl9-OH-2WE" firstAttribute="leading" secondItem="un5-Yg-iXa" secondAttribute="trailing" constant="8" id="cba-zg-5Rf"/>
+                <constraint firstItem="Tl9-OH-2WE" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="coq-lk-Qbf"/>
+                <constraint firstItem="St1-h5-d1C" firstAttribute="width" secondItem="St1-h5-d1C" secondAttribute="height" multiplier="1:1" id="rix-Nc-9g1"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="244" y="48.575712143928037"/>
+        </view>
+    </objects>
+</document>

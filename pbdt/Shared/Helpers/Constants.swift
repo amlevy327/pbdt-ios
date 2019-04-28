@@ -8,6 +8,24 @@
 
 import Foundation
 
+struct UIMessages {
+    
+    // input errors
+    static let kInputFormatIncorrect = "Input format incorrect"
+    static let kInputBlank = "Input cannot be blank"
+    static let kInputZero = "Input must be greater than zero"
+    
+    // entries
+    static let kEntryAdded = "Food added!"
+    static let kEntryUpdated = "Food updated!"
+    
+    // goals
+    static let kGoalsUpdated = "Goals updated!"
+    
+    // error
+    static let kErrorGeneral = "We encountered an error. Please try again later."
+}
+
 struct StaticLists {
     
     static let servingsNameArray = [

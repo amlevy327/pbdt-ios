@@ -24,6 +24,7 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         fetchItems()
         setupTableView()
+        setupNotfications()
     }
     
     // setups
@@ -37,6 +38,18 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         tableView.register(nib, forCellReuseIdentifier: "AddDiaryEntryCell")
         
         tableView.tableFooterView = UIView()
+    }
+    
+    func setupNotfications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
+    }
+    
+    // updates
+    
+    @objc func updateAfterFoodModification() {
+        //print("updateAfterFoodModification: start")
+        goToNavigationRoot()
     }
     
     // table view
@@ -58,12 +71,13 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddDiaryEntryCell", for: indexPath) as! AddDiaryEntryCell
         
         let item = items[indexPath.row]
-        cell.nameLbl.text = item.name
+        cell.nameLbl.text = item.name?.capitalized
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         presentUpdateDiaryEntryVC(item)
     }
@@ -97,6 +111,10 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     // MARK: - navigation
+    
+    func goToNavigationRoot() {
+        navigationController?.popToRootViewController(animated: true)
+    }
 
     /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation

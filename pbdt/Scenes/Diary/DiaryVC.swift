@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Alamofire
 
 class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,7 +17,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var logBtn: UIButton!
     @IBOutlet weak var dateView: DateView!
     
-    //var diaryEntries = [Food]()
+    var navDateView = DateView()
     
     // MARK: - functions
     
@@ -29,16 +30,27 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         setupTableView()
         setupButtons()
         setupNotfications()
+        setupNavigationBar()
     }
     
     // setups
     
+    func setupNavigationBar() {
+        
+        navDateView.view.backgroundColor = .clear
+        navDateView.dateLbl.textColor = UIColor.brandWhite()
+        //navDateView.dateLbl.text = "Today"
+        navDateView.updateAfterDateChange()
+        
+        navDateView.parentVc = "DiaryVC"
+        navDateView.diaryVc = self
+        
+        navigationItem.titleView = navDateView
+    }
+    
     func setupViews() {
         
-        view.backgroundColor = .cyan
-        
-        dateView.parentVc = "DiaryVC"
-        dateView.diaryVc = self
+        view.backgroundColor = UIColor.mainViewBackground()
     }
     
     func setupTableView() {
@@ -48,27 +60,53 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        dateView.loadFoods()
+        appDelegate.loadFoods()
     }
     
     func setupButtons() {
         
-        logBtn.setTitle("Log New Food", for: .normal)
+        logBtn.setTitle("Log Food", for: .normal)
+        logBtn.backgroundColor = UIColor.actionButtonBackground()
+        logBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
+        logBtn.titleLabel?.font = UIFont.actionButtonText()
+        logBtn.layer.borderWidth = CGFloat(2)
+        logBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
     }
     
     func setupNotfications() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterDateChange), name: NSNotification.Name("DateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
     }
     
     // updates
     
     @objc func updateAfterDateChange() {
         
-        print("updateAfterDateChange")
-        dateView.updateAfterDateChange()
+        print("updateAfterDateChange: DiaryVC")
+        //dateView.updateAfterDateChange()
+        
+        navDateView.updateAfterDateChange()
+        
+        tableView.reloadData()
+        
+        if appDelegate.diaryEntries.count > 0 {
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     
+    @objc func updateAfterFoodModification() {
+        
+        print("updateAfterFoodModification")
+        appDelegate.loadFoods()
+        tableView.reloadData()
+        
+        if appDelegate.diaryEntries.count > 0 {
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
+    }
     
     // table view
     
@@ -81,7 +119,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 64
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -91,10 +129,6 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let entry = appDelegate.diaryEntries[indexPath.row]
         //print("Entry: \(entry)")
         
-        if let id = entry.objectId {
-            cell.idLbl.text = "\(id)"
-        }
-        
         if let name = entry.name {
             cell.nameLbl.text = "\(name.capitalized)"
         }
@@ -103,21 +137,56 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             let servingsT = entry.servingsT
             
-            if servingsT.truncatingRemainder(dividingBy: 1) == 0 {
-                let servingsTInt = Int(servingsT)
-                cell.detailLbl.text = "\(variety.capitalized), \(servingsTInt) servings"
+            if servingsT == 1 {
+                cell.detailLbl.text = "\(variety.capitalized), \(servingsT) serving"
             } else {
                 cell.detailLbl.text = "\(variety.capitalized), \(servingsT) servings"
             }
             
+            if appDelegate.checkIfInt(input: servingsT) {
+                if servingsT == 1 {
+                    cell.detailLbl.text = "\(variety.capitalized), \(Int(servingsT)) serving"
+                } else {
+                    cell.detailLbl.text = "\(variety.capitalized), \(Int(servingsT)) servings"
+                }
+            }
         }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         let entry = appDelegate.diaryEntries[indexPath.row]
         presentUpdateDiaryEntryVC(entry)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action:UITableViewRowAction, indexPath:IndexPath) in
+            
+            let alert = UIAlertController(title: "Are you sure you want to delete this entry", message: "", preferredStyle: .alert)
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                print("delete tapped")
+                
+                if let id = appDelegate.diaryEntries[indexPath.row].objectId {
+                    self.deleteFood(objectId: id, indexPathRow: indexPath.row)
+                }
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+            
+            
+        return [deleteAction]
     }
     
     
@@ -135,6 +204,54 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         vc.entry = entry
         vc.previousVC = "DiaryVC"
         self.present(vc, animated: true)
+    }
+    
+    func deleteFood(objectId: NSNumber, indexPathRow: Int) {
+        print("deleteFood: start, id = \(objectId)")
+        
+        let email = "\(UserDefaults.standard.string(forKey: "email")!)"
+        let authenticationToken = "\(UserDefaults.standard.string(forKey: "authenticationToken")!)"
+        
+        let url = "http://localhost:3000/v1/foods/\(objectId)"
+        
+        let headers: [String:String] = [
+            "X-USER-EMAIL": email,
+            "X-USER-TOKEN": authenticationToken,
+            "Content-Type": "application/json"
+        ]
+        
+        /*
+        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            
+            switch response.result {
+            case .success:
+                if let JSON = response.result.value as? [[String: AnyObject]] {
+                    
+                    for food in JSON {
+                        Food.findOrCreateFromJSON(food, context: context)
+                    }
+                    
+                    let fetchRequest: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
+                    fetchRequest.predicate = NSPredicate(format: "objectId = %@", objectId)
+                    let foodFetch = try context.fetch(fetchRequest)
+                    for food in foodFetch {
+                        context.delete(food)
+                    }
+                    context.save()
+                }
+            case .failure(let error):
+                print("response failure: \(error)")
+            }
+        }
+        */
+        /*
+        do {
+            let fetchRequest = try context.fetch(foodFetch)
+            appDelegate.diaryEntries = fetchRequest
+        } catch {
+            print("Error fetching foods: \(error)")
+        }
+        */
     }
     
     // MARK: - navigation

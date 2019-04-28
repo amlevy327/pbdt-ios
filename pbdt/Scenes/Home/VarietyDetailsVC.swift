@@ -1,34 +1,21 @@
 //
-//  ViewController.swift
+//  VarietyDetailsVC.swift
 //  pbdt
 //
-//  Created by Andrew M Levy on 4/5/19.
+//  Created by Andrew M Levy on 4/19/19.
 //  Copyright © 2019 Andrew-M-Levy. All rights reserved.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
-    
-    // MARK: - objects and vars
-    
-    // MARK: - functions
-    
-    // lifecycle
-    
+class VarietyDetailsVC: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
+        // Do any additional setup after loading the view.
     }
     
-    // setups
-    
-    // table view
-    
-    // MARK: - actions
-    
-    // MARK: - navigation
 
     /*
     // MARK: - Navigation

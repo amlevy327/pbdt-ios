@@ -1,21 +1,19 @@
 //
-//  DateView.swift
+//  NavigationDateView.swift
 //  pbdt
 //
-//  Created by Andrew M Levy on 4/15/19.
+//  Created by Andrew M Levy on 4/27/19.
 //  Copyright © 2019 Andrew-M-Levy. All rights reserved.
 //
 
 import UIKit
-import CoreData
 
-class DateView: UIView {
-    
+class NavigationDateView: UIView {
+
     // MARK: - objects and vars
-    
-    @IBOutlet weak var dateLbl: UILabel!
-    @IBOutlet weak var previousBtn: UIButton!
-    @IBOutlet weak var nextBtn: UIButton!
+    @IBOutlet weak var navDateLbl: UILabel!
+    @IBOutlet weak var navPreviousBtn: UIButton!
+    @IBOutlet weak var navNextBtn: UIButton!
     
     var view: UIView!
     
@@ -55,7 +53,7 @@ class DateView: UIView {
         view.frame = bounds
         
         // attributes
-        view.backgroundColor = UIColor.viewBackground()
+        view.backgroundColor = UIColor.brandPrimary()
         
         // Make the view stretch with containing view
         view.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
@@ -73,26 +71,26 @@ class DateView: UIView {
     
     func setupLabels() {
         
-        dateLbl.font = UIFont.dateText()
+        //dateLbl.backgroundColor = UIColor.viewBackground()
+        navDateLbl.textColor = UIColor.brandWhite()
+        navDateLbl.font = UIFont.dateText()
         
         updateDateLbl()
     }
     
     func setupButtons() {
         
-        previousBtn.titleLabel?.font = UIFont.dateButtonText()
-        //previousBtn.backgroundColor = UIColor.dateButtonBackground()
-        previousBtn.setTitleColor(UIColor.dateButtonText(), for: .normal)
-        //previousBtn.setTitleColor(UIColor.brandWhite(), for: .normal)
-        previousBtn.layer.borderWidth = CGFloat(2)
-        previousBtn.layer.borderColor = UIColor.dateButtonBorder().cgColor
+        navPreviousBtn.titleLabel?.font = UIFont.dateButtonText()
+        navPreviousBtn.backgroundColor = UIColor.dateButtonBackground()
+        navPreviousBtn.setTitleColor(UIColor.dateButtonText(), for: .normal)
+        //previousBtn.layer.borderWidth = CGFloat(2)
+        //previousBtn.layer.borderColor = UIColor.dateButtonBorder().cgColor
         
-        nextBtn.titleLabel?.font = UIFont.dateButtonText()
-        //nextBtn.backgroundColor = UIColor.dateButtonBackground()
-        nextBtn.setTitleColor(UIColor.dateButtonText(), for: .normal)
-        //nextBtn.setTitleColor(UIColor.brandWhite(), for: .normal)
-        nextBtn.layer.borderWidth = CGFloat(2)
-        nextBtn.layer.borderColor = UIColor.dateButtonBorder().cgColor
+        navNextBtn.titleLabel?.font = UIFont.dateButtonText()
+        navNextBtn.backgroundColor = UIColor.clear
+        navNextBtn.setTitleColor(UIColor.brandWhite(), for: .normal)
+        //nextBtn.layer.borderWidth = CGFloat(2)
+        //nextBtn.layer.borderColor = UIColor.dateButtonBorder().cgColor
     }
     
     // updates
@@ -105,22 +103,22 @@ class DateView: UIView {
             
             let today = Date()
             let todayNoTimeStamp = today.removeTimeStamp(fromDate: today)
-            print("today: \(today)")
+            //print("today: \(today)")
             
             let dateFilterNoTimeStamp = dateFilter.removeTimeStamp(fromDate: dateFilter)
             let difference = Calendar.current.dateComponents([.day], from: todayNoTimeStamp, to: dateFilterNoTimeStamp)
-            print("difference: \(difference.day)")
+            //print("difference: \(difference.day)")
             
             switch difference.day {
             case -1:
-                dateLbl.text = "Yesterday"
+                navDateLbl.text = "Yesterday"
             case 0:
-                dateLbl.text = "Today"
+                navDateLbl.text = "Today"
             case 1:
-                dateLbl.text = "Tomorrow"
+                navDateLbl.text = "Tomorrow"
             default:
                 let dateString = dateFilter.toString(format: "MMM dd, yyyy")
-                dateLbl.text = "\(dateString)"
+                navDateLbl.text = "\(dateString)"
             }
         }
     }
@@ -131,7 +129,7 @@ class DateView: UIView {
         
         appDelegate.dateFilter = Calendar.current.date(byAdding: .day, value: 1, to: appDelegate.dateFilter)
         
-        //updateAfterDateChange()
+        updateAfterDateChange()
         postNotificationDateChange()
     }
     
@@ -139,7 +137,7 @@ class DateView: UIView {
         
         appDelegate.dateFilter = Calendar.current.date(byAdding: .day, value: -1, to: appDelegate.dateFilter)
         
-        //updateAfterDateChange()
+        updateAfterDateChange()
         postNotificationDateChange()
     }
     
@@ -160,15 +158,5 @@ class DateView: UIView {
     }
     
     // MARK: - actions
-    
-    @IBAction func previousBtn_clicked(_ sender: Any) {
-        
-        previousDay()
-    }
-    
-    @IBAction func nextBtn_clicked(_ sender: Any) {
-        
-        nextDay()
-    }
     
 }

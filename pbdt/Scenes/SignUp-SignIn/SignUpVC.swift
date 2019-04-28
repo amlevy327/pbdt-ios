@@ -71,6 +71,16 @@ class SignUpVC: UIViewController {
     
     @IBAction func signUpBtn_clicked(_ sender: Any) {
         
+        do {
+            let fetch: NSFetchRequest<User> = NSFetchRequest(entityName: "User")
+            //let fetch: NSFetchRequest<Item> = NSFetchRequest(entityName: "Item")
+            let fetchCheck = try context.fetch(fetch)
+            print("fetchCheck.count = \(fetchCheck.count)")
+        } catch {
+            print("error")
+        }
+        
+        /*
         let name = nameTxt.text
         let email = emailTxt.text
         let password = passwordTxt.text
@@ -136,6 +146,7 @@ class SignUpVC: UIViewController {
                 print("response failure from post user: \(error)")
             }
         }
+        */
     }
     
     // MARK: - navigation

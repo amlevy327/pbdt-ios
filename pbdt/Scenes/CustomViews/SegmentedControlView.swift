@@ -19,6 +19,7 @@ class SegmentedControlView: UIView {
     var parentVc: String!
     var homeVc: HomeVC!
     var updateDiaryEntryVc: UpdateDiaryEntryVC!
+    var goalsVc: GoalsVC!
     
     // MARK: - functions
     
@@ -50,6 +51,9 @@ class SegmentedControlView: UIView {
         // use bounds not frame or it'll be offset
         view.frame = bounds
         
+        // attributes
+        view.backgroundColor = UIColor.viewBackground()
+        
         // Make the view stretch with containing view
         view.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         
@@ -70,7 +74,7 @@ class SegmentedControlView: UIView {
             type: .bottom,
             ratio: 1,
             height: 4,
-            color: UIColor.blue)
+            color: UIColor.brandPrimary())
         
         let horizontalOptions = SegmentioHorizontalSeparatorOptions(type: .bottom, height: 0, color: UIColor.black)
         
@@ -107,6 +111,9 @@ class SegmentedControlView: UIView {
             case "UpdateDiaryEntryVC":
                 print("UpdateDiaryEntryVC")
                 self.updateDiaryEntryVc.tableView.reloadData()
+            case "GoalsVC":
+                print("GoalsVC")
+                self.goalsVc.tableView.reloadData()
             default:
                 print("d")
             }
@@ -121,18 +128,18 @@ class SegmentedControlView: UIView {
         return SegmentioStates(
             defaultState: SegmentioState(
                 backgroundColor: .clear,
-                titleFont: UIFont.systemFont(ofSize: 16),
-                titleTextColor: UIColor.black
+                titleFont: UIFont.segmentedControlDefault(),
+                titleTextColor: UIColor.segmentedControlDefault()
             ),
             selectedState: SegmentioState(
                 backgroundColor: .clear,
-                titleFont: UIFont.systemFont(ofSize: 16),
-                titleTextColor: UIColor.red
+                titleFont: UIFont.segmentedControlSelected(),
+                titleTextColor: UIColor.segmentedControlSelected()
             ),
             highlightedState: SegmentioState(
                 backgroundColor: .clear,
-                titleFont: UIFont.systemFont(ofSize: 16),
-                titleTextColor: UIColor.black
+                titleFont: UIFont.segmentedControlDefault(),
+                titleTextColor: UIColor.segmentedControlDefault()
             )
         )
     }

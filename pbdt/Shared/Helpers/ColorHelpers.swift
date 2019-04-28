@@ -11,7 +11,108 @@ import UIKit
 
 extension UIColor {
     
-    class func brandColor1() -> UIColor {
-        return UIColor.yellow
+    class func brandPrimary() -> UIColor {
+        return UIColor(red: 2/255, green: 45/255, blue: 160/255, alpha: 1) // brand, dark blue
     }
+    
+    class func brandSecondary() -> UIColor {
+        return UIColor(red: 8/255, green: 138/255, blue: 184/255, alpha: 1) // brand, light blue
+    }
+    
+    class func brandGreyDark() -> UIColor {
+        return UIColor(red: 127/255, green: 127/255, blue: 127/255, alpha: 1.0) // #7F7F7F
+    }
+    
+    class func brandGreyLight() -> UIColor {
+        return UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1.0) // #EBEBEB
+    }
+    
+    class func brandWhite() -> UIColor {
+        return UIColor.white
+    }
+    
+    class func brandBlack() -> UIColor {
+        return UIColor.black
+    }
+    
+    // views
+    
+    class func mainViewBackground() -> UIColor {
+        return UIColor.groupTableViewBackground
+    }
+    
+    class func viewBackground() -> UIColor {
+        return UIColor.brandWhite()
+    }
+    
+    // buttons
+    
+//    class func actionButtonBackground() -> UIColor {
+//        return UIColor(red: 8/255, green: 138/255, blue: 184/255, alpha: 1) // light blue
+//    }
+    
+    class func actionButtonBackground() -> UIColor {
+        return UIColor.brandPrimary()
+    }
+    
+    class func actionButtonText() -> UIColor {
+        return UIColor.brandWhite()
+    }
+    
+    class func actionButtonBorder() -> UIColor {
+        return UIColor.brandWhite()
+    }
+    
+    class func dateButtonBackground() -> UIColor {
+        return UIColor.brandWhite()
+    }
+    
+    class func dateButtonText() -> UIColor {
+        return UIColor.brandSecondary()
+    }
+    
+    class func dateButtonBorder() -> UIColor {
+        return UIColor.brandSecondary()
+    }
+    
+    // cells
+    
+    class func cellPrimaryText() -> UIColor {
+        return UIColor.brandBlack()
+    }
+    
+    class func cellSecondaryText() -> UIColor {
+        return UIColor.brandGreyDark()
+    }
+    
+    // segmented control
+    
+    class func segmentedControlDefault() -> UIColor {
+        return UIColor.brandGreyDark()
+    }
+    
+    class func segmentedControlSelected() -> UIColor {
+        return UIColor.brandBlack()
+    }
+    
+    // summary
+    
+    class func success() -> UIColor {
+        return UIColor(red: 2/255, green: 157/255, blue: 104/255, alpha: 0.5) // green
+    }
+    
+    class func failure() -> UIColor {
+        return UIColor(red: 186/255, green: 3/255, blue: 34/255, alpha: 0.5)  // red
+    }
+    
+    // pop up
+    
+    class func popUpSuccess() -> UIColor {
+        return UIColor(red: 2/255, green: 157/255, blue: 104/255, alpha: 1) // green
+    }
+    
+    class func popUpFailure() -> UIColor {
+        return UIColor(red: 186/255, green: 3/255, blue: 34/255, alpha: 1)  // red
+    }
+    
 }

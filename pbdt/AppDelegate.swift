@@ -20,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var dateFilter: Date!
     var diaryEntries = [Food]()
+    var currentUser: User!
+    
+    var infoViewIsShowing: Bool = false
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -27,7 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         
         dateFilter = Date()
-        print("dateFilter: \(dateFilter)")
+        
+        AppearanceConfig.setupNavigationBar()
+        AppearanceConfig.setupStatusBar()
+        AppearanceConfig.setupTabBar()
         
         return true
     }
@@ -99,6 +105,110 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+    
+    // MARK: - pop up view
+    
+    // pop up view
+    func showInfoView(message: String, color: UIColor) {
+        
+        let statusBar_Height = UIApplication.shared.statusBarFrame.height
+        
+        if infoViewIsShowing == false {
+            
+            infoViewIsShowing = true
+            
+            // pop up view parameters
+            let infoView_Width = CGFloat(self.window!.bounds.width) - CGFloat(6)
+            let infoView_Height = CGFloat(40)
+            let infoView_X = CGFloat(3)
+            let infoView_Y = CGFloat(0 - infoView_Height)
+            let infoView = UIView(frame: CGRect(x: infoView_X, y: infoView_Y, width: infoView_Width, height: infoView_Height))
+            infoView.layer.cornerRadius = CGFloat(3)
+            infoView.layer.borderWidth = CGFloat(2)
+            infoView.layer.borderColor = UIColor.brandWhite().cgColor
+            self.window!.addSubview(infoView)
+            
+            let label_Height = CGFloat(20)
+            let label_X = CGFloat(13)
+            let label_Y = CGFloat(10)
+            let label_Width = infoView_Width - CGFloat(26)
+            let label = UILabel(frame: CGRect(x: label_X, y: label_Y, width: label_Width, height: label_Height))
+            label.font = UIFont.large()
+            label.backgroundColor = .clear
+            label.textColor = UIColor.brandWhite()
+            label.textAlignment = .center
+            infoView.addSubview(label)
+            
+            infoView.backgroundColor = color
+            label.text = message
+            
+            // animate errorView
+            UIView.animate(withDuration: 0.2, animations: {
+                
+                // move infoView down
+                infoView.frame.origin.y = statusBar_Height
+                //infoView.frame.origin.y = 200
+                
+                // if animation finished
+            }, completion: { (finished:Bool) in
+                
+                // if true
+                if finished {
+                    
+                    UIView.animate(withDuration: 0.2, delay: 3, options: [.allowUserInteraction, .curveLinear], animations: {
+                        
+                        // move errorView up
+                        infoView.frame.origin.y = infoView_Y
+                        
+                        // if finished animation
+                    }, completion: { (finished:Bool) in
+                        
+                        if finished {
+                            infoView.removeFromSuperview()
+                            label.removeFromSuperview()
+                            self.infoViewIsShowing = false
+                        }
+                    })
+                }
+            })
+        }
+    }
+    
+    // MARK: - load foods
+    
+    func loadFoods() {
+        
+        let date = appDelegate.dateFilter.toString(format: "yyyy-MM-dd")
+        
+        let foodFetch: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
+        foodFetch.predicate = NSPredicate(format: "logDate = %@", "\(date)")
+        
+        do {
+            let fetchRequest = try context.fetch(foodFetch)
+            appDelegate.diaryEntries = fetchRequest
+        } catch {
+            print("Error fetching foods: \(error)")
+        }
+    }
+    
+    // MARK: - checks
+    
+    func dotsCount(inputString: String) -> Int {
+        let filteredInput = inputString.filter() { $0 == "." }
+        return filteredInput.count
+    }
+    
+    func checkIfInt(input: Double) -> Bool {
+        if input.truncatingRemainder(dividingBy: 1) == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func round100(input: Double) -> Double {
+        return Double(round(100*input)/100)
     }
 
 }

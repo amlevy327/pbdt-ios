@@ -18,6 +18,8 @@ class AddDiaryEntryCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        nameLbl.font = UIFont.cellLarge()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

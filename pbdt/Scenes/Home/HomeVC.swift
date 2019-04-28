@@ -10,13 +10,13 @@ import UIKit
 import CoreData
 import Segmentio
 
-class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     // MARK: - objects and vars
-    
-    @IBOutlet weak var dateView: DateView!
-    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControlView: SegmentedControlView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    var navDateView = DateView()
     
     var namesServings: [String]!
     var amountsServings: [Double]!
@@ -24,6 +24,11 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var namesMacros: [String]!
     var amountsMacros: [Double]!
     var goalsMacros: [Double]!
+    
+    var itemsPerRow = CGFloat(0)
+    var sectionInsets = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+    
+    var varietySelected: String = ""
     
     // MARK: - functions
     
@@ -34,8 +39,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         setupViews()
         setInitialValues()
-        setupTableView()
+        setupCollectionView()
         setupNotfications()
+        setupNavigationBar()
     }
     
     // setups
@@ -48,25 +54,43 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         updateSummary()
     }
     
+    func setupNavigationBar() {
+        
+        navDateView.view.backgroundColor = .clear
+        navDateView.dateLbl.textColor = UIColor.brandWhite()
+        //navDateView.dateLbl.text = "Today"
+        navDateView.updateAfterDateChange()
+        
+        navDateView.parentVc = "HomeVC"
+        navDateView.homeVc = self
+        
+        navigationItem.titleView = navDateView
+    }
+    
     func setupViews() {
         
-        view.backgroundColor = .green
-        
-        dateView.parentVc = "HomeVC"
-        dateView.homeVc = self
+        view.backgroundColor = UIColor.mainViewBackground()
         
         segmentedControlView.parentVc = "HomeVC"
         segmentedControlView.homeVc = self
     }
     
-    func setupTableView() {
+    func setupCollectionView() {
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        let nib = UINib(nibName: "HomeCell", bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: "HomeCell")
-        tableView.tableFooterView = UIView()
-        dateView.loadFoods()
+        collectionView.backgroundColor = UIColor.viewBackground()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        let nib = UINib(nibName: "HomeCollectionCell", bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: "HomeCollectionCell")
+        appDelegate.loadFoods()
+    }
+    
+    func setupNotfications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterDateChange), name: NSNotification.Name("DateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterUserGoalsModification), name: NSNotification.Name("UserGoalsModification"), object: nil)
     }
     
     // updates
@@ -171,54 +195,52 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             sumProtein
         ]
         
-        let goalBeans = UserDefaults.standard.double(forKey: "beans")
-        let goalBerries = UserDefaults.standard.double(forKey: "berries")
-        let goalOtherFruits = UserDefaults.standard.double(forKey: "otherFruits")
-        let goalCruciferousVegetables = UserDefaults.standard.double(forKey: "cruciferousVegetables")
-        let goalGreens = UserDefaults.standard.double(forKey: "greens")
-        let goalOtherVegetables = UserDefaults.standard.double(forKey: "otherVegetables")
-        let goalFlaxseeds = UserDefaults.standard.double(forKey: "flaxseeds")
-        let goalNuts = UserDefaults.standard.double(forKey: "nuts")
-        let goalTurmeric = UserDefaults.standard.double(forKey: "turmeric")
-        let goalWholeGrains = UserDefaults.standard.double(forKey: "wholeGrains")
-        let goalOtherSeeds = UserDefaults.standard.double(forKey: "otherSeeds")
-        
-        let goalCals = UserDefaults.standard.double(forKey: "cals")
-        let goalFat = UserDefaults.standard.double(forKey: "fat")
-        let goalCarbs = UserDefaults.standard.double(forKey: "carbs")
-        let goalProtein = UserDefaults.standard.double(forKey: "protein")
-        
         goalsServings = [
-            goalBeans,
-            goalBerries,
-            goalOtherFruits,
-            goalCruciferousVegetables,
-            goalGreens,
-            goalOtherVegetables,
-            goalFlaxseeds,
-            goalNuts,
-            goalTurmeric,
-            goalWholeGrains,
-            goalOtherSeeds
+            appDelegate.currentUser.beansG,
+            appDelegate.currentUser.berriesG,
+            appDelegate.currentUser.otherFruitsG,
+            appDelegate.currentUser.cruciferousVegetablesG,
+            appDelegate.currentUser.greensG,
+            appDelegate.currentUser.otherVegetablesG,
+            appDelegate.currentUser.flaxseedsG,
+            appDelegate.currentUser.nutsG,
+            appDelegate.currentUser.turmericG,
+            appDelegate.currentUser.wholeGrainsG,
+            appDelegate.currentUser.otherSeedsG
         ]
         
         goalsMacros = [
-            goalCals,
-            goalFat,
-            goalCarbs,
-            goalProtein
+            appDelegate.currentUser.calsG,
+            appDelegate.currentUser.fatG,
+            appDelegate.currentUser.carbsG,
+            appDelegate.currentUser.proteinG
         ]
         
-        tableView.reloadData()
+        collectionView.reloadData()
     }
     
-    // table view
+    // updates
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    @objc func updateAfterFoodModification() {
+        
+        print("updateAfterFoodModification")
+        appDelegate.loadFoods()
+        updateSummary()
+    }
+    
+    @objc func updateAfterUserGoalsModification() {
+        
+        print("updateAfterUserGoalsModification")
+        updateSummary()
+    }
+    
+    // collection view
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
             return namesServings.count
@@ -230,52 +252,166 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as! HomeCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let amountServings = amountsServings[indexPath.row]
-        let goalServings = goalsServings[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionCell", for: indexPath) as! HomeCollectionCell
         
         switch self.segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
+            
+            let amountServings = amountsServings[indexPath.row]
+            let goalServings = goalsServings[indexPath.row]
+            
             let name = namesServings[indexPath.row]
             cell.nameLbl.text = name
-            cell.amountLbl.text = "\(amountServings) of \(goalServings)"
+            
+            cell.amountLbl.text = "\(amountServings)"
+            if appDelegate.checkIfInt(input: amountServings) {
+                cell.amountLbl.text = "\(Int(amountServings))"
+            }
+            
+            cell.goalLbl.text = "\(goalServings)"
+            if appDelegate.checkIfInt(input: goalServings) {
+                cell.goalLbl.text = "of \(Int(goalServings))"
+            }
+            
+            // attributes
+            
+            if amountServings >= goalServings {
+                cell.backgroundColor = UIColor.success()
+            } else {
+                cell.backgroundColor = UIColor.failure()
+            }
+            
+//            cell.nameLbl.font = UIFont.homeCellServingsName()
+//            cell.amountLbl.font = UIFont.homeCellServingsAmount()
+//            cell.goalLbl.font = UIFont.homeCellServingsGoal()
+            //cell.goalLbl.isHidden = false
+            //cell.isUserInteractionEnabled = true
+            
+            
+            
         case 1:
+            
+            let amountMacros = amountsMacros[indexPath.row]
+            let goalMacros = goalsMacros[indexPath.row]
+            
             let name = namesMacros[indexPath.row]
             cell.nameLbl.text = name
-            cell.amountLbl.text = "\(amountsMacros[indexPath.row])"
+            
+            cell.amountLbl.text = "\(amountMacros)"
+            if appDelegate.checkIfInt(input: amountMacros) {
+                cell.amountLbl.text = "\(Int(amountMacros))"
+            }
+            
+            cell.goalLbl.text = "\(goalMacros)"
+            if appDelegate.checkIfInt(input: goalMacros) {
+                cell.goalLbl.text = "of \(Int(goalMacros))"
+            }
+            
+            // attributes
+            
+            if amountMacros >= goalMacros {
+                cell.backgroundColor = UIColor.success()
+            } else {
+                cell.backgroundColor = UIColor.failure()
+            }
+            
+            
+//            cell.nameLbl.font = UIFont.homeCellMacrosName()
+//            cell.amountLbl.font = UIFont.homeCellMacrosAmount()
+//            cell.goalLbl.font = UIFont.homeCellMacrosGoal()
+            //cell.goalLbl.isHidden = true
+            //cell.isUserInteractionEnabled = false
+            
         default:
             print("d")
         }
         
-        if amountServings >= goalServings {
-            cell.nameLbl.textColor = .green
-            cell.amountLbl.textColor = .green
-        } else {
-            cell.nameLbl.textColor = .red
-            cell.amountLbl.textColor = .red
-        }
+        // cell attributes
+        cell.nameLbl.font = UIFont.homeCellName()
+        cell.amountLbl.font = UIFont.homeCellAmount()
+        cell.goalLbl.font = UIFont.homeCellGoal()
         
         return cell
     }
     
-    func setupNotfications() {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterDateChange), name: NSNotification.Name("DateChanged"), object: nil)
+        //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionCell", for: indexPath) as! HomeCollectionCell
+        
+        switch self.segmentedControlView.segmentedControl.selectedSegmentioIndex {
+        case 0:
+            varietySelected = namesServings[indexPath.row].lowercased()
+        case 1:
+            varietySelected = namesMacros[indexPath.row].lowercased()
+        default:
+            print("d")
+        }
+        
+        self.performSegue(withIdentifier: "toVarietyDetailVC", sender: self)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
+        case 0:
+            self.itemsPerRow = 3.0
+        case 1:
+            self.itemsPerRow = 3.0
+        default:
+            print("d")
+            self.itemsPerRow = 0.0
+        }
+        
+        
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1) + 4
+        let availableWidth = collectionView.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+        let heightPerItem = widthPerItem
+        
+        //let widthPerItem = CGFloat(127)
+        //let heightPerItem = widthPerItem
+        
+//        print("itemsPerRow: \(itemsPerRow)")
+//        print("paddingSpace: \(paddingSpace)")
+//        print("availableWidth: \(availableWidth)")
+//        print("widthPerItem: \(widthPerItem)")
+//        print("heightPerItem: \(heightPerItem)")
+        
+        
+        /*
+        let widthPerItem = collectionView.bounds.width / itemsPerRow
+        let heightPerItem = widthPerItem
+        
+        print("collectionView.bounds.width: \(collectionView.bounds.width)")
+        print("widthPerItem: \(widthPerItem)")
+        
+        */
+        
+        
+        return CGSize(width: widthPerItem, height: heightPerItem)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.top
     }
     
     // updates
     
     @objc func updateAfterDateChange() {
         
-        print("updateAfterDateChange")
-        dateView.updateAfterDateChange()
+        //print("updateAfterDateChange")
+        //dateView.updateAfterDateChange()
+        
+        navDateView.updateAfterDateChange()
+        updateSummary()
     }
+    
     
     // MARK: - actions
     
@@ -283,20 +419,25 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         print("clicked - check")
         
+        
         do {
-            let fetch: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
+            let fetch: NSFetchRequest<User> = NSFetchRequest(entityName: "User")
             //let fetch: NSFetchRequest<Item> = NSFetchRequest(entityName: "Item")
             let fetchCheck = try context.fetch(fetch)
             print("fetchCheck.count = \(fetchCheck.count)")
         } catch {
             print("error")
         }
+        
     }
     
     @IBAction func checkBtn_clicked(_ sender: Any) {
         
         print("clicked - delete")
         
+        //appDelegate.showInfoView(action: "added", response: "failure")
+        
+        /*
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Food")
         //let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Item")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
@@ -307,7 +448,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } catch {
             print ("Error deleting")
         }
-
+        */
     }
     
     func saveContext() {
@@ -320,11 +461,16 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - navigation
     
-    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    // Get the new view controller using segue.destination.
-    // Pass the selected object to the new view controller.
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        
+        // segue
+        if segue.identifier == "toVarietyDetailVC", let destination = segue.destination as? VarietyDetailVC {
+            
+            destination.varietySelected = self.varietySelected
+        }
     }
-    */
+    
 }

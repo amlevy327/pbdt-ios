@@ -11,7 +11,7 @@ import UIKit
 
 extension Date {
     
-    static func removeTimeStamp(fromDate: Date) -> Date {
+    func removeTimeStamp(fromDate: Date) -> Date {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"

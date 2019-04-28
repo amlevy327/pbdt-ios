@@ -23,6 +23,8 @@ class UpdateDiaryEntryCell: UITableViewCell {
         super.awakeFromNib()
         
         self.selectionStyle = .none
+        nameLbl.font = UIFont.cellLarge()
+        amountLbl.font = UIFont.cellLarge()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -29,7 +29,7 @@ public class Food: NSManagedObject {
             
             if foodFetch.count == 0 {
                 
-                print("foodJSON new: \(foodJSON)")
+                //print("foodJSON new: \(foodJSON)")
                 
                 // create a new food
                 let newFood = NSEntityDescription.insertNewObject(forEntityName: "Food", into: context) as! Food
@@ -142,7 +142,7 @@ public class Food: NSManagedObject {
                 
             } else if foodFetch.count == 1 {
                 
-                print("foodJSON existing: \(foodJSON)")
+                //print("foodJSON existing: \(foodJSON)")
                 
                 // update existing food
                 food = foodFetch.first!

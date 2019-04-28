@@ -13,9 +13,10 @@ import Alamofire
 
 class Onboarding {
     
+    /*
     func saveUserInfo(_ JSON: [String: Any]) {
         
-        print("JSON: \(JSON)")
+        //print("JSON: \(JSON)")
         
         let name = JSON["name"] as! String
         let email = JSON["email"] as! String
@@ -69,6 +70,7 @@ class Onboarding {
         
         self.goToTabBarController()
     }
+    */
     
     func goToTabBarController() {
         //self.performSegue(withIdentifier: "goToTabBarController", sender: self)
@@ -82,13 +84,14 @@ class Onboarding {
                 view.removeFromSuperview()
             }
         }
+        appDelegate.loadFoods()
         appDelegate.window?.rootViewController = rvc
     }
     
     func loadItems() {
         
-        let email = "\(UserDefaults.standard.string(forKey: "email")!)"
-        let authenticationToken = "\(UserDefaults.standard.string(forKey: "authenticationToken")!)"
+        let email = "\(appDelegate.currentUser.email!)"
+        let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
         let url = "http://localhost:3000/v1/items"
         
@@ -117,6 +120,7 @@ class Onboarding {
                 } else {
                     print("could not create item json")
                 }
+                //print("currentUser: \(appDelegate.currentUser)")
                 self.goToTabBarController()
             case .failure(let error):
                 print("response failure from get items: \(error)")
