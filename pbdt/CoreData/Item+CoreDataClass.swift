@@ -227,7 +227,7 @@ public class Item: NSManagedObject {
             
         } catch {
             
-            fatalError("Failed to fetch: \(error)")
+            fatalError("Failed to fetch items: \(error)")
         }
         
         appDelegate.saveContext()

@@ -99,17 +99,17 @@ class DateView: UIView {
     
     func updateDateLbl() {
         
-        print("updateDateLbl: start")
+        //print("updateDateLbl: start")
         
         if let dateFilter = appDelegate.dateFilter {
             
             let today = Date()
             let todayNoTimeStamp = today.removeTimeStamp(fromDate: today)
-            print("today: \(today)")
+            //print("today: \(today)")
             
             let dateFilterNoTimeStamp = dateFilter.removeTimeStamp(fromDate: dateFilter)
             let difference = Calendar.current.dateComponents([.day], from: todayNoTimeStamp, to: dateFilterNoTimeStamp)
-            print("difference: \(difference.day)")
+            //print("difference: \(difference.day)")
             
             switch difference.day {
             case -1:

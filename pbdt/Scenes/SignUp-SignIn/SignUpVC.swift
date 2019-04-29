@@ -15,9 +15,6 @@ class SignUpVC: UIViewController {
     // MARK: - objects and vars
     
     // ui objects
-    @IBOutlet weak var brandView: UIView!
-    @IBOutlet weak var brandPrimaryLbl: UILabel!
-    @IBOutlet weak var brandSecondaryLbl: UILabel!
     @IBOutlet weak var nameTxt: UITextField!
     @IBOutlet weak var emailTxt: UITextField!
     @IBOutlet weak var passwordTxt: UITextField!
@@ -34,7 +31,6 @@ class SignUpVC: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-        setupLabels()
         setupTextFields()
         setupButtons()
     }
@@ -43,33 +39,65 @@ class SignUpVC: UIViewController {
     
     func setupViews() {
         
-        view.backgroundColor = .yellow
-        
-        brandView.backgroundColor = .cyan
-    }
-    
-    func setupLabels() {
-        
+        view.backgroundColor = UIColor.mainViewBackground()
     }
     
     func setupTextFields() {
         
+        nameTxt.font = UIFont.large()
+        nameTxt.textColor = UIColor.brandBlack()
         nameTxt.placeholder = "name"
         
+        emailTxt.font = UIFont.large()
+        emailTxt.textColor = UIColor.brandBlack()
         emailTxt.placeholder = "email"
         
+        passwordTxt.font = UIFont.large()
+        passwordTxt.textColor = UIColor.brandBlack()
         passwordTxt.placeholder = "password"
         
+        passwordConfirmationTxt.font = UIFont.large()
+        passwordConfirmationTxt.textColor = UIColor.brandBlack()
         passwordConfirmationTxt.placeholder = "confirm password"
     }
     
     func setupButtons() {
         
+        signUpBtn.setTitle("Sign Up", for: .normal)
+        signUpBtn.backgroundColor = UIColor.actionButtonBackground()
+        signUpBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
+        signUpBtn.titleLabel?.font = UIFont.actionButtonText()
+        signUpBtn.layer.borderWidth = CGFloat(2)
+        signUpBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
     }
     
     // MARK: - actions
     
     @IBAction func signUpBtn_clicked(_ sender: Any) {
+        
+        self.view.endEditing(true)
+        
+        if nameTxt.text!.isEmpty || emailTxt.text!.isEmpty || passwordTxt.text!.isEmpty || passwordConfirmationTxt.text!.isEmpty {
+            
+            nameTxt.attributedPlaceholder = NSAttributedString(string: "name", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            emailTxt.attributedPlaceholder = NSAttributedString(string: "email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            passwordTxt.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            passwordConfirmationTxt.attributedPlaceholder = NSAttributedString(string: "confirm password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            
+            return
+        }
+        
+        if (passwordTxt.text?.characters.count)! < 6 {
+            
+            appDelegate.showInfoView(message: UIMessages.kErrorPasswordLength, color: UIColor.popUpFailure())
+            return
+        }
+        
+        if passwordTxt.text != passwordConfirmationTxt.text {
+            
+            appDelegate.showInfoView(message: UIMessages.kErrorPasswordNoMatch, color: UIColor.popUpFailure())
+            return
+        }
         
         do {
             let fetch: NSFetchRequest<User> = NSFetchRequest(entityName: "User")

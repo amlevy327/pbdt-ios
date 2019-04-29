@@ -19,6 +19,7 @@ class SegmentedControlView: UIView {
     var parentVc: String!
     var homeVc: HomeVC!
     var updateDiaryEntryVc: UpdateDiaryEntryVC!
+    var addDiaryEntryVc: AddDiaryEntryVC!
     var goalsVc: GoalsVC!
     
     // MARK: - functions
@@ -70,6 +71,8 @@ class SegmentedControlView: UIView {
     
     func setupSegmentedControl() {
         
+        print("parentVc = \(parentVc)")
+        
         let indicatorOptions = SegmentioIndicatorOptions(
             type: .bottom,
             ratio: 1,
@@ -95,7 +98,19 @@ class SegmentedControlView: UIView {
         
         let servingsItem = SegmentioItem(title: "Servings", image: nil)
         let nutritionItem = SegmentioItem(title: "Nutrition", image: nil)
-        let content : [SegmentioItem] = [servingsItem, nutritionItem]
+        let itemsItem = SegmentioItem(title: "Items", image: nil)
+        let recipesItem = SegmentioItem(title: "Recipes", image: nil)
+        
+        var content : [SegmentioItem] = []
+        
+        switch self.parentVc {
+        case "AddDiaryEntryVC":
+            print("content: AddDiaryEntryVC")
+            content = [itemsItem, recipesItem]
+        default:
+            print("content: d")
+            content = [servingsItem, nutritionItem]
+        }
         
         segmentedControl.setup(
             content: content,
@@ -111,6 +126,9 @@ class SegmentedControlView: UIView {
             case "UpdateDiaryEntryVC":
                 print("UpdateDiaryEntryVC")
                 self.updateDiaryEntryVc.tableView.reloadData()
+            case "AddDiaryEntryVC":
+                print("AddDiaryEntryVC")
+                self.addDiaryEntryVc.tableView.reloadData()
             case "GoalsVC":
                 print("GoalsVC")
                 self.goalsVc.tableView.reloadData()

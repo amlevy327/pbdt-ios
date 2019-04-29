@@ -27,13 +27,26 @@ class SignInVc: UIViewController {
         super.viewDidLoad()
         
         setupViews()
+        setupTextFields()
         setupButtons()
     }
     
     // setups
     
     func setupViews() {
+        
         view.backgroundColor = UIColor.mainViewBackground()
+    }
+    
+    func setupTextFields() {
+        
+        emailTxt.font = UIFont.large()
+        emailTxt.textColor = UIColor.brandBlack()
+        emailTxt.placeholder = "email"
+        
+        passwordTxt.font = UIFont.large()
+        passwordTxt.textColor = UIColor.brandBlack()
+        passwordTxt.placeholder = "password"
     }
     
     func setupButtons() {
@@ -48,6 +61,16 @@ class SignInVc: UIViewController {
     
     // MARK: - actions
     @IBAction func signInBtn_clicked(_ sender: Any) {
+        
+        self.view.endEditing(true)
+        
+        if emailTxt.text!.isEmpty || passwordTxt.text!.isEmpty {
+            
+            emailTxt.attributedPlaceholder = NSAttributedString(string: "email", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            passwordTxt.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            
+            return
+        }
         
         let email = emailTxt.text
         let password = passwordTxt.text
@@ -79,6 +102,7 @@ class SignInVc: UIViewController {
                 }
             case .failure(let error):
                 print("response failure from post session: \(error)")
+                appDelegate.showInfoView(message: UIMessages.kErrorEmailPassword, color: UIColor.popUpFailure())
             }
         }
     }

@@ -97,7 +97,7 @@ class NavigationDateView: UIView {
     
     func updateDateLbl() {
         
-        print("updateDateLbl: start")
+        //print("updateDateLbl: start")
         
         if let dateFilter = appDelegate.dateFilter {
             

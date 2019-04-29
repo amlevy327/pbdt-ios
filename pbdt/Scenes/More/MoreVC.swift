@@ -17,7 +17,7 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     // vars
-    let names = ["Goals", "Sign Out"]
+    let names = ["Recipes", "Goals", "Sign Out"]
     
     // MARK: - functions
     
@@ -56,7 +56,7 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 48
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,9 +72,12 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0:
             print("0")
-            goToGoalsVC()
+            goToRecipesVC()
         case 1:
             print("1")
+            goToGoalsVC()
+        case 2:
+            print("2")
             showSignOutAlertController()
         default:
             print("switch default")
@@ -83,21 +86,13 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // clear
     
-    func clearUserDefaults() {
-        
-        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
-        UserDefaults.standard.synchronize()
-        
-        goToSignInVC()
-    }
-    
     func clearCoreData() {
         
         clearUser()
         clearItem()
         clearFood()
         
-        goToSignInVC()
+        goToRegistrationVC()
     }
     
     func clearUser() {
@@ -158,15 +153,30 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - navigation
     
+    func goToRecipesVC() {
+        self.performSegue(withIdentifier: "goToRecipesVC", sender: self)
+    }
+    
     func goToGoalsVC() {
         self.performSegue(withIdentifier: "goToGoalsVC", sender: self)
     }
     
-    func goToSignInVC() {
+    func goToRegistrationVC() {
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpVC
-        appDelegate.window?.rootViewController = signUpVC
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let signUpVC = storyboard.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
+//        appDelegate.window?.rootViewController = signUpVC
+        
+//        let sb = UIStoryboard(name: "Main", bundle: nil)
+//        let rvc = sb.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
+//
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        if let subs = appDelegate.window?.rootViewController?.view.subviews {
+//            for view in subs {
+//                view.removeFromSuperview()
+//            }
+//        }
+//        appDelegate.window?.rootViewController = rvc
     }
     
     

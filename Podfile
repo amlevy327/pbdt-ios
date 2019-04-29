@@ -9,6 +9,7 @@ target 'pbdt' do
   pod 'Alamofire', '~> 4.8.1'
   pod 'Segmentio', '~> 3.3'
   pod 'IQKeyboardManagerSwift'
+  pod 'DZNEmptyDataSet'
 
   target 'pbdtTests' do
     inherit! :search_paths

@@ -32,7 +32,8 @@ extension UIFont {
     // date view
     
     class func dateText() -> UIFont {
-        return UIFont.large()
+        //return UIFont.large()
+        return UIFont.systemFont(ofSize: 18, weight: .medium)
     }
     
     // navigation title
@@ -44,7 +45,8 @@ extension UIFont {
     // buttons
     
     class func actionButtonText() -> UIFont {
-        return UIFont.large()
+        //return UIFont.large()
+        return UIFont.systemFont(ofSize: 16, weight: .medium)
     }
     
     class func dateButtonText() -> UIFont {
@@ -82,6 +84,15 @@ extension UIFont {
     
     class func homeCellGoal() -> UIFont {
         return UIFont.small()
+    }
+    
+    // empty data set
+    
+    class func emptyDataSetTitle() -> UIFont {
+        return UIFont.boldSystemFont(ofSize: 18)
+    }
+    class func emptyDataSetDescription() -> UIFont {
+        return systemFont(ofSize: 16)
     }
     
     /*

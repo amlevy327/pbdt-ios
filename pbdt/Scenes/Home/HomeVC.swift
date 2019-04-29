@@ -58,6 +58,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         navDateView.view.backgroundColor = .clear
         navDateView.dateLbl.textColor = UIColor.brandWhite()
+        navDateView.dateLbl.font = UIFont.navigationTitle()
+        
         //navDateView.dateLbl.text = "Today"
         navDateView.updateAfterDateChange()
         

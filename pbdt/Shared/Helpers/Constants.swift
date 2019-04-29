@@ -24,6 +24,9 @@ struct UIMessages {
     
     // error
     static let kErrorGeneral = "We encountered an error. Please try again later."
+    static let kErrorEmailPassword = "Email and password combination incorrect"
+    static let kErrorPasswordNoMatch = "Passwords do not match"
+    static let kErrorPasswordLength = "Password must be at least 6 characters"
 }
 
 struct StaticLists {

@@ -27,13 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        IQKeyboardManager.shared.enable = true
+        //IQKeyboardManager.shared.enable = true
         
         dateFilter = Date()
         
         AppearanceConfig.setupNavigationBar()
         AppearanceConfig.setupStatusBar()
         AppearanceConfig.setupTabBar()
+        AppearanceConfig.setupKeyboard()
         
         return true
     }
@@ -182,7 +183,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let date = appDelegate.dateFilter.toString(format: "yyyy-MM-dd")
         
         let foodFetch: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
+        
         foodFetch.predicate = NSPredicate(format: "logDate = %@", "\(date)")
+        
+        let sectionSortDescriptions = NSSortDescriptor(key: "updatedAt", ascending: false)
+        let sortDescripters = [sectionSortDescriptions]
+        foodFetch.sortDescriptors = sortDescripters
         
         do {
             let fetchRequest = try context.fetch(foodFetch)

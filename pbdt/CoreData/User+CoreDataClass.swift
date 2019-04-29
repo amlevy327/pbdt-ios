@@ -196,7 +196,7 @@ public class User: NSManagedObject {
             
         } catch {
             
-            fatalError("Failed to fetch: \(error)")
+            fatalError("Failed to fetch users: \(error)")
         }
         
         appDelegate.saveContext()

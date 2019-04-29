@@ -13,8 +13,6 @@
 		D409D882226CEB5400F6E829 /* AppearanceConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409D881226CEB5400F6E829 /* AppearanceConfig.swift */; };
 		D41182592274FD7B00E3046D /* NavigationDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D41182582274FD7B00E3046D /* NavigationDateView.xib */; };
 		D411825B2274FE4400E3046D /* NavigationDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411825A2274FE4400E3046D /* NavigationDateView.swift */; };
-		D411827022750ABC00E3046D /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411826E22750ABC00E3046D /* User+CoreDataProperties.swift */; };
-		D411827122750ABC00E3046D /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411826F22750ABC00E3046D /* User+CoreDataClass.swift */; };
 		D411827322752EAA00E3046D /* BrandView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D411827222752EAA00E3046D /* BrandView.xib */; };
 		D411827522752EB700E3046D /* BrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411827422752EB700E3046D /* BrandView.swift */; };
 		D418C9FE2250368100A4BAFE /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418C9FD2250368100A4BAFE /* Router.swift */; };
@@ -25,6 +23,7 @@
 		D42581C82257CCBB007E0D72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42581C72257CCBB007E0D72 /* ViewController.swift */; };
 		D43772922263F4C0003F66DB /* DateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D43772912263F4C0003F66DB /* DateView.xib */; };
 		D43FEE9E225E992C00EDF6C8 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */; };
+		D440746122767BDF00102702 /* RecipesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440746022767BDF00102702 /* RecipesVC.swift */; };
 		D441ED7822502BB400B9DB39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D441ED7722502BB400B9DB39 /* AppDelegate.swift */; };
 		D441ED7D22502BB400B9DB39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D441ED7B22502BB400B9DB39 /* Main.storyboard */; };
 		D441ED8022502BB400B9DB39 /* pbdt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D441ED7E22502BB400B9DB39 /* pbdt.xcdatamodeld */; };
@@ -39,6 +38,14 @@
 		D458BCC22251872700BD9F87 /* MoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458BCC12251872700BD9F87 /* MoreVC.swift */; };
 		D458BCC7225187CD00BD9F87 /* MoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458BCC5225187CD00BD9F87 /* MoreCell.swift */; };
 		D458BCC8225187CD00BD9F87 /* MoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D458BCC6225187CD00BD9F87 /* MoreCell.xib */; };
+		D45D23D522763A2100AFDF8E /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D23D422763A2100AFDF8E /* RegistrationVC.swift */; };
+		D45D23D7227640B100AFDF8E /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D23D6227640B100AFDF8E /* SplashVC.swift */; };
+		D45D23F62276629700AFDF8E /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D23F42276629600AFDF8E /* User+CoreDataProperties.swift */; };
+		D45D23F72276629700AFDF8E /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D23F52276629700AFDF8E /* User+CoreDataClass.swift */; };
+		D45D2402227662E600AFDF8E /* Ingredient+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2400227662E600AFDF8E /* Ingredient+CoreDataClass.swift */; };
+		D45D2403227662E600AFDF8E /* Ingredient+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2401227662E600AFDF8E /* Ingredient+CoreDataProperties.swift */; };
+		D45D2406227662F500AFDF8E /* Recipe+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2404227662F400AFDF8E /* Recipe+CoreDataClass.swift */; };
+		D45D2407227662F500AFDF8E /* Recipe+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2405227662F400AFDF8E /* Recipe+CoreDataProperties.swift */; };
 		D45FE5BA225B59DE00BCA446 /* AddDiaryEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */; };
 		D45FE5BD225B5A1100BCA446 /* AddDiaryEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */; };
 		D45FE5BE225B5A1100BCA446 /* AddDiaryEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */; };
@@ -96,8 +103,6 @@
 		D409D881226CEB5400F6E829 /* AppearanceConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceConfig.swift; sourceTree = "<group>"; };
 		D41182582274FD7B00E3046D /* NavigationDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationDateView.xib; sourceTree = "<group>"; };
 		D411825A2274FE4400E3046D /* NavigationDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDateView.swift; sourceTree = "<group>"; };
-		D411826E22750ABC00E3046D /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D411826F22750ABC00E3046D /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D411827222752EAA00E3046D /* BrandView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrandView.xib; sourceTree = "<group>"; };
 		D411827422752EB700E3046D /* BrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandView.swift; sourceTree = "<group>"; };
 		D418C9FD2250368100A4BAFE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -108,6 +113,7 @@
 		D42581C72257CCBB007E0D72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D43772912263F4C0003F66DB /* DateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateView.xib; sourceTree = "<group>"; };
 		D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
+		D440746022767BDF00102702 /* RecipesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesVC.swift; sourceTree = "<group>"; };
 		D441ED7422502BB400B9DB39 /* pbdt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pbdt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D441ED7722502BB400B9DB39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D441ED7C22502BB400B9DB39 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -128,6 +134,14 @@
 		D458BCC12251872700BD9F87 /* MoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreVC.swift; sourceTree = "<group>"; };
 		D458BCC5225187CD00BD9F87 /* MoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreCell.swift; sourceTree = "<group>"; };
 		D458BCC6225187CD00BD9F87 /* MoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoreCell.xib; sourceTree = "<group>"; };
+		D45D23D422763A2100AFDF8E /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
+		D45D23D6227640B100AFDF8E /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
+		D45D23F42276629600AFDF8E /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D45D23F52276629700AFDF8E /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D45D2400227662E600AFDF8E /* Ingredient+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ingredient+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D45D2401227662E600AFDF8E /* Ingredient+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ingredient+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D45D2404227662F400AFDF8E /* Recipe+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recipe+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D45D2405227662F400AFDF8E /* Recipe+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recipe+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiaryEntryVC.swift; sourceTree = "<group>"; };
 		D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiaryEntryCell.swift; sourceTree = "<group>"; };
 		D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddDiaryEntryCell.xib; sourceTree = "<group>"; };
@@ -201,8 +215,12 @@
 				D4D929752255BE3300D862EA /* Food+CoreDataProperties.swift */,
 				D4D9297A2255CAE800D862EA /* Item+CoreDataClass.swift */,
 				D4D929792255CAE800D862EA /* Item+CoreDataProperties.swift */,
-				D411826F22750ABC00E3046D /* User+CoreDataClass.swift */,
-				D411826E22750ABC00E3046D /* User+CoreDataProperties.swift */,
+				D45D23F52276629700AFDF8E /* User+CoreDataClass.swift */,
+				D45D23F42276629600AFDF8E /* User+CoreDataProperties.swift */,
+				D45D2400227662E600AFDF8E /* Ingredient+CoreDataClass.swift */,
+				D45D2401227662E600AFDF8E /* Ingredient+CoreDataProperties.swift */,
+				D45D2404227662F400AFDF8E /* Recipe+CoreDataClass.swift */,
+				D45D2405227662F400AFDF8E /* Recipe+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -323,6 +341,7 @@
 				D4B6B00622735ADB007F69E6 /* GoalsVC.swift */,
 				D4B6B00822735CDD007F69E6 /* GoalsCell.swift */,
 				D4B6B00922735CDD007F69E6 /* GoalsCell.xib */,
+				D440746022767BDF00102702 /* RecipesVC.swift */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -330,6 +349,8 @@
 		D458BCC4225187B500BD9F87 /* SignUp-SignIn */ = {
 			isa = PBXGroup;
 			children = (
+				D45D23D6227640B100AFDF8E /* SplashVC.swift */,
+				D45D23D422763A2100AFDF8E /* RegistrationVC.swift */,
 				D418CA0022503DB300A4BAFE /* SignUpVC.swift */,
 				D4FECC7D2257104500AB0CC0 /* SignInVc.swift */,
 			);
@@ -636,6 +657,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-pbdt/Pods-pbdt-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
 			);
@@ -644,6 +666,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
 			);
@@ -736,7 +759,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4D9297C2255CAE800D862EA /* Item+CoreDataClass.swift in Sources */,
-				D411827122750ABC00E3046D /* User+CoreDataClass.swift in Sources */,
 				D411825B2274FE4400E3046D /* NavigationDateView.swift in Sources */,
 				D4759E5D2266B00B0088CD63 /* SegmentedControlView.swift in Sources */,
 				D44A7FE32259516700842B31 /* Constants.swift in Sources */,
@@ -750,28 +772,36 @@
 				D42581C32257BF0C007E0D72 /* DiaryCell.swift in Sources */,
 				D418C9FE2250368100A4BAFE /* Router.swift in Sources */,
 				D45FE5BA225B59DE00BCA446 /* AddDiaryEntryVC.swift in Sources */,
+				D45D23F72276629700AFDF8E /* User+CoreDataClass.swift in Sources */,
 				D4E5DB3D2254487900713887 /* DiaryVC.swift in Sources */,
 				D409D880226CBECD00F6E829 /* FontHelpers.swift in Sources */,
 				D4B6B00722735ADB007F69E6 /* GoalsVC.swift in Sources */,
 				D4C32863225A73E7004BB713 /* CustomTabBarController.swift in Sources */,
 				D441ED7822502BB400B9DB39 /* AppDelegate.swift in Sources */,
 				D4E5DB3B2254486D00713887 /* HomeVC.swift in Sources */,
+				D440746122767BDF00102702 /* RecipesVC.swift in Sources */,
+				D45D23D7227640B100AFDF8E /* SplashVC.swift in Sources */,
 				D4BCE8CF2265261300F1DC88 /* DateView.swift in Sources */,
 				D498A58B226A826900649E9E /* VarietyDetailVC.swift in Sources */,
+				D45D23F62276629700AFDF8E /* User+CoreDataProperties.swift in Sources */,
 				D458BCC22251872700BD9F87 /* MoreVC.swift in Sources */,
 				D458BCC7225187CD00BD9F87 /* MoreCell.swift in Sources */,
+				D45D2402227662E600AFDF8E /* Ingredient+CoreDataClass.swift in Sources */,
+				D45D23D522763A2100AFDF8E /* RegistrationVC.swift in Sources */,
 				D418CA0122503DB300A4BAFE /* SignUpVC.swift in Sources */,
 				D409D882226CEB5400F6E829 /* AppearanceConfig.swift in Sources */,
-				D411827022750ABC00E3046D /* User+CoreDataProperties.swift in Sources */,
 				D498A586226912ED00649E9E /* HomeCollectionCell.swift in Sources */,
 				D42581C82257CCBB007E0D72 /* ViewController.swift in Sources */,
 				D441ED8022502BB400B9DB39 /* pbdt.xcdatamodeld in Sources */,
 				D458BCC02251819900BD9F87 /* ColorHelpers.swift in Sources */,
 				D4D929772255BE3300D862EA /* Food+CoreDataProperties.swift in Sources */,
+				D45D2403227662E600AFDF8E /* Ingredient+CoreDataProperties.swift in Sources */,
 				D42581C62257CC4A007E0D72 /* UpdateDiaryEntryVC.swift in Sources */,
 				D4FECC7E2257104500AB0CC0 /* SignInVc.swift in Sources */,
 				D4B6B00A22735CDD007F69E6 /* GoalsCell.swift in Sources */,
 				D411827522752EB700E3046D /* BrandView.swift in Sources */,
+				D45D2407227662F500AFDF8E /* Recipe+CoreDataProperties.swift in Sources */,
+				D45D2406227662F500AFDF8E /* Recipe+CoreDataClass.swift in Sources */,
 				D44A7FE62259530000842B31 /* UpdateDiaryEntryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

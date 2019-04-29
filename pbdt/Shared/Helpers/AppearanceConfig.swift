@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import IQKeyboardManagerSwift
 
 class AppearanceConfig {
     
@@ -28,6 +29,12 @@ class AppearanceConfig {
     
     class func setupTabBar() {
         UITabBar.appearance().tintColor = UIColor.brandPrimary()
+    }
+    
+    class func setupKeyboard() {
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.toolbarTintColor = UIColor.brandWhite()
+        IQKeyboardManager.shared.toolbarBarTintColor = UIColor.brandGreyDark()
     }
 }
 

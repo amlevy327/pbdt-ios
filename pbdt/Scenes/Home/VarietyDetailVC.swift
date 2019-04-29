@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import DZNEmptyDataSet
 
-class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
 
     // MARK: - objects and vars
     
@@ -61,6 +62,9 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         tableView.delegate = self
         tableView.dataSource = self
         
+        tableView.emptyDataSetDelegate = self
+        tableView.emptyDataSetSource = self
+        
         let nib = UINib(nibName: "UpdateDiaryEntryCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "UpdateDiaryEntryCell")
         
@@ -75,6 +79,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func setupNotfications() {
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterDateChange), name: NSNotification.Name("DateChanged"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterUserGoalsModification), name: NSNotification.Name("UserGoalsModification"), object: nil)
     }
@@ -119,6 +124,11 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         goToNavigationRoot()
     }
     
+    @objc func updateAfterFoodModification() {
+        print("updateAfterFoodModification")
+        loadFilteredFoods()
+    }
+    
     // get foods
     
     func loadFilteredFoods() {
@@ -129,7 +139,12 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         //print("varietySelected: \(varietySelected)")
         
         let foodFetch: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
+        
         foodFetch.predicate = NSPredicate(format: "logDate = %@", "\(date)")
+        
+        let sectionSortDescriptions = NSSortDescriptor(key: "updatedAt", ascending: false)
+        let sortDescripters = [sectionSortDescriptions]
+        foodFetch.sortDescriptors = sortDescripters
         
         do {
             let fetchRequest = try context.fetch(foodFetch)
@@ -237,7 +252,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 48
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -344,6 +359,26 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         
         return cell
+    }
+    
+    // empty data set
+    
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        return foodsFiltered.count == 0
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "No \(varietySelected.capitalized) logged"
+        let attributes = [NSAttributedString.Key.font: UIFont.emptyDataSetTitle(),
+                          NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "\(varietySelected.capitalized) you log in your diary will appear here"
+        let attributes = [NSAttributedString.Key.font: UIFont.emptyDataSetDescription(),
+                          NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()]
+        return NSAttributedString(string: string, attributes: attributes)
     }
     
     // MARK: - actions

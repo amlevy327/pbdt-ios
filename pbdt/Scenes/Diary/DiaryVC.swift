@@ -9,13 +9,13 @@
 import UIKit
 import CoreData
 import Alamofire
+import DZNEmptyDataSet
 
-class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - objects and vars
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var logBtn: UIButton!
-    @IBOutlet weak var dateView: DateView!
     
     var navDateView = DateView()
     
@@ -39,7 +39,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         navDateView.view.backgroundColor = .clear
         navDateView.dateLbl.textColor = UIColor.brandWhite()
-        //navDateView.dateLbl.text = "Today"
+        navDateView.dateLbl.font = UIFont.navigationTitle()
         navDateView.updateAfterDateChange()
         
         navDateView.parentVc = "DiaryVC"
@@ -59,6 +59,8 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.register(nib, forCellReuseIdentifier: "DiaryCell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
         appDelegate.loadFoods()
     }
@@ -189,6 +191,25 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return [deleteAction]
     }
     
+    // empty data set
+    
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        return appDelegate.diaryEntries.count == 0
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "No diary entries"
+        let attributes = [NSAttributedString.Key.font: UIFont.emptyDataSetTitle(),
+                          NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "Food you log will appear here"
+        let attributes = [NSAttributedString.Key.font: UIFont.emptyDataSetDescription(),
+                          NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
     
     // MARK: - actions
     
@@ -203,6 +224,13 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let vc = storyboard.instantiateViewController(withIdentifier: "UpdateDiaryEntryVC") as! UpdateDiaryEntryVC
         vc.entry = entry
         vc.previousVC = "DiaryVC"
+        print("entry variety: \(entry.variety)")
+        switch entry.variety {
+        case "recipe":
+            vc.updateType = "recipe"
+        default:
+            vc.updateType = "item"
+        }
         self.present(vc, animated: true)
     }
     

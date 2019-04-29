@@ -255,7 +255,7 @@ public class Food: NSManagedObject {
             
         } catch {
             
-            fatalError("Failed to fetch: \(error)")
+            fatalError("Failed to fetch foods: \(error)")
         }
         
         appDelegate.saveContext()

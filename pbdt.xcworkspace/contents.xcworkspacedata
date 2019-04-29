@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/andrewmlevy/Desktop/PBDT/pbdt-ios/pbdt/pbdt/CoreData/User+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/andrewmlevy/Desktop/PBDT/pbdt-ios/pbdt/pbdt/CoreData/User+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:pbdt.xcodeproj">
    </FileRef>
    <FileRef
