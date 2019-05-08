@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Alamofire
 import DZNEmptyDataSet
 
 class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
@@ -26,12 +27,30 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         super.viewDidLoad()
         
         fetchRecipes()
+        setupNavigationBar()
         setupViews()
         setupTableView()
         setupButtons()
+        setupNotfications()
     }
     
     // setups
+    
+    func setupNavigationBar() {
+        
+        navigationItem.title = "Recipes"
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
+        
+//        let backArrow = UIImage.backArrow()
+//        let backBtn = UIBarButtonItem(image: UIImage.backArrow(), style: .plain, target: self, action: #selector(goToNavigationRoot))
+//        
+//        navigationController?.navigationBar.backIndicatorImage = backArrow
+//        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backArrow
+//        navigationItem.leftBarButtonItem = backBtn
+    }
     
     func setupViews() {
         
@@ -54,12 +73,33 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
     
     func setupButtons() {
         
-        newBtn.setTitle("Add Recipe", for: .normal)
+        newBtn.setTitle("Create a Recipe", for: .normal)
         newBtn.backgroundColor = UIColor.actionButtonBackground()
         newBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         newBtn.titleLabel?.font = UIFont.actionButtonText()
-        newBtn.layer.borderWidth = CGFloat(2)
-        newBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
+        let height = newBtn.frame.height
+        newBtn.layer.cornerRadius = height / 2
+    }
+    
+    func setupNotfications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterRecipeChange), name: NSNotification.Name("RecipeChanged"), object: nil)
+    }
+    
+    // updates
+    
+    @objc func updateAfterRecipeChange() {
+        
+        print("updateAfterRecipeChange")
+        
+        fetchRecipes()
+    }
+    
+    // notifications
+    
+    func postNotificationRecipeChange() {
+        print("postNotificationRecipeChange")
+        NotificationCenter.default.post(name: NSNotification.Name("RecipeChanged"), object: nil)
     }
     
     // table view
@@ -83,6 +123,10 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         let recipe = recipes[indexPath.row]
         cell.nameLbl.text = recipe.name?.capitalized
         
+        //cell.isUserInteractionEnabled = false
+        
+        //print("recipe \(recipe.name?.capitalized): ingredients.count = \(recipe.ingredient?.count)")
+        
         return cell
     }
     
@@ -91,7 +135,34 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         tableView.deselectRow(at: indexPath, animated: true)
         
         let recipe = recipes[indexPath.row]
-        //presentRecipeUpdateDiaryEntryVC(recipe)
+        goToConfirmRecipeVC(recipe: recipe)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action:UITableViewRowAction, indexPath:IndexPath) in
+            
+            let alert = UIAlertController(title: "Are you sure you want to delete this recipe", message: "", preferredStyle: .alert)
+            let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                print("delete tapped")
+                
+                if let recipe = self.recipes[indexPath.row] as? Recipe {
+                    self.deleteRecipe(recipe: recipe)
+                }
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
+        return [deleteAction]
     }
     
     // empty data set
@@ -121,10 +192,16 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         //print("fetchRecipes: start")
         
         let fetch: NSFetchRequest<Recipe> = NSFetchRequest(entityName: "Recipe")
+        
+        let sectionSortDescriptions = NSSortDescriptor(key: "updatedAt", ascending: false)
+        let sortDescripters = [sectionSortDescriptions]
+        fetch.sortDescriptors = sortDescripters
+        
         do {
             print("fetchRecipes: request success")
             let fetchRequest = try context.fetch(fetch)
             self.recipes = fetchRequest
+            self.recipes.sort(by: { $0.updatedAt!.compare($1.updatedAt! as Date) == ComparisonResult.orderedDescending })
             tableView.reloadData()
         } catch {
             print("Error fetching recipes: \(error)")
@@ -135,9 +212,78 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
     
     @IBAction func newBtn_clicked(_ sender: Any) {
         
+        goToCreateRecipeVC()
+    }
+    
+    func deleteRecipe(recipe: Recipe) {
+        
+        print("deleteRecipe")
+        
+        let id = (recipe.objectId!)
+        print("id: \(id)")
+        
+        let email = "\(appDelegate.currentUser.email!)"
+        let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
+        
+        let url = "http://localhost:3000/v1/recipes/\(id)"
+        
+        let params = ["recipe": [
+            "id": id
+            ]
+        ]
+        
+        print("params: \(params)")
+        print("url: \(url)")
+        
+        let headers: [String:String] = [
+            "X-USER-EMAIL": email,
+            "X-USER-TOKEN": authenticationToken,
+            "Content-Type": "application/json"
+        ]
+        
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            
+            print(response)
+            
+            switch response.result {
+            case .success:
+                
+                do {
+                    try context.delete(recipe)
+                    try context.save()
+                    self.postNotificationRecipeChange()
+                    self.fetchRecipes()
+                } catch {
+                    print("errors: \(error)")
+                }
+                
+                appDelegate.showInfoView(message: UIMessages.kRecipeDeleted, color: UIColor.popUpSuccess())
+            case .failure(let error):
+                print("response failure: \(error)")
+                appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
+            }
+        }
     }
     
     // MARK: - navigation
+    
+    @objc func goToNavigationRoot() {
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func goToConfirmRecipeVC(recipe: Recipe) {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "ConfirmRecipeVC") as! ConfirmRecipeVC
+        vc.previousVc = "RecipesVC"
+        vc.recipe = recipe
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func goToCreateRecipeVC() {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "CreateRecipeVC") as! CreateRecipeVC
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
     /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation

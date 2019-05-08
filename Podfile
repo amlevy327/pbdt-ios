@@ -10,6 +10,7 @@ target 'pbdt' do
   pod 'Segmentio', '~> 3.3'
   pod 'IQKeyboardManagerSwift'
   pod 'DZNEmptyDataSet'
+  pod 'UICircularProgressRing'
 
   target 'pbdtTests' do
     inherit! :search_paths

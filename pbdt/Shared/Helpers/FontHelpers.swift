@@ -60,7 +60,8 @@ extension UIFont {
     }
     
     class func segmentedControlSelected() -> UIFont {
-        return UIFont.large()
+        return UIFont.boldSystemFont(ofSize: 16)
+        //return UIFont.large()
     }
     
     // table view cell

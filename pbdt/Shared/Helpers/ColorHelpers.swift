@@ -12,7 +12,8 @@ import UIKit
 extension UIColor {
     
     class func brandPrimary() -> UIColor {
-        return UIColor(red: 2/255, green: 45/255, blue: 160/255, alpha: 1) // brand, dark blue
+        //return UIColor(red: 2/255, green: 45/255, blue: 160/255, alpha: 1) // brand, dark blue
+        return UIColor(red: 63/255, green: 133/255, blue: 214/255, alpha: 1) // brand, google blue
     }
     
     class func brandSecondary() -> UIColor {
@@ -32,24 +33,25 @@ extension UIColor {
     }
     
     class func brandBlack() -> UIColor {
-        return UIColor.black
+        //return UIColor.black
+        return UIColor(red: 68/255, green: 68/255, blue: 68/255, alpha: 1.0)
     }
     
     // views
     
     class func mainViewBackground() -> UIColor {
-        return UIColor.groupTableViewBackground
+        return UIColor.brandWhite()
     }
     
     class func viewBackground() -> UIColor {
         return UIColor.brandWhite()
     }
     
-    // buttons
+    class func viewDivider() -> UIColor {
+        return UIColor.brandGreyDark()
+    }
     
-//    class func actionButtonBackground() -> UIColor {
-//        return UIColor(red: 8/255, green: 138/255, blue: 184/255, alpha: 1) // light blue
-//    }
+    // buttons
     
     class func actionButtonBackground() -> UIColor {
         return UIColor.brandPrimary()
@@ -78,7 +80,7 @@ extension UIColor {
     // cells
     
     class func cellPrimaryText() -> UIColor {
-        return UIColor.brandBlack()
+        return UIColor.brandPrimary()
     }
     
     class func cellSecondaryText() -> UIColor {
@@ -108,11 +110,13 @@ extension UIColor {
     // pop up
     
     class func popUpSuccess() -> UIColor {
-        return UIColor(red: 2/255, green: 157/255, blue: 104/255, alpha: 1) // green
+        //return UIColor(red: 2/255, green: 157/255, blue: 104/255, alpha: 1) // green
+        return UIColor.brandWhite()
     }
     
     class func popUpFailure() -> UIColor {
-        return UIColor(red: 186/255, green: 3/255, blue: 34/255, alpha: 1)  // red
+        //return UIColor(red: 186/255, green: 3/255, blue: 34/255, alpha: 1)  // red
+        return UIColor.brandWhite()
     }
     
 }

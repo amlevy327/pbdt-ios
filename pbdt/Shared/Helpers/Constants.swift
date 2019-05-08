@@ -18,6 +18,17 @@ struct UIMessages {
     // entries
     static let kEntryAdded = "Food added!"
     static let kEntryUpdated = "Food updated!"
+    static let kEntryDeleted = "Food deleted!"
+    
+    // ingredients
+    static let kIngredientAdded = "Ingredient added!"
+    static let kIngredientUpdated = "Ingredient updated!"
+    static let kIngredientDeleted = "Ingredient deleted!"
+    
+    // recipe
+    static let kRecipeAdded = "Recipe added!"
+    static let kRecipeUpdated = "Recipe updated!"
+    static let kRecipeDeleted = "Recipe deleted!"
     
     // goals
     static let kGoalsUpdated = "Goals updated!"

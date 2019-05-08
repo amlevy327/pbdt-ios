@@ -25,6 +25,9 @@ class MoreCell: UITableViewCell {
         // Initialization code
         
         self.selectionStyle = .none
+        
+        nameLbl.font = UIFont.large()
+        nameLbl.textColor = UIColor.brandBlack()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

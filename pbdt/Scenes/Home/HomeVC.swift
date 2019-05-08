@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Segmentio
+import UICircularProgressRing
 
 class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -26,9 +27,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     var goalsMacros: [Double]!
     
     var itemsPerRow = CGFloat(0)
-    var sectionInsets = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+    //var sectionInsets = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+    var sectionInsets = UIEdgeInsets(top: 0.0, left: 16.0, bottom: 0.0, right: 16.0)
     
     var varietySelected: String = ""
+    var numberServings: Double = 0.0
     
     // MARK: - functions
     
@@ -83,8 +86,13 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        let nib = UINib(nibName: "HomeCollectionCell", bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: "HomeCollectionCell")
+        
+        //let nib = UINib(nibName: "HomeCollectionCell", bundle: nil)
+        //collectionView.register(nib, forCellWithReuseIdentifier: "HomeCollectionCell")
+        
+        let nib = UINib(nibName: "HomeCell", bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: "HomeCell")
+        
         appDelegate.loadFoods()
     }
     
@@ -118,61 +126,19 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         for entry in appDelegate.diaryEntries {
             sumBeans += entry.beansT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumBerries += entry.berriesT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumOtherFruits += entry.otherFruitsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumCruciferousVegetables += entry.cruciferousVegetablesT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumGreens += entry.greensT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumOtherVegetables += entry.otherVegetablesT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumFlaxseeds += entry.flaxseedsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumNuts += entry.nutsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumTurmeric += entry.turmericT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumWholeGrains += entry.wholeGrainsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumOtherSeeds += entry.otherSeedsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumCals += entry.calsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumFat += entry.fatT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumCarbs += entry.carbsT
-        }
-        
-        for entry in appDelegate.diaryEntries {
             sumProtein += entry.proteinT
         }
         
@@ -256,84 +222,55 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCollectionCell", for: indexPath) as! HomeCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeCell", for: indexPath) as! HomeCell
+        
+        var amount: Double = 0.0
+        var goal: Double = 0.0
         
         switch self.segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
             
-            let amountServings = amountsServings[indexPath.row]
-            let goalServings = goalsServings[indexPath.row]
-            
             let name = namesServings[indexPath.row]
             cell.nameLbl.text = name
             
-            cell.amountLbl.text = "\(amountServings)"
-            if appDelegate.checkIfInt(input: amountServings) {
-                cell.amountLbl.text = "\(Int(amountServings))"
-            }
-            
-            cell.goalLbl.text = "\(goalServings)"
-            if appDelegate.checkIfInt(input: goalServings) {
-                cell.goalLbl.text = "of \(Int(goalServings))"
-            }
-            
-            // attributes
-            
-            if amountServings >= goalServings {
-                cell.backgroundColor = UIColor.success()
-            } else {
-                cell.backgroundColor = UIColor.failure()
-            }
-            
-//            cell.nameLbl.font = UIFont.homeCellServingsName()
-//            cell.amountLbl.font = UIFont.homeCellServingsAmount()
-//            cell.goalLbl.font = UIFont.homeCellServingsGoal()
-            //cell.goalLbl.isHidden = false
-            //cell.isUserInteractionEnabled = true
-            
-            
+            amount = amountsServings[indexPath.row].roundToPlaces(places: 2)
+            goal = goalsServings[indexPath.row].roundToPlaces(places: 2)
             
         case 1:
-            
-            let amountMacros = amountsMacros[indexPath.row]
-            let goalMacros = goalsMacros[indexPath.row]
             
             let name = namesMacros[indexPath.row]
             cell.nameLbl.text = name
             
-            cell.amountLbl.text = "\(amountMacros)"
-            if appDelegate.checkIfInt(input: amountMacros) {
-                cell.amountLbl.text = "\(Int(amountMacros))"
-            }
-            
-            cell.goalLbl.text = "\(goalMacros)"
-            if appDelegate.checkIfInt(input: goalMacros) {
-                cell.goalLbl.text = "of \(Int(goalMacros))"
-            }
-            
-            // attributes
-            
-            if amountMacros >= goalMacros {
-                cell.backgroundColor = UIColor.success()
-            } else {
-                cell.backgroundColor = UIColor.failure()
-            }
-            
-            
-//            cell.nameLbl.font = UIFont.homeCellMacrosName()
-//            cell.amountLbl.font = UIFont.homeCellMacrosAmount()
-//            cell.goalLbl.font = UIFont.homeCellMacrosGoal()
-            //cell.goalLbl.isHidden = true
-            //cell.isUserInteractionEnabled = false
-            
+            amount = amountsMacros[indexPath.row].roundToPlaces(places: 2)
+            goal = goalsMacros[indexPath.row].roundToPlaces(places: 2)
         default:
             print("d")
         }
         
-        // cell attributes
-        cell.nameLbl.font = UIFont.homeCellName()
-        cell.amountLbl.font = UIFont.homeCellAmount()
-        cell.goalLbl.font = UIFont.homeCellGoal()
+        let attributedText = NSMutableAttributedString()
+        var attributedAmount = NSAttributedString()
+        var attributedGoal = NSAttributedString()
+        
+        if amount.isInt() && goal.isInt() {
+            attributedAmount = NSAttributedString(string: "\(Int(amount))", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.brandPrimary()])
+            attributedGoal = NSAttributedString(string: "\nof \(Int(goal))", attributes: [NSAttributedString.Key.font: UIFont.small(), NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()])
+        } else if amount.isInt() && !goal.isInt() {
+            attributedAmount = NSAttributedString(string: "\(Int(amount))", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.brandPrimary()])
+            attributedGoal = NSAttributedString(string: "\nof \(goal)", attributes: [NSAttributedString.Key.font: UIFont.small(), NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()])
+        } else if !amount.isInt() && goal.isInt() {
+            attributedAmount = NSAttributedString(string: "\(amount)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.brandPrimary()])
+            attributedGoal = NSAttributedString(string: "\nof \(Int(goal))", attributes: [NSAttributedString.Key.font: UIFont.small(), NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()])
+        } else {
+            attributedAmount = NSAttributedString(string: "\(amount)", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.brandPrimary()])
+            attributedGoal = NSAttributedString(string: "\nof \(goal)", attributes: [NSAttributedString.Key.font: UIFont.small(), NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()])
+        }
+        
+        attributedText.append(attributedAmount)
+        attributedText.append(attributedGoal)
+        cell.amountLbl.attributedText = attributedText
+        
+        cell.circularProgressRing.maxValue = CGFloat(goal)
+        cell.circularProgressRing.startProgress(to: CGFloat(amount), duration: 0.5)
         
         return cell
     }
@@ -345,8 +282,10 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         switch self.segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
             varietySelected = namesServings[indexPath.row].lowercased()
+            numberServings = amountsServings[indexPath.row]
         case 1:
             varietySelected = namesMacros[indexPath.row].lowercased()
+            numberServings = amountsMacros[indexPath.row]
         default:
             print("d")
         }
@@ -370,7 +309,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1) + 4
         let availableWidth = collectionView.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
-        let heightPerItem = widthPerItem
+        //let heightPerItem = widthPerItem
+        let heightPerItem = widthPerItem + CGFloat(42)
         
         //let widthPerItem = CGFloat(127)
         //let heightPerItem = widthPerItem
@@ -421,12 +361,16 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         print("clicked - check")
         
-        
         do {
-            let fetch: NSFetchRequest<User> = NSFetchRequest(entityName: "User")
+            let fetch: NSFetchRequest<Ingredient> = NSFetchRequest(entityName: "Ingredient")
+            //let fetch: NSFetchRequest<Recipe> = NSFetchRequest(entityName: "Recipe")
+            //let fetch: NSFetchRequest<User> = NSFetchRequest(entityName: "User")
             //let fetch: NSFetchRequest<Item> = NSFetchRequest(entityName: "Item")
             let fetchCheck = try context.fetch(fetch)
             print("fetchCheck.count = \(fetchCheck.count)")
+            print("fetchCheck = \(fetchCheck)")
+            let ingredientsCount = fetchCheck.count
+            print("ingredients.count: \(ingredientsCount)")
         } catch {
             print("error")
         }
@@ -472,6 +416,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if segue.identifier == "toVarietyDetailVC", let destination = segue.destination as? VarietyDetailVC {
             
             destination.varietySelected = self.varietySelected
+            destination.numberServings = self.numberServings
+            
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            navigationItem.backBarButtonItem = backItem
         }
     }
     

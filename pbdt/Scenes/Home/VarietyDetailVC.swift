@@ -16,9 +16,11 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     @IBOutlet weak var detailLbl: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var dividerView: UIView!
     
     var foodsFiltered: [Food]! = []
     var varietySelected: String = ""
+    var numberServings: Double = 0.0
     
     // MARK: - functions
     
@@ -48,12 +50,13 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func setupViews() {
         
         self.view.backgroundColor = UIColor.mainViewBackground()
+        dividerView.backgroundColor = UIColor.viewDivider()
     }
     
     func setupLabels() {
         
         detailLbl.backgroundColor = UIColor.viewBackground()
-        detailLbl.textColor = UIColor.brandBlack()
+        detailLbl.textColor = UIColor.brandPrimary()
         detailLbl.font = UIFont.large()
     }
     
@@ -73,8 +76,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func setupNavigationBar() {
         
-        self.navigationItem.title = "\(varietySelected.capitalized)"
-        //self.navigationItem.titleView = DateView()
+        navigationItem.title = "\(varietySelected.capitalized)"
     }
     
     func setupNotfications() {
@@ -88,6 +90,55 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func updateLabels() {
         
+        switch varietySelected {
+        case "calories":
+            print("calories")
+            if numberServings == 1 {
+                detailLbl.text = "\(numberServings) calorie"
+            } else {
+                detailLbl.text = "\(numberServings) calories"
+            }
+            
+            if numberServings.isInt() {
+                if numberServings == 1 {
+                    detailLbl.text = "\(Int(numberServings)) calorie"
+                } else {
+                    detailLbl.text = "\(Int(numberServings)) calories"
+                }
+            }
+        case "fat", "carbs", "protein":
+            print("fat, carbs, protein")
+            if numberServings == 1 {
+                detailLbl.text = "\(numberServings) gram"
+            } else {
+                detailLbl.text = "\(numberServings) grams"
+            }
+            
+            if numberServings.isInt() {
+                if numberServings == 1 {
+                    detailLbl.text = "\(Int(numberServings)) gram"
+                } else {
+                    detailLbl.text = "\(Int(numberServings)) grams"
+                }
+            }
+        default:
+            print("d")
+            if numberServings == 1 {
+                detailLbl.text = "\(numberServings) serving"
+            } else {
+                detailLbl.text = "\(numberServings) servings"
+            }
+            
+            if numberServings.isInt() {
+                if numberServings == 1 {
+                    detailLbl.text = "\(Int(numberServings)) serving"
+                } else {
+                    detailLbl.text = "\(Int(numberServings)) servings"
+                }
+            }
+        }
+        
+        /*
         var foodNames: [String] = []
         for food in foodsFiltered {
             if !foodNames.contains(food.name!) {
@@ -111,6 +162,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         //detailLbl.text = "\(foodsFiltered.count) foods containing \(varietySelected) logged on \(appDelegate.dateFilter.toString(format: "MMM dd, yyyy")), \n\(foodNames.count) unique types of \(varietySelected)"
         
         detailLbl.text = "\(foodsFiltered.count) total \(foodString), \(foodNames.count) unique \(typeString)"
+        */
     }
     
     @objc func updateAfterDateChange() {
@@ -267,91 +319,91 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         case "beans":
             //print("beans")
             cell.amountLbl.text = "\(food.beansT)"
-            if appDelegate.checkIfInt(input: food.beansT) {
+            if food.beansT.isInt() {
                 cell.amountLbl.text = "\(Int(food.beansT))"
             }
         case "berries":
             //print("berries")
             cell.amountLbl.text = "\(food.berriesT)"
-            if appDelegate.checkIfInt(input: food.berriesT) {
+            if food.berriesT.isInt() {
                 cell.amountLbl.text = "\(Int(food.berriesT))"
             }
         case "other fruits":
             //print("other fruits")
             cell.amountLbl.text = "\(food.otherFruitsT)"
-            if appDelegate.checkIfInt(input: food.otherFruitsT) {
+            if food.otherFruitsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.otherFruitsT))"
             }
         case "cruciferous vegetables":
             //print("cruciferous vegetables")
             cell.amountLbl.text = "\(food.cruciferousVegetablesT)"
-            if appDelegate.checkIfInt(input: food.cruciferousVegetablesT) {
+            if food.cruciferousVegetablesT.isInt() {
                 cell.amountLbl.text = "\(Int(food.cruciferousVegetablesT))"
             }
         case "greens":
             //print("greens")
             cell.amountLbl.text = "\(food.greensT)"
-            if appDelegate.checkIfInt(input: food.greensT) {
+            if food.greensT.isInt() {
                 cell.amountLbl.text = "\(Int(food.greensT))"
             }
         case "other vegetables":
             //print("other vegetables")
             cell.amountLbl.text = "\(food.otherVegetablesT)"
-            if appDelegate.checkIfInt(input: food.otherVegetablesT) {
+            if food.otherVegetablesT.isInt() {
                 cell.amountLbl.text = "\(Int(food.otherVegetablesT))"
             }
         case "flaxseeds":
             //print("flaxseeds")
             cell.amountLbl.text = "\(food.flaxseedsT)"
-            if appDelegate.checkIfInt(input: food.flaxseedsT) {
+            if food.flaxseedsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.flaxseedsT))"
             }
         case "nuts":
             //print("nuts")
             cell.amountLbl.text = "\(food.nutsT)"
-            if appDelegate.checkIfInt(input: food.nutsT) {
+            if food.nutsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.nutsT))"
             }
         case "turmeric":
             //print("berries")
             cell.amountLbl.text = "\(food.turmericT)"
-            if appDelegate.checkIfInt(input: food.turmericT) {
+            if food.turmericT.isInt() {
                 cell.amountLbl.text = "\(Int(food.turmericT))"
             }
         case "whole grains":
             //print("whole grains")
             cell.amountLbl.text = "\(food.wholeGrainsT)"
-            if appDelegate.checkIfInt(input: food.wholeGrainsT) {
+            if food.wholeGrainsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.wholeGrainsT))"
             }
         case "other seeds":
             //print("other seeds")
             cell.amountLbl.text = "\(food.otherSeedsT)"
-            if appDelegate.checkIfInt(input: food.otherSeedsT) {
+            if food.otherSeedsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.otherSeedsT))"
             }
         case "calories":
             //print("calories")
             cell.amountLbl.text = "\(food.calsT)"
-            if appDelegate.checkIfInt(input: food.calsT) {
+            if food.calsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.calsT))"
             }
         case "fat":
             //print("fat")
             cell.amountLbl.text = "\(food.fatT)"
-            if appDelegate.checkIfInt(input: food.fatT) {
+            if food.fatT.isInt() {
                 cell.amountLbl.text = "\(Int(food.fatT))"
             }
         case "carbs":
             //print("carbs")
             cell.amountLbl.text = "\(food.carbsT)"
-            if appDelegate.checkIfInt(input: food.carbsT) {
+            if food.carbsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.carbsT))"
             }
         case "protein":
             //print("protein")
             cell.amountLbl.text = "\(food.proteinT)"
-            if appDelegate.checkIfInt(input: food.proteinT) {
+            if food.proteinT.isInt() {
                 cell.amountLbl.text = "\(Int(food.proteinT))"
             }
         default:
@@ -368,7 +420,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let string = "No \(varietySelected.capitalized) logged"
+        let string = "No \(varietySelected) logged"
         let attributes = [NSAttributedString.Key.font: UIFont.emptyDataSetTitle(),
                           NSAttributedString.Key.foregroundColor: UIColor.brandGreyDark()]
         return NSAttributedString(string: string, attributes: attributes)

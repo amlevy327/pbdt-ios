@@ -46,11 +46,16 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         navDateView.diaryVc = self
         
         navigationItem.titleView = navDateView
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
     }
     
     func setupViews() {
         
-        view.backgroundColor = UIColor.mainViewBackground()
+        //view.backgroundColor = UIColor.mainViewBackground()
+        view.backgroundColor = UIColor.brandWhite()
     }
     
     func setupTableView() {
@@ -67,12 +72,12 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
     
     func setupButtons() {
         
-        logBtn.setTitle("Log Food", for: .normal)
+        logBtn.setTitle("Log a Food", for: .normal)
         logBtn.backgroundColor = UIColor.actionButtonBackground()
         logBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         logBtn.titleLabel?.font = UIFont.actionButtonText()
-        logBtn.layer.borderWidth = CGFloat(2)
-        logBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
+        let height = logBtn.frame.height
+        logBtn.layer.cornerRadius = height / 2
     }
     
     func setupNotfications() {
@@ -145,7 +150,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
                 cell.detailLbl.text = "\(variety.capitalized), \(servingsT) servings"
             }
             
-            if appDelegate.checkIfInt(input: servingsT) {
+            if servingsT.isInt() {
                 if servingsT == 1 {
                     cell.detailLbl.text = "\(variety.capitalized), \(Int(servingsT)) serving"
                 } else {
@@ -176,8 +181,8 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
                 print("delete tapped")
                 
-                if let id = appDelegate.diaryEntries[indexPath.row].objectId {
-                    self.deleteFood(objectId: id, indexPathRow: indexPath.row)
+                if let food = appDelegate.diaryEntries[indexPath.row] as? Food {
+                    self.deleteFood(food: food, indexPathRow: indexPath.row)
                 }
             })
             let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -234,13 +239,24 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         self.present(vc, animated: true)
     }
     
-    func deleteFood(objectId: NSNumber, indexPathRow: Int) {
-        print("deleteFood: start, id = \(objectId)")
+    func deleteFood(food: Food, indexPathRow: Int) {
         
-        let email = "\(UserDefaults.standard.string(forKey: "email")!)"
-        let authenticationToken = "\(UserDefaults.standard.string(forKey: "authenticationToken")!)"
+        print("deleteFood")
         
-        let url = "http://localhost:3000/v1/foods/\(objectId)"
+        let id = "\(food.objectId!)"
+        
+        let email = "\(appDelegate.currentUser.email!)"
+        let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
+        
+        let url = "http://localhost:3000/v1/foods/\(id)"
+        
+        let params = ["food": [
+            "id": id
+            ]
+        ]
+        
+        print("params: \(params)")
+        print("url: \(url)")
         
         let headers: [String:String] = [
             "X-USER-EMAIL": email,
@@ -248,43 +264,54 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
             "Content-Type": "application/json"
         ]
         
-        /*
-        Alamofire.request(url, method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+        Alamofire.request(url, method: .delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            
+            print(response)
             
             switch response.result {
             case .success:
-                if let JSON = response.result.value as? [[String: AnyObject]] {
-                    
-                    for food in JSON {
-                        Food.findOrCreateFromJSON(food, context: context)
-                    }
-                    
-                    let fetchRequest: NSFetchRequest<Food> = NSFetchRequest(entityName: "Food")
-                    fetchRequest.predicate = NSPredicate(format: "objectId = %@", objectId)
-                    let foodFetch = try context.fetch(fetchRequest)
-                    for food in foodFetch {
-                        context.delete(food)
-                    }
-                    context.save()
+                
+                do {
+                    try context.delete(food)
+                    try context.save()
+                    appDelegate.loadFoods()
+                    self.tableView.reloadData()
+                } catch {
+                    print("errors: \(error)")
                 }
+                
+                /*
+                if let JSON = response.result.value as? [String: AnyObject] {
+                    if let errors = JSON["error"] as? [String: AnyObject] {
+                        appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
+                    } else {
+                        do {
+                            try context.delete(food)
+                            try context.save()
+                            appDelegate.loadFoods()
+                            self.tableView.reloadData()
+                        } catch {
+                            print("errors: \(error)")
+                        }
+                    }
+                }
+                */
+                
+                appDelegate.showInfoView(message: UIMessages.kEntryDeleted, color: UIColor.popUpSuccess())
             case .failure(let error):
                 print("response failure: \(error)")
+                appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
         }
-        */
-        /*
-        do {
-            let fetchRequest = try context.fetch(foodFetch)
-            appDelegate.diaryEntries = fetchRequest
-        } catch {
-            print("Error fetching foods: \(error)")
-        }
-        */
     }
     
     // MARK: - navigation
     
     func goToAddDiaryEntryVC() {
+        
+//        let backItem = UIBarButtonItem()
+//        backItem.title = ""
+//        navigationItem.backBarButtonItem = backItem
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "AddDiaryEntryVC")

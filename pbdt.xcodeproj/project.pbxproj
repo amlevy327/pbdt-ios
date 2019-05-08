@@ -9,19 +9,22 @@
 /* Begin PBXBuildFile section */
 		1CAB0296636B6F214EB06E02 /* Pods_pbdtUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 535FAC387B5A2A1631FE099D /* Pods_pbdtUITests.framework */; };
 		3CF82F5FC4D2EE2C614AB3B6 /* Pods_pbdtTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACB2D94DDBD2752FEAF8AB8 /* Pods_pbdtTests.framework */; };
+		D408E90522809CD2007EE032 /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D408E90422809CD2007EE032 /* StringHelpers.swift */; };
 		D409D880226CBECD00F6E829 /* FontHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409D87F226CBECD00F6E829 /* FontHelpers.swift */; };
 		D409D882226CEB5400F6E829 /* AppearanceConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D409D881226CEB5400F6E829 /* AppearanceConfig.swift */; };
 		D41182592274FD7B00E3046D /* NavigationDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D41182582274FD7B00E3046D /* NavigationDateView.xib */; };
 		D411825B2274FE4400E3046D /* NavigationDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411825A2274FE4400E3046D /* NavigationDateView.swift */; };
 		D411827322752EAA00E3046D /* BrandView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D411827222752EAA00E3046D /* BrandView.xib */; };
 		D411827522752EB700E3046D /* BrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411827422752EB700E3046D /* BrandView.swift */; };
-		D418C9FE2250368100A4BAFE /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418C9FD2250368100A4BAFE /* Router.swift */; };
+		D414FF8C22794F07002CF6AA /* UpdateRecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414FF8B22794F07002CF6AA /* UpdateRecipeVC.swift */; };
 		D418CA0122503DB300A4BAFE /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418CA0022503DB300A4BAFE /* SignUpVC.swift */; };
 		D42581C32257BF0C007E0D72 /* DiaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42581C12257BF0C007E0D72 /* DiaryCell.swift */; };
 		D42581C42257BF0C007E0D72 /* DiaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D42581C22257BF0C007E0D72 /* DiaryCell.xib */; };
 		D42581C62257CC4A007E0D72 /* UpdateDiaryEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42581C52257CC4A007E0D72 /* UpdateDiaryEntryVC.swift */; };
 		D42581C82257CCBB007E0D72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42581C72257CCBB007E0D72 /* ViewController.swift */; };
 		D43772922263F4C0003F66DB /* DateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D43772912263F4C0003F66DB /* DateView.xib */; };
+		D43C3B7C227BDCDB0022CD03 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43C3B7A227BDCDB0022CD03 /* HomeCell.swift */; };
+		D43C3B7D227BDCDB0022CD03 /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D43C3B7B227BDCDB0022CD03 /* HomeCell.xib */; };
 		D43FEE9E225E992C00EDF6C8 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */; };
 		D440746122767BDF00102702 /* RecipesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440746022767BDF00102702 /* RecipesVC.swift */; };
 		D441ED7822502BB400B9DB39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D441ED7722502BB400B9DB39 /* AppDelegate.swift */; };
@@ -46,13 +49,15 @@
 		D45D2403227662E600AFDF8E /* Ingredient+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2401227662E600AFDF8E /* Ingredient+CoreDataProperties.swift */; };
 		D45D2406227662F500AFDF8E /* Recipe+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2404227662F400AFDF8E /* Recipe+CoreDataClass.swift */; };
 		D45D2407227662F500AFDF8E /* Recipe+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45D2405227662F400AFDF8E /* Recipe+CoreDataProperties.swift */; };
+		D45F4BB4227E65080081A31F /* ConfirmRecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F4BB3227E65080081A31F /* ConfirmRecipeVC.swift */; };
+		D45F4BB6227EA0690081A31F /* ImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F4BB5227EA0690081A31F /* ImageHelpers.swift */; };
 		D45FE5BA225B59DE00BCA446 /* AddDiaryEntryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */; };
 		D45FE5BD225B5A1100BCA446 /* AddDiaryEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */; };
 		D45FE5BE225B5A1100BCA446 /* AddDiaryEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */; };
 		D4759E5B2266AFF00088CD63 /* SegmentedControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4759E5A2266AFF00088CD63 /* SegmentedControlView.xib */; };
 		D4759E5D2266B00B0088CD63 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4759E5C2266B00B0088CD63 /* SegmentedControlView.swift */; };
-		D4759E602266C1B60088CD63 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4759E5E2266C1B60088CD63 /* HomeCell.swift */; };
-		D4759E612266C1B60088CD63 /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4759E5F2266C1B60088CD63 /* HomeCell.xib */; };
+		D47F289B227A8E430075B1F8 /* CreateRecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47F289A227A8E430075B1F8 /* CreateRecipeVC.swift */; };
+		D47F289D227A9E9D0075B1F8 /* UpdateIngredientVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47F289C227A9E9D0075B1F8 /* UpdateIngredientVC.swift */; };
 		D498A586226912ED00649E9E /* HomeCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498A584226912ED00649E9E /* HomeCollectionCell.swift */; };
 		D498A587226912ED00649E9E /* HomeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D498A585226912ED00649E9E /* HomeCollectionCell.xib */; };
 		D498A589226A798500649E9E /* DoubleHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498A588226A798500649E9E /* DoubleHelpers.swift */; };
@@ -60,6 +65,7 @@
 		D4B6B00722735ADB007F69E6 /* GoalsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6B00622735ADB007F69E6 /* GoalsVC.swift */; };
 		D4B6B00A22735CDD007F69E6 /* GoalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6B00822735CDD007F69E6 /* GoalsCell.swift */; };
 		D4B6B00B22735CDD007F69E6 /* GoalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4B6B00922735CDD007F69E6 /* GoalsCell.xib */; };
+		D4B8D9CD227D491A0007CD60 /* AddIngredientVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B8D9CC227D491A0007CD60 /* AddIngredientVC.swift */; };
 		D4BCE8CF2265261300F1DC88 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BCE8CE2265261300F1DC88 /* DateView.swift */; };
 		D4C32861225A72C7004BB713 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C32860225A72C7004BB713 /* Onboarding.swift */; };
 		D4C32863225A73E7004BB713 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C32862225A73E7004BB713 /* CustomTabBarController.swift */; };
@@ -99,19 +105,22 @@
 		8ACB2D94DDBD2752FEAF8AB8 /* Pods_pbdtTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pbdtTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2093DD42AF8704EB6D155B6 /* Pods-pbdt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pbdt.release.xcconfig"; path = "Pods/Target Support Files/Pods-pbdt/Pods-pbdt.release.xcconfig"; sourceTree = "<group>"; };
 		C009A2C38BCAF5E2B29AE7FE /* Pods-pbdtTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pbdtTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-pbdtTests/Pods-pbdtTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D408E90422809CD2007EE032 /* StringHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelpers.swift; sourceTree = "<group>"; };
 		D409D87F226CBECD00F6E829 /* FontHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHelpers.swift; sourceTree = "<group>"; };
 		D409D881226CEB5400F6E829 /* AppearanceConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceConfig.swift; sourceTree = "<group>"; };
 		D41182582274FD7B00E3046D /* NavigationDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NavigationDateView.xib; sourceTree = "<group>"; };
 		D411825A2274FE4400E3046D /* NavigationDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDateView.swift; sourceTree = "<group>"; };
 		D411827222752EAA00E3046D /* BrandView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BrandView.xib; sourceTree = "<group>"; };
 		D411827422752EB700E3046D /* BrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandView.swift; sourceTree = "<group>"; };
-		D418C9FD2250368100A4BAFE /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		D414FF8B22794F07002CF6AA /* UpdateRecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRecipeVC.swift; sourceTree = "<group>"; };
 		D418CA0022503DB300A4BAFE /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		D42581C12257BF0C007E0D72 /* DiaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCell.swift; sourceTree = "<group>"; };
 		D42581C22257BF0C007E0D72 /* DiaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiaryCell.xib; sourceTree = "<group>"; };
 		D42581C52257CC4A007E0D72 /* UpdateDiaryEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateDiaryEntryVC.swift; sourceTree = "<group>"; };
 		D42581C72257CCBB007E0D72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D43772912263F4C0003F66DB /* DateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateView.xib; sourceTree = "<group>"; };
+		D43C3B7A227BDCDB0022CD03 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		D43C3B7B227BDCDB0022CD03 /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
 		D43FEE9D225E992C00EDF6C8 /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		D440746022767BDF00102702 /* RecipesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesVC.swift; sourceTree = "<group>"; };
 		D441ED7422502BB400B9DB39 /* pbdt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pbdt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,13 +151,15 @@
 		D45D2401227662E600AFDF8E /* Ingredient+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Ingredient+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D45D2404227662F400AFDF8E /* Recipe+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recipe+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D45D2405227662F400AFDF8E /* Recipe+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Recipe+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D45F4BB3227E65080081A31F /* ConfirmRecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmRecipeVC.swift; sourceTree = "<group>"; };
+		D45F4BB5227EA0690081A31F /* ImageHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelpers.swift; sourceTree = "<group>"; };
 		D45FE5B9225B59DE00BCA446 /* AddDiaryEntryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiaryEntryVC.swift; sourceTree = "<group>"; };
 		D45FE5BB225B5A1100BCA446 /* AddDiaryEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDiaryEntryCell.swift; sourceTree = "<group>"; };
 		D45FE5BC225B5A1100BCA446 /* AddDiaryEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddDiaryEntryCell.xib; sourceTree = "<group>"; };
 		D4759E5A2266AFF00088CD63 /* SegmentedControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SegmentedControlView.xib; sourceTree = "<group>"; };
 		D4759E5C2266B00B0088CD63 /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
-		D4759E5E2266C1B60088CD63 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
-		D4759E5F2266C1B60088CD63 /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
+		D47F289A227A8E430075B1F8 /* CreateRecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRecipeVC.swift; sourceTree = "<group>"; };
+		D47F289C227A9E9D0075B1F8 /* UpdateIngredientVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateIngredientVC.swift; sourceTree = "<group>"; };
 		D498A584226912ED00649E9E /* HomeCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionCell.swift; sourceTree = "<group>"; };
 		D498A585226912ED00649E9E /* HomeCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCollectionCell.xib; sourceTree = "<group>"; };
 		D498A588226A798500649E9E /* DoubleHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleHelpers.swift; sourceTree = "<group>"; };
@@ -156,6 +167,7 @@
 		D4B6B00622735ADB007F69E6 /* GoalsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsVC.swift; sourceTree = "<group>"; };
 		D4B6B00822735CDD007F69E6 /* GoalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsCell.swift; sourceTree = "<group>"; };
 		D4B6B00922735CDD007F69E6 /* GoalsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GoalsCell.xib; sourceTree = "<group>"; };
+		D4B8D9CC227D491A0007CD60 /* AddIngredientVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientVC.swift; sourceTree = "<group>"; };
 		D4BCE8CE2265261300F1DC88 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		D4C32860225A72C7004BB713 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		D4C32862225A73E7004BB713 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -229,7 +241,6 @@
 			isa = PBXGroup;
 			children = (
 				D458BCBE2251818200BD9F87 /* Helpers */,
-				D418C9FD2250368100A4BAFE /* Router.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -328,6 +339,8 @@
 				D498A588226A798500649E9E /* DoubleHelpers.swift */,
 				D409D87F226CBECD00F6E829 /* FontHelpers.swift */,
 				D409D881226CEB5400F6E829 /* AppearanceConfig.swift */,
+				D45F4BB5227EA0690081A31F /* ImageHelpers.swift */,
+				D408E90422809CD2007EE032 /* StringHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -342,6 +355,11 @@
 				D4B6B00822735CDD007F69E6 /* GoalsCell.swift */,
 				D4B6B00922735CDD007F69E6 /* GoalsCell.xib */,
 				D440746022767BDF00102702 /* RecipesVC.swift */,
+				D47F289A227A8E430075B1F8 /* CreateRecipeVC.swift */,
+				D414FF8B22794F07002CF6AA /* UpdateRecipeVC.swift */,
+				D4B8D9CC227D491A0007CD60 /* AddIngredientVC.swift */,
+				D45F4BB3227E65080081A31F /* ConfirmRecipeVC.swift */,
+				D47F289C227A9E9D0075B1F8 /* UpdateIngredientVC.swift */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -377,8 +395,8 @@
 			isa = PBXGroup;
 			children = (
 				D4E5DB3A2254486D00713887 /* HomeVC.swift */,
-				D4759E5E2266C1B60088CD63 /* HomeCell.swift */,
-				D4759E5F2266C1B60088CD63 /* HomeCell.xib */,
+				D43C3B7A227BDCDB0022CD03 /* HomeCell.swift */,
+				D43C3B7B227BDCDB0022CD03 /* HomeCell.xib */,
 				D498A584226912ED00649E9E /* HomeCollectionCell.swift */,
 				D498A585226912ED00649E9E /* HomeCollectionCell.xib */,
 				D498A58A226A826900649E9E /* VarietyDetailVC.swift */,
@@ -528,13 +546,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D43C3B7D227BDCDB0022CD03 /* HomeCell.xib in Resources */,
 				D458BCC8225187CD00BD9F87 /* MoreCell.xib in Resources */,
 				D44A7FE72259530000842B31 /* UpdateDiaryEntryCell.xib in Resources */,
 				D441ED8522502BB500B9DB39 /* LaunchScreen.storyboard in Resources */,
 				D45FE5BE225B5A1100BCA446 /* AddDiaryEntryCell.xib in Resources */,
 				D411827322752EAA00E3046D /* BrandView.xib in Resources */,
 				D4B6B00B22735CDD007F69E6 /* GoalsCell.xib in Resources */,
-				D4759E612266C1B60088CD63 /* HomeCell.xib in Resources */,
 				D498A587226912ED00649E9E /* HomeCollectionCell.xib in Resources */,
 				D42581C42257BF0C007E0D72 /* DiaryCell.xib in Resources */,
 				D441ED8222502BB500B9DB39 /* Assets.xcassets in Resources */,
@@ -660,6 +678,7 @@
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Segmentio/Segmentio.framework",
+				"${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -669,6 +688,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segmentio.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICircularProgressRing.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -762,15 +782,15 @@
 				D411825B2274FE4400E3046D /* NavigationDateView.swift in Sources */,
 				D4759E5D2266B00B0088CD63 /* SegmentedControlView.swift in Sources */,
 				D44A7FE32259516700842B31 /* Constants.swift in Sources */,
+				D4B8D9CD227D491A0007CD60 /* AddIngredientVC.swift in Sources */,
 				D45FE5BD225B5A1100BCA446 /* AddDiaryEntryCell.swift in Sources */,
 				D4C32861225A72C7004BB713 /* Onboarding.swift in Sources */,
 				D498A589226A798500649E9E /* DoubleHelpers.swift in Sources */,
 				D4D9297B2255CAE800D862EA /* Item+CoreDataProperties.swift in Sources */,
+				D45F4BB6227EA0690081A31F /* ImageHelpers.swift in Sources */,
 				D43FEE9E225E992C00EDF6C8 /* DateHelpers.swift in Sources */,
-				D4759E602266C1B60088CD63 /* HomeCell.swift in Sources */,
 				D4D929782255BE3300D862EA /* Food+CoreDataClass.swift in Sources */,
 				D42581C32257BF0C007E0D72 /* DiaryCell.swift in Sources */,
-				D418C9FE2250368100A4BAFE /* Router.swift in Sources */,
 				D45FE5BA225B59DE00BCA446 /* AddDiaryEntryVC.swift in Sources */,
 				D45D23F72276629700AFDF8E /* User+CoreDataClass.swift in Sources */,
 				D4E5DB3D2254487900713887 /* DiaryVC.swift in Sources */,
@@ -782,24 +802,30 @@
 				D440746122767BDF00102702 /* RecipesVC.swift in Sources */,
 				D45D23D7227640B100AFDF8E /* SplashVC.swift in Sources */,
 				D4BCE8CF2265261300F1DC88 /* DateView.swift in Sources */,
+				D47F289D227A9E9D0075B1F8 /* UpdateIngredientVC.swift in Sources */,
 				D498A58B226A826900649E9E /* VarietyDetailVC.swift in Sources */,
 				D45D23F62276629700AFDF8E /* User+CoreDataProperties.swift in Sources */,
 				D458BCC22251872700BD9F87 /* MoreVC.swift in Sources */,
 				D458BCC7225187CD00BD9F87 /* MoreCell.swift in Sources */,
 				D45D2402227662E600AFDF8E /* Ingredient+CoreDataClass.swift in Sources */,
+				D47F289B227A8E430075B1F8 /* CreateRecipeVC.swift in Sources */,
 				D45D23D522763A2100AFDF8E /* RegistrationVC.swift in Sources */,
 				D418CA0122503DB300A4BAFE /* SignUpVC.swift in Sources */,
 				D409D882226CEB5400F6E829 /* AppearanceConfig.swift in Sources */,
 				D498A586226912ED00649E9E /* HomeCollectionCell.swift in Sources */,
+				D43C3B7C227BDCDB0022CD03 /* HomeCell.swift in Sources */,
 				D42581C82257CCBB007E0D72 /* ViewController.swift in Sources */,
 				D441ED8022502BB400B9DB39 /* pbdt.xcdatamodeld in Sources */,
 				D458BCC02251819900BD9F87 /* ColorHelpers.swift in Sources */,
 				D4D929772255BE3300D862EA /* Food+CoreDataProperties.swift in Sources */,
 				D45D2403227662E600AFDF8E /* Ingredient+CoreDataProperties.swift in Sources */,
+				D45F4BB4227E65080081A31F /* ConfirmRecipeVC.swift in Sources */,
 				D42581C62257CC4A007E0D72 /* UpdateDiaryEntryVC.swift in Sources */,
 				D4FECC7E2257104500AB0CC0 /* SignInVc.swift in Sources */,
 				D4B6B00A22735CDD007F69E6 /* GoalsCell.swift in Sources */,
+				D414FF8C22794F07002CF6AA /* UpdateRecipeVC.swift in Sources */,
 				D411827522752EB700E3046D /* BrandView.swift in Sources */,
+				D408E90522809CD2007EE032 /* StringHelpers.swift in Sources */,
 				D45D2407227662F500AFDF8E /* Recipe+CoreDataProperties.swift in Sources */,
 				D45D2406227662F500AFDF8E /* Recipe+CoreDataClass.swift in Sources */,
 				D44A7FE62259530000842B31 /* UpdateDiaryEntryCell.swift in Sources */,

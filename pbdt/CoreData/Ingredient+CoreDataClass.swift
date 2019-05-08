@@ -19,6 +19,13 @@ public class Ingredient: NSManagedObject {
         let objectId = ingredientJSON["id"] as! NSNumber
         fetchRequest.predicate = NSPredicate(format: "objectId = %@", objectId)
         
+        // test
+        let fetchRequestRecipe: NSFetchRequest<Recipe> = NSFetchRequest(entityName: "Recipe")
+        let recipeId = ingredientJSON["recipe_id"] as! NSNumber
+        fetchRequestRecipe.predicate = NSPredicate(format: "objectId = %@", recipeId)
+        //print("recipeId: \(recipeId)")
+        //
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
@@ -27,18 +34,28 @@ public class Ingredient: NSManagedObject {
             
             let ingredientFetch = try context.fetch(fetchRequest)
             
-            if ingredientFetch.count == 0 {
+            // test
+            let recipeFetch = try context.fetch(fetchRequestRecipe)
+            //
+            
+            print("recipeFetch.count: \(recipeFetch.count)")
+            
+            if ingredientFetch.count == 0 && recipeFetch.count > 0 {
                 
-                //print("ingredientJSON new: \(ingredientJSON)")
+                print("ingredientJSON new: \(ingredientJSON)")
                 
                 // create a new ingredient
                 let newIngredient = NSEntityDescription.insertNewObject(forEntityName: "Ingredient", into: context) as! Ingredient
+                
+                // test
+                newIngredient.recipe = recipeFetch.first
+                //
                 
                 if let objectId = ingredientJSON["id"] as? NSNumber {
                     newIngredient.objectId = objectId
                 }
                 
-                if let recipeId = ingredientJSON["recipeId"] as? NSNumber {
+                if let recipeId = ingredientJSON["recipe_id"] as? NSNumber {
                     newIngredient.recipeId = recipeId
                 }
                 
@@ -138,16 +155,20 @@ public class Ingredient: NSManagedObject {
                 
             } else if ingredientFetch.count == 1 {
                 
-                //print("ingredientJSON existing: \(ingredientJSON)")
+                print("ingredientJSON existing: \(ingredientJSON)")
                 
                 // update existing ingredient
                 ingredient = ingredientFetch.first!
+                
+                // test
+                ingredient!.recipe = recipeFetch.first
+                //
                 
                 if let name = ingredientJSON["name"] as? String {
                     ingredient!.name = name
                 }
                 
-                if let recipeId = ingredientJSON["recipeId"] as? NSNumber {
+                if let recipeId = ingredientJSON["recipe_id"] as? NSNumber {
                     ingredient!.recipeId = recipeId
                 }
                 

@@ -60,6 +60,7 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func setupNotfications() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterRecipeModification), name: NSNotification.Name("RecipeChanged"), object: nil)
     }
     
     // updates
@@ -67,6 +68,11 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     @objc func updateAfterFoodModification() {
         //print("updateAfterFoodModification: start")
         goToNavigationRoot()
+    }
+    
+    @objc func updateAfterRecipeModification() {
+        print("updateAfterRecipeModification: start")
+        fetchRecipes()
     }
     
     // table view
@@ -194,6 +200,7 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             print("fetchItems: request success")
             let fetchRequest = try context.fetch(fetch)
             self.items = fetchRequest
+            self.items.sort(by: { $0.name!.compare($1.name! as String) == ComparisonResult.orderedDescending })
             tableView.reloadData()
         } catch {
             print("Error fetching items: \(error)")
@@ -209,6 +216,7 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             print("fetchRecipes: request success")
             let fetchRequest = try context.fetch(fetch)
             self.recipes = fetchRequest
+            self.recipes.sort(by: { $0.updatedAt!.compare($1.updatedAt! as Date) == ComparisonResult.orderedDescending })
             tableView.reloadData()
         } catch {
             print("Error fetching recipes: \(error)")

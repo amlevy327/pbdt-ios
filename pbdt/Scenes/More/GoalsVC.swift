@@ -88,12 +88,12 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
     
     func setupButtons() {
         
-        updateBtn.setTitle("Update", for: .normal)
+        updateBtn.setTitle("Update My Goals", for: .normal)
         updateBtn.backgroundColor = UIColor.actionButtonBackground()
         updateBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         updateBtn.titleLabel?.font = UIFont.actionButtonText()
-        updateBtn.layer.borderWidth = CGFloat(2)
-        updateBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
+        let height = updateBtn.frame.height
+        updateBtn.layer.cornerRadius = height / 2
     }
     
     func setupNavigationBar() {
@@ -178,7 +178,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
             
             cell.nameLbl.text = name
             cell.goalTxt.text = "\(goalServing)"
-            if appDelegate.checkIfInt(input: goalServing) {
+            if goalServing.isInt() {
                 cell.goalTxt.text = "\(Int(goalServing))"
             }
             
@@ -189,7 +189,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
             
             cell.nameLbl.text = name
             cell.goalTxt.text = "\(goalServing)"
-            if appDelegate.checkIfInt(input: goalServing) {
+            if goalServing.isInt() {
                 cell.goalTxt.text = "\(Int(goalServing))"
             }
             
@@ -207,7 +207,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         
         print("textField.tag: \(textField.tag)")
         
-        if appDelegate.dotsCount(inputString: "\(textField.text)") > 1 {
+        if ("\(textField.text)").dotsCheck() {
             appDelegate.showInfoView(message: UIMessages.kInputFormatIncorrect, color: UIColor.popUpFailure())
             return false
         }
@@ -222,49 +222,50 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
             return false
         }
         
+        let updatedGoal = ((textField.text! as NSString).doubleValue).roundToPlaces(places: 2)
+        
         switch textField.tag {
             
         case 900:
-            goalsServings[0] = appDelegate.round100(input: ((textField.text! as NSString).doubleValue))
+            goalsServings[0] = updatedGoal
         case 901:
-            goalsServings[1] = (textField.text! as NSString).doubleValue
+            goalsServings[1] = updatedGoal
         case 902:
-            goalsServings[2] = (textField.text! as NSString).doubleValue
+            goalsServings[2] = updatedGoal
         case 903:
-            goalsServings[3] = (textField.text! as NSString).doubleValue
+            goalsServings[3] = updatedGoal
         case 904:
-            goalsServings[4] = (textField.text! as NSString).doubleValue
+            goalsServings[4] = updatedGoal
         case 905:
-            goalsServings[5] = (textField.text! as NSString).doubleValue
+            goalsServings[5] = updatedGoal
         case 906:
-            goalsServings[6] = (textField.text! as NSString).doubleValue
+            goalsServings[6] = updatedGoal
         case 907:
-            goalsServings[7] = (textField.text! as NSString).doubleValue
+            goalsServings[7] = updatedGoal
         case 908:
-            goalsServings[8] = (textField.text! as NSString).doubleValue
+            goalsServings[8] = updatedGoal
         case 909:
-            goalsServings[9] = (textField.text! as NSString).doubleValue
+            goalsServings[9] = updatedGoal
         case 910:
-            goalsServings[10] = (textField.text! as NSString).doubleValue
+            goalsServings[10] = updatedGoal
             
         case 800:
-            goalsMacros[0] = (textField.text! as NSString).doubleValue
+            goalsMacros[0] = updatedGoal
         case 801:
-            goalsMacros[1] = (textField.text! as NSString).doubleValue
+            goalsMacros[1] = updatedGoal
         case 802:
-            goalsMacros[2] = (textField.text! as NSString).doubleValue
+            goalsMacros[2] = updatedGoal
         case 803:
-            goalsMacros[3] = (textField.text! as NSString).doubleValue
+            goalsMacros[3] = updatedGoal
             
         default:
             print("d")
         }
         
-        let textFieldRounded = appDelegate.round100(input: ((textField.text! as NSString).doubleValue))
-        textField.text = "\(textFieldRounded)"
+        textField.text = "\(updatedGoal)"
         
-        if appDelegate.checkIfInt(input: textFieldRounded) {
-            textField.text = "\(Int(textFieldRounded))"
+        if updatedGoal.isInt() {
+            textField.text = "\(Int(updatedGoal))"
         }
         
         return true

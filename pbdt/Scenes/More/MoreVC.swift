@@ -26,14 +26,19 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupNavigation()
+        setupNavigationBar()
         setupTableView()
     }
     
     // setups
     
-    func setupNavigation() {
+    func setupNavigationBar() {
+        
         navigationItem.title = "More"
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
     }
     
     func setupTableView() {
@@ -91,6 +96,8 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         clearUser()
         clearItem()
         clearFood()
+        clearRecipe()
+        clearIngredient()
         
         goToRegistrationVC()
     }
@@ -134,6 +141,32 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func clearRecipe() {
+        
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        
+        do {
+            try context.execute(deleteRequest)
+            appDelegate.saveContext()
+        } catch {
+            print ("Error deleting Recipe")
+        }
+    }
+    
+    func clearIngredient() {
+        
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Ingredient")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        
+        do {
+            try context.execute(deleteRequest)
+            appDelegate.saveContext()
+        } catch {
+            print ("Error deleting Ingredient")
+        }
+    }
+    
     // alert controller
     func showSignOutAlertController() {
         
@@ -167,16 +200,20 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //        let signUpVC = storyboard.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
 //        appDelegate.window?.rootViewController = signUpVC
         
-//        let sb = UIStoryboard(name: "Main", bundle: nil)
-//        let rvc = sb.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
-//
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        if let subs = appDelegate.window?.rootViewController?.view.subviews {
-//            for view in subs {
-//                view.removeFromSuperview()
-//            }
-//        }
-//        appDelegate.window?.rootViewController = rvc
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let rvc = sb.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
+
+        //let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let subs = appDelegate.window?.rootViewController?.view.subviews {
+            for view in subs {
+                view.removeFromSuperview()
+            }
+        }
+        appDelegate.window?.rootViewController = rvc
+    }
+    
+    @objc func goToNavigationRoot() {
+        navigationController?.popToRootViewController(animated: true)
     }
     
     

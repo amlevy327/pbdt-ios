@@ -21,6 +21,7 @@ class SegmentedControlView: UIView {
     var updateDiaryEntryVc: UpdateDiaryEntryVC!
     var addDiaryEntryVc: AddDiaryEntryVC!
     var goalsVc: GoalsVC!
+    var confirmRecipeVc: ConfirmRecipeVC!
     
     // MARK: - functions
     
@@ -96,7 +97,7 @@ class SegmentedControlView: UIView {
             segmentStates: segmentioStates(),
             animationDuration: 0.1)
         
-        let servingsItem = SegmentioItem(title: "Servings", image: nil)
+        let servingsItem = SegmentioItem(title: "Food Groups", image: nil)
         let nutritionItem = SegmentioItem(title: "Nutrition", image: nil)
         let itemsItem = SegmentioItem(title: "Items", image: nil)
         let recipesItem = SegmentioItem(title: "Recipes", image: nil)
@@ -132,6 +133,9 @@ class SegmentedControlView: UIView {
             case "GoalsVC":
                 print("GoalsVC")
                 self.goalsVc.tableView.reloadData()
+            case "ConfirmRecipeVC":
+                print("ConfirmRecipeVC")
+                self.confirmRecipeVc.tableView.reloadData()
             default:
                 print("d")
             }

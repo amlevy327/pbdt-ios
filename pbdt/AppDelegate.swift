@@ -27,8 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        //IQKeyboardManager.shared.enable = true
-        
         dateFilter = Date()
         
         AppearanceConfig.setupNavigationBar()
@@ -127,7 +125,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let infoView = UIView(frame: CGRect(x: infoView_X, y: infoView_Y, width: infoView_Width, height: infoView_Height))
             infoView.layer.cornerRadius = CGFloat(3)
             infoView.layer.borderWidth = CGFloat(2)
-            infoView.layer.borderColor = UIColor.brandWhite().cgColor
+            infoView.layer.borderColor = UIColor.brandPrimary().cgColor
+            //infoView.layer.cornerRadius = infoView_Height / 2
+            infoView.layer.cornerRadius = CGFloat(5)
             self.window!.addSubview(infoView)
             
             let label_Height = CGFloat(20)
@@ -135,9 +135,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let label_Y = CGFloat(10)
             let label_Width = infoView_Width - CGFloat(26)
             let label = UILabel(frame: CGRect(x: label_X, y: label_Y, width: label_Width, height: label_Height))
-            label.font = UIFont.large()
+            label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
             label.backgroundColor = .clear
-            label.textColor = UIColor.brandWhite()
+            label.textColor = UIColor.brandPrimary()
             label.textAlignment = .center
             infoView.addSubview(label)
             
@@ -157,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // if true
                 if finished {
                     
-                    UIView.animate(withDuration: 0.2, delay: 3, options: [.allowUserInteraction, .curveLinear], animations: {
+                    UIView.animate(withDuration: 0.2, delay: 1, options: [.allowUserInteraction, .curveLinear], animations: {
                         
                         // move errorView up
                         infoView.frame.origin.y = infoView_Y
@@ -197,25 +197,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Error fetching foods: \(error)")
         }
     }
-    
-    // MARK: - checks
-    
-    func dotsCount(inputString: String) -> Int {
-        let filteredInput = inputString.filter() { $0 == "." }
-        return filteredInput.count
-    }
-    
-    func checkIfInt(input: Double) -> Bool {
-        if input.truncatingRemainder(dividingBy: 1) == 0 {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func round100(input: Double) -> Double {
-        return Double(round(100*input)/100)
-    }
-
 }
 

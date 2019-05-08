@@ -25,6 +25,12 @@ class UpdateDiaryEntryCell: UITableViewCell {
         self.selectionStyle = .none
         nameLbl.font = UIFont.cellLarge()
         amountLbl.font = UIFont.cellLarge()
+        
+        //nameLbl.textColor = UIColor.brandGreyDark()
+        //amountLbl.textColor = UIColor.brandGreyDark()
+        
+        nameLbl.textColor = UIColor.brandBlack()
+        amountLbl.textColor = UIColor.brandBlack()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

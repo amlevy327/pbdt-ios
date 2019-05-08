@@ -86,7 +86,7 @@ class SignInVc: UIViewController {
             case .success:
                 if let JSON = response.result.value as? [String: AnyObject] {
                     
-                    //print("JSON: \(JSON)")
+                    print("JSON: \(JSON)")
                     
                     if let user = User.findOrCreateFromJSON(JSON, context: context) {
                         appDelegate.currentUser = user
@@ -96,6 +96,16 @@ class SignInVc: UIViewController {
                     let userFoods = JSON["foods"] as! [[String: AnyObject]]
                     for userFood in userFoods {
                         Food.findOrCreateFromJSON(userFood, context: context)
+                    }
+                    
+                    let userRecipes = JSON["recipes"] as! [[String: AnyObject]]
+                    for userRecipe in userRecipes {
+                        Recipe.findOrCreateFromJSON(userRecipe, context: context)
+                    }
+                    
+                    let userIngredients = JSON["ingredients"] as! [[String: AnyObject]]
+                    for userIngredient in userIngredients {
+                        Ingredient.findOrCreateFromJSON(userIngredient, context: context)
                     }
                     
                     self.onboarding.loadItems()

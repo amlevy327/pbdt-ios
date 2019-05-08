@@ -20,6 +20,7 @@ class AddDiaryEntryCell: UITableViewCell {
         // Initialization code
         
         nameLbl.font = UIFont.cellLarge()
+        nameLbl.textColor = UIColor.brandBlack()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

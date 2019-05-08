@@ -10,14 +10,20 @@ import Foundation
 
 extension Double {
     
-    /*
-    func checkIfInt(input: Double) -> Bool {
+    func isInt() -> Bool {
+        return self.truncatingRemainder(dividingBy: 1) == 0
         
+        /*
         if input.truncatingRemainder(dividingBy: 1) == 0 {
             return true
         } else {
             return false
         }
+        */
     }
-    */
+    
+    func roundToPlaces(places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
 }

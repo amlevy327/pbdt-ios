@@ -20,7 +20,6 @@ class AppearanceConfig {
                                                             NSAttributedString.Key.font: UIFont.navigationTitle()]
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.brandWhite(),
                                                              NSAttributedString.Key.font: UIFont.navigationTitle()], for: .normal)
-        
     }
     
     class func setupStatusBar() {
