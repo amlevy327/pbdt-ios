@@ -17,7 +17,7 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView: UITableView!
     
     // vars
-    let names = ["Recipes", "Goals", "Sign Out"]
+    let names = ["Recipes", "Update my goals", "How are food group servings calculated?", "Request an item be added", "Send Feedback", "Sign Out"]
     
     // MARK: - functions
     
@@ -83,6 +83,15 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             goToGoalsVC()
         case 2:
             print("2")
+            goToFoodGroupsVC()
+        case 3:
+            print("3")
+            goToRequestItemVC()
+        case 4:
+            print("4")
+            goToFeedbackVC()
+        case 5:
+            print("5")
             showSignOutAlertController()
         default:
             print("switch default")
@@ -194,6 +203,18 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.performSegue(withIdentifier: "goToGoalsVC", sender: self)
     }
     
+    func goToFoodGroupsVC() {
+        self.performSegue(withIdentifier: "goToFoodGroupsVC", sender: self)
+    }
+    
+    func goToRequestItemVC() {
+        self.performSegue(withIdentifier: "goToRequestItemVC", sender: self)
+    }
+    
+    func goToFeedbackVC() {
+        self.performSegue(withIdentifier: "goToFeedbackVC", sender: self)
+    }
+    
     func goToRegistrationVC() {
         
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -201,7 +222,7 @@ class MoreVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //        appDelegate.window?.rootViewController = signUpVC
         
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        let rvc = sb.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
+        let rvc = sb.instantiateViewController(withIdentifier: "RegistrationNC") as! RegistrationNC
 
         //let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let subs = appDelegate.window?.rootViewController?.view.subviews {

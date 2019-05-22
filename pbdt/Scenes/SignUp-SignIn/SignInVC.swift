@@ -1,5 +1,5 @@
 //
-//  SignInVc.swift
+//  SignInVC.swift
 //  pbdt
 //
 //  Created by Andrew M Levy on 4/4/19.
@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import Alamofire
+import NVActivityIndicatorView
 
-class SignInVc: UIViewController {
+class SignInVC: UIViewController {
 
     // MARK: - objects and vars
     @IBOutlet weak var emailTxt: UITextField!
@@ -18,6 +19,8 @@ class SignInVc: UIViewController {
     @IBOutlet weak var signInBtn: UIButton!
     
     let onboarding = Onboarding()
+    var toolbar: UIToolbar!
+    var spinner: NVActivityIndicatorView!
     
     // MARK: - functions
     
@@ -26,12 +29,20 @@ class SignInVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigation()
         setupViews()
         setupTextFields()
         setupButtons()
+        setupToolbar()
+        setupSpinner()
     }
     
     // setups
+    
+    func setupNavigation() {
+        
+        navigationItem.title = "pbdt"
+    }
     
     func setupViews() {
         
@@ -47,6 +58,8 @@ class SignInVc: UIViewController {
         passwordTxt.font = UIFont.large()
         passwordTxt.textColor = UIColor.brandBlack()
         passwordTxt.placeholder = "password"
+        
+        emailTxt.becomeFirstResponder()
     }
     
     func setupButtons() {
@@ -55,11 +68,59 @@ class SignInVc: UIViewController {
         signInBtn.backgroundColor = UIColor.actionButtonBackground()
         signInBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         signInBtn.titleLabel?.font = UIFont.actionButtonText()
-        signInBtn.layer.borderWidth = CGFloat(2)
-        signInBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
+        //signInBtn.layer.borderWidth = CGFloat(2)
+        //signInBtn.layer.borderColor = UIColor.actionButtonBorder().cgColor
+        signInBtn.layer.shadowColor = UIColor.brandGreyDark().cgColor
+        signInBtn.layer.shadowOffset = ButtonConstants.shadowOffset
+        signInBtn.layer.shadowOpacity = ButtonConstants.shadowOpacity
+        let heightSignInBtn = signInBtn.frame.height
+        signInBtn.layer.cornerRadius = heightSignInBtn / 2
+    }
+    
+    func setupToolbar() {
+        
+        toolbar = UIToolbar()
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.isTranslucent = true
+        toolbar.isUserInteractionEnabled = true
+        toolbar.tintColor = UIColor.toolbarText()
+        toolbar.barTintColor = UIColor.toolbarBackground()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneClicked))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.sizeToFit()
+        
+        emailTxt.inputAccessoryView = toolbar
+        passwordTxt.inputAccessoryView = toolbar
+    }
+    
+    @objc func doneClicked() {
+        // end editing
+        view.endEditing(true)
+    }
+    
+    func setupSpinner() {
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: ActivityIndicatorConstants.color, padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
     }
     
     // MARK: - actions
+    
+    func startSpinner() {
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+    
     @IBAction func signInBtn_clicked(_ sender: Any) {
         
         self.view.endEditing(true)
@@ -72,10 +133,15 @@ class SignInVc: UIViewController {
             return
         }
         
+        self.startSpinner()
+        
         let email = emailTxt.text
         let password = passwordTxt.text
         
-        let url = "http://localhost:3000/v1/sessions"
+        let url = "\(baseUrl)/v1/sessions"
+        
+        print("url: \(url)")
+        
         let params = ["email": email,
                       "password": password
         ]
@@ -86,7 +152,7 @@ class SignInVc: UIViewController {
             case .success:
                 if let JSON = response.result.value as? [String: AnyObject] {
                     
-                    print("JSON: \(JSON)")
+                    //print("JSON: \(JSON)")
                     
                     if let user = User.findOrCreateFromJSON(JSON, context: context) {
                         appDelegate.currentUser = user
@@ -108,12 +174,14 @@ class SignInVc: UIViewController {
                         Ingredient.findOrCreateFromJSON(userIngredient, context: context)
                     }
                     
-                    self.onboarding.loadItems()
+                    self.onboarding.loadItems(spinner: self.spinner)
                 }
             case .failure(let error):
                 print("response failure from post session: \(error)")
-                appDelegate.showInfoView(message: UIMessages.kErrorEmailPassword, color: UIColor.popUpFailure())
+                appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
+            
+            self.stopSpinner()
         }
     }
     

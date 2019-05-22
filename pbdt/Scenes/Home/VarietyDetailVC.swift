@@ -38,7 +38,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         setupViews()
         setupLabels()
         setupTableView()
-        setupNotfications()
+        setupNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,9 +77,13 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func setupNavigationBar() {
         
         navigationItem.title = "\(varietySelected.capitalized)"
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        navigationItem.backBarButtonItem = backItem
     }
     
-    func setupNotfications() {
+    func setupNotifications() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterDateChange), name: NSNotification.Name("DateChanged"), object: nil)
@@ -90,13 +94,15 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func updateLabels() {
         
+        print("updateLabels - VarietyDetailVC")
+        
         switch varietySelected {
         case "calories":
             print("calories")
             if numberServings == 1 {
-                detailLbl.text = "\(numberServings) calorie"
+                detailLbl.text = "\(numberServings.roundToPlaces(places: 1)) calorie"
             } else {
-                detailLbl.text = "\(numberServings) calories"
+                detailLbl.text = "\(numberServings.roundToPlaces(places: 1)) calories"
             }
             
             if numberServings.isInt() {
@@ -109,9 +115,9 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         case "fat", "carbs", "protein":
             print("fat, carbs, protein")
             if numberServings == 1 {
-                detailLbl.text = "\(numberServings) gram"
+                detailLbl.text = "\(numberServings.roundToPlaces(places: 1)) gram"
             } else {
-                detailLbl.text = "\(numberServings) grams"
+                detailLbl.text = "\(numberServings.roundToPlaces(places: 1)) grams"
             }
             
             if numberServings.isInt() {
@@ -124,9 +130,9 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         default:
             print("d")
             if numberServings == 1 {
-                detailLbl.text = "\(numberServings) serving"
+                detailLbl.text = "\(numberServings.roundToPlaces(places: 1)) serving"
             } else {
-                detailLbl.text = "\(numberServings) servings"
+                detailLbl.text = "\(numberServings.roundToPlaces(places: 1)) servings"
             }
             
             if numberServings.isInt() {
@@ -137,32 +143,6 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 }
             }
         }
-        
-        /*
-        var foodNames: [String] = []
-        for food in foodsFiltered {
-            if !foodNames.contains(food.name!) {
-                foodNames.append(food.name!)
-            }
-        }
-        
-        var foodString = "foods"
-        var typeString = "types"
-        
-        if foodsFiltered.count == 1 {
-            foodString = "food"
-        }
-        
-        if foodNames.count == 1 {
-            typeString = "type"
-        }
-        
-        //detailLbl.text = "\(foodsFiltered.count) \(varietySelected)\nlogged on \(appDelegate.dateFilter.toString(format: "MMM dd, yyyy"))"
-        
-        //detailLbl.text = "\(foodsFiltered.count) foods containing \(varietySelected) logged on \(appDelegate.dateFilter.toString(format: "MMM dd, yyyy")), \n\(foodNames.count) unique types of \(varietySelected)"
-        
-        detailLbl.text = "\(foodsFiltered.count) total \(foodString), \(foodNames.count) unique \(typeString)"
-        */
     }
     
     @objc func updateAfterDateChange() {
@@ -177,7 +157,7 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     @objc func updateAfterFoodModification() {
-        print("updateAfterFoodModification")
+        print("updateAfterFoodModification - VarietyDetailVC")
         loadFilteredFoods()
     }
     
@@ -201,87 +181,121 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         do {
             let fetchRequest = try context.fetch(foodFetch)
             
+            self.numberServings = 0
+            
             for food in fetchRequest {
                 switch varietySelected {
                 case "beans":
                     //print("beans")
                     if food.beansT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.beansT
                     }
+                    self.foodsFiltered.sort(by: {$0.beansT > $1.beansT})
                 case "berries":
                     //print("berries")
                     if food.berriesT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.berriesT
                     }
+                    self.foodsFiltered.sort(by: {$0.berriesT > $1.berriesT})
                 case "other fruits":
                     //print("other fruits")
                     if food.otherFruitsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.otherFruitsT
                     }
+                    self.foodsFiltered.sort(by: {$0.otherFruitsT > $1.otherFruitsT})
                 case "cruciferous vegetables":
                     //print("cruciferous vegetables")
                     if food.cruciferousVegetablesT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.cruciferousVegetablesT
                     }
+                    self.foodsFiltered.sort(by: {$0.cruciferousVegetablesT > $1.cruciferousVegetablesT})
                 case "greens":
                     //print("greens")
                     if food.greensT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.greensT
                     }
+                    self.foodsFiltered.sort(by: {$0.greensT > $1.greensT})
                 case "other vegetables":
                     //print("other vegetables")
                     if food.otherVegetablesT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.otherVegetablesT
                     }
+                    self.foodsFiltered.sort(by: {$0.otherVegetablesT > $1.otherVegetablesT})
                 case "flaxseeds":
                     //print("flaxseeds")
                     if food.flaxseedsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.flaxseedsT
                     }
+                    self.foodsFiltered.sort(by: {$0.flaxseedsT > $1.flaxseedsT})
                 case "nuts":
                     //print("nuts")
                     if food.nutsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.nutsT
                     }
+                    self.foodsFiltered.sort(by: {$0.nutsT > $1.nutsT})
                 case "turmeric":
                     //print("turmeric")
                     if food.turmericT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.turmericT
                     }
+                    self.foodsFiltered.sort(by: {$0.turmericT > $1.turmericT})
                 case "whole grains":
                     //print("whole grains")
                     if food.wholeGrainsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.wholeGrainsT
                     }
+                    self.foodsFiltered.sort(by: {$0.wholeGrainsT > $1.wholeGrainsT})
                 case "other seeds":
                     //print("other seeds")
                     if food.otherSeedsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.otherSeedsT
                     }
+                    self.foodsFiltered.sort(by: {$0.otherSeedsT > $1.otherSeedsT})
                 case "calories":
                     //print("calories")
                     if food.calsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.calsT
                     }
+                    self.foodsFiltered.sort(by: {$0.calsT > $1.calsT})
                 case "fat":
                     //print("fat")
                     if food.fatT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.fatT
                     }
+                    self.foodsFiltered.sort(by: {$0.fatT > $1.fatT})
                 case "carbs":
                     //print("carbs")
                     if food.carbsT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.carbsT
                     }
+                    self.foodsFiltered.sort(by: {$0.carbsT > $1.carbsT})
                 case "protein":
                     //print("protein")
                     if food.proteinT > 0.0 {
                         self.foodsFiltered.append(food)
+                        self.numberServings += food.proteinT
                     }
+                    self.foodsFiltered.sort(by: {$0.proteinT > $1.proteinT})
                 default:
                     print("d")
                 }
             }
+            
+            //self.numberServings = foodsFiltered
             
             self.tableView.reloadData()
         } catch {
@@ -313,96 +327,96 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         let food = foodsFiltered[indexPath.row]
         
-        cell.nameLbl.text = "\(food.name!.capitalized)"
+        cell.nameLbl.text = food.name
         
         switch varietySelected {
         case "beans":
             //print("beans")
-            cell.amountLbl.text = "\(food.beansT)"
+            cell.amountLbl.text = "\(food.beansT.roundToPlaces(places: 1))"
             if food.beansT.isInt() {
                 cell.amountLbl.text = "\(Int(food.beansT))"
             }
         case "berries":
             //print("berries")
-            cell.amountLbl.text = "\(food.berriesT)"
+            cell.amountLbl.text = "\(food.berriesT.roundToPlaces(places: 1))"
             if food.berriesT.isInt() {
                 cell.amountLbl.text = "\(Int(food.berriesT))"
             }
         case "other fruits":
             //print("other fruits")
-            cell.amountLbl.text = "\(food.otherFruitsT)"
+            cell.amountLbl.text = "\(food.otherFruitsT.roundToPlaces(places: 1))"
             if food.otherFruitsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.otherFruitsT))"
             }
         case "cruciferous vegetables":
             //print("cruciferous vegetables")
-            cell.amountLbl.text = "\(food.cruciferousVegetablesT)"
+            cell.amountLbl.text = "\(food.cruciferousVegetablesT.roundToPlaces(places: 1))"
             if food.cruciferousVegetablesT.isInt() {
                 cell.amountLbl.text = "\(Int(food.cruciferousVegetablesT))"
             }
         case "greens":
             //print("greens")
-            cell.amountLbl.text = "\(food.greensT)"
+            cell.amountLbl.text = "\(food.greensT.roundToPlaces(places: 1))"
             if food.greensT.isInt() {
                 cell.amountLbl.text = "\(Int(food.greensT))"
             }
         case "other vegetables":
             //print("other vegetables")
-            cell.amountLbl.text = "\(food.otherVegetablesT)"
+            cell.amountLbl.text = "\(food.otherVegetablesT.roundToPlaces(places: 1))"
             if food.otherVegetablesT.isInt() {
                 cell.amountLbl.text = "\(Int(food.otherVegetablesT))"
             }
         case "flaxseeds":
             //print("flaxseeds")
-            cell.amountLbl.text = "\(food.flaxseedsT)"
+            cell.amountLbl.text = "\(food.flaxseedsT.roundToPlaces(places: 1))"
             if food.flaxseedsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.flaxseedsT))"
             }
         case "nuts":
             //print("nuts")
-            cell.amountLbl.text = "\(food.nutsT)"
+            cell.amountLbl.text = "\(food.nutsT.roundToPlaces(places: 1))"
             if food.nutsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.nutsT))"
             }
         case "turmeric":
             //print("berries")
-            cell.amountLbl.text = "\(food.turmericT)"
+            cell.amountLbl.text = "\(food.turmericT.roundToPlaces(places: 1))"
             if food.turmericT.isInt() {
                 cell.amountLbl.text = "\(Int(food.turmericT))"
             }
         case "whole grains":
             //print("whole grains")
-            cell.amountLbl.text = "\(food.wholeGrainsT)"
+            cell.amountLbl.text = "\(food.wholeGrainsT.roundToPlaces(places: 1))"
             if food.wholeGrainsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.wholeGrainsT))"
             }
         case "other seeds":
             //print("other seeds")
-            cell.amountLbl.text = "\(food.otherSeedsT)"
+            cell.amountLbl.text = "\(food.otherSeedsT.roundToPlaces(places: 1))"
             if food.otherSeedsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.otherSeedsT))"
             }
         case "calories":
             //print("calories")
-            cell.amountLbl.text = "\(food.calsT)"
+            cell.amountLbl.text = "\(food.calsT.roundToPlaces(places: 1))"
             if food.calsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.calsT))"
             }
         case "fat":
             //print("fat")
-            cell.amountLbl.text = "\(food.fatT)"
+            cell.amountLbl.text = "\(food.fatT.roundToPlaces(places: 1))"
             if food.fatT.isInt() {
                 cell.amountLbl.text = "\(Int(food.fatT))"
             }
         case "carbs":
             //print("carbs")
-            cell.amountLbl.text = "\(food.carbsT)"
+            cell.amountLbl.text = "\(food.carbsT.roundToPlaces(places: 1))"
             if food.carbsT.isInt() {
                 cell.amountLbl.text = "\(Int(food.carbsT))"
             }
         case "protein":
             //print("protein")
-            cell.amountLbl.text = "\(food.proteinT)"
+            cell.amountLbl.text = "\(food.proteinT.roundToPlaces(places: 1))"
             if food.proteinT.isInt() {
                 cell.amountLbl.text = "\(Int(food.proteinT))"
             }
@@ -411,6 +425,13 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        let entry = foodsFiltered[indexPath.row]
+        presentUpdateDiaryEntryVC(entry)
     }
     
     // empty data set
@@ -433,7 +454,45 @@ class VarietyDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         return NSAttributedString(string: string, attributes: attributes)
     }
     
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControl.State) -> NSAttributedString! {
+        let string = "Tap to learn about \(varietySelected)"
+        let attributes = [NSAttributedString.Key.font: UIFont.emptyDataSetDescription(),
+                          NSAttributedString.Key.foregroundColor: UIColor.brandPrimary()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        print("button tapped")
+        goToFoodGroupDetailVC(foodGroupSelected: self.varietySelected.lowercased())
+    }
+    
+    
     // MARK: - actions
+    
+    func goToFoodGroupDetailVC(foodGroupSelected: String) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "FoodGroupDetailVC")  as! FoodGroupDetailVC
+        vc.foodGroupSelected = foodGroupSelected
+        vc.previousVC = "VarietyDetailVC"
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func presentUpdateDiaryEntryVC(_ entry: Food) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "UpdateDiaryEntryVC") as! UpdateDiaryEntryVC
+        vc.entry = entry
+        vc.previousVC = "VarietyDetailVC"
+        print("entry variety: \(entry.variety)")
+        switch entry.variety {
+        case "recipe":
+            vc.updateType = "recipe"
+        default:
+            vc.updateType = "item"
+        }
+        self.present(vc, animated: true)
+    }
     
     // MARK: - navigation
     

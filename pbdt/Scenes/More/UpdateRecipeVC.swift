@@ -9,12 +9,15 @@
 import UIKit
 import Alamofire
 import DZNEmptyDataSet
+import NVActivityIndicatorView
 
 class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // MARK: - objects and vars
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addBtn: UIButton!
+    
+    var spinner: NVActivityIndicatorView!
     
     var previousVc: String!
     var recipe: Recipe!
@@ -34,6 +37,7 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         setupTableView()
         setupButtons()
         setupNotifications()
+        setupSpinner()
     }
     
     // setups
@@ -50,6 +54,12 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         case "ConfirmRecipeVC":
             print("previousVc = ConfirmRecipeVC")
             navigationItem.hidesBackButton = false
+        case "CreateRecipeVC":
+            print("previousVc = CreateRecipeVC")
+            navigationItem.hidesBackButton = true
+            
+            let deleteBtn = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(deleteBtn_clicked))
+            navigationItem.leftBarButtonItem = deleteBtn
         default:
             print("previousVc = d")
             navigationItem.hidesBackButton = true
@@ -90,13 +100,21 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         addBtn.backgroundColor = UIColor.actionButtonBackground()
         addBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         addBtn.titleLabel?.font = UIFont.actionButtonText()
+        addBtn.layer.shadowColor = UIColor.brandGreyDark().cgColor
+        addBtn.layer.shadowOffset = ButtonConstants.shadowOffset
+        addBtn.layer.shadowOpacity = ButtonConstants.shadowOpacity
         let height = addBtn.frame.height
         addBtn.layer.cornerRadius = height / 2
     }
     
     func setupNotifications() {
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterIngredientModification), name: NSNotification.Name("IngredientModification"), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterIngredientUpdateToExistingRecipe), name: NSNotification.Name("IngredientUpdateToExistingRecipe"), object: nil)
+    }
+    
+    func setupSpinner() {
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: ActivityIndicatorConstants.color, padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
     }
     
     // updates
@@ -151,7 +169,7 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddDiaryEntryCell", for: indexPath) as! AddDiaryEntryCell
         
         let ingredient = ingredients[indexPath.row]
-        cell.nameLbl.text = ingredient.name?.capitalized
+        cell.nameLbl.text = ingredient.name
         
         return cell
     }
@@ -213,9 +231,24 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // MARK: - actions
     
+    func startSpinner() {
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+    
     func deleteIngredient(ingredient: Ingredient, indexPathRow: Int) {
         
         print("deleteIngredient")
+        
+        self.startSpinner()
         
         let id = "\(ingredient.objectId!)"
         let recipeId = "\(ingredient.recipeId!)"
@@ -223,7 +256,7 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/recipes/\(recipeId)/ingredients/\(id)"
+        let url = "\(baseUrl)/v1/recipes/\(recipeId)/ingredients/\(id)"
         
         let params = ["ingredient": [
             "id": id,
@@ -260,6 +293,8 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("response failure: \(error)")
                 appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
+            
+            self.stopSpinner()
         }
     }
     
@@ -273,7 +308,7 @@ class UpdateRecipeVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/recipes/\(id)"
+        let url = "\(baseUrl)/v1/recipes/\(id)"
         
         let params = ["recipe": [
             "id": id

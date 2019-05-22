@@ -10,67 +10,9 @@ import Foundation
 import UIKit
 import CoreData
 import Alamofire
+import NVActivityIndicatorView
 
 class Onboarding {
-    
-    /*
-    func saveUserInfo(_ JSON: [String: Any]) {
-        
-        //print("JSON: \(JSON)")
-        
-        let name = JSON["name"] as! String
-        let email = JSON["email"] as! String
-        let authorizationToken = JSON["authentication_token"] as! String
-        let beans = JSON["beans_g"] as! String
-        let berries = JSON["berries_g"] as! String
-        let otherFruits = JSON["other_fruits_g"] as! String
-        let cruciferousVegetables = JSON["cruciferous_vegetables_g"] as! String
-        let greens = JSON["greens_g"] as! String
-        let otherVegetables = JSON["other_vegetables_g"] as! String
-        let flaxseeds = JSON["flaxseeds_g"] as! String
-        let nuts = JSON["nuts_g"] as! String
-        let turmeric = JSON["turmeric_g"] as! String
-        let wholeGrains = JSON["whole_grains_g"] as! String
-        let otherSeeds = JSON["other_seeds_g"] as! String
-        let cals = JSON["cals_g"] as! String
-        let fat = JSON["fat_g"] as! String
-        let carbs = JSON["carbs_g"] as! String
-        let protein = JSON["protein_g"] as! String
-        
-        UserDefaults.standard.set(name, forKey: "name")
-        UserDefaults.standard.set(email, forKey: "email")
-        UserDefaults.standard.set(authorizationToken, forKey: "authenticationToken")
-        UserDefaults.standard.set(beans, forKey: "beans")
-        UserDefaults.standard.set(berries, forKey: "berries")
-        UserDefaults.standard.set(otherFruits, forKey: "otherFruits")
-        UserDefaults.standard.set(cruciferousVegetables, forKey: "cruciferousVegetables")
-        UserDefaults.standard.set(greens, forKey: "greens")
-        UserDefaults.standard.set(otherVegetables, forKey: "otherVegetables")
-        UserDefaults.standard.set(flaxseeds, forKey: "flaxseeds")
-        UserDefaults.standard.set(nuts, forKey: "nuts")
-        UserDefaults.standard.set(turmeric, forKey: "turmeric")
-        UserDefaults.standard.set(wholeGrains, forKey: "wholeGrains")
-        UserDefaults.standard.set(otherSeeds, forKey: "otherSeeds")
-        UserDefaults.standard.set(cals, forKey: "cals")
-        UserDefaults.standard.set(fat, forKey: "fat")
-        UserDefaults.standard.set(carbs, forKey: "carbs")
-        UserDefaults.standard.set(protein, forKey: "protein")
-        
-        
-        // test
-        
-        let userFoods = JSON["foods"] as! [[String: AnyObject]]
-        //print("userFoods.count: \(userFoods.count)")
-        
-        for userFood in userFoods {
-            Food.findOrCreateFromJSON(userFood, context: context)
-        }
-        
-        //
-        
-        self.goToTabBarController()
-    }
-    */
     
     func goToTabBarController() {
         //self.performSegue(withIdentifier: "goToTabBarController", sender: self)
@@ -88,12 +30,12 @@ class Onboarding {
         appDelegate.window?.rootViewController = rvc
     }
     
-    func loadItems() {
+    func loadItems(spinner: NVActivityIndicatorView) {
         
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/items"
+        let url = "\(baseUrl)/v1/items"
         
         let headers: [String:String] = [
             "X-USER-EMAIL": email,
@@ -101,12 +43,12 @@ class Onboarding {
             "Content-Type": "application/json"
         ]
         
-        //print("url: \(url)")
-        //print("headers: \(headers)")
+        print("url: \(url)")
+        print("headers: \(headers)")
         
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             
-            //print(response)
+            print(response)
             
             switch response.result {
             case .success:
@@ -125,6 +67,8 @@ class Onboarding {
             case .failure(let error):
                 print("response failure from get items: \(error)")
             }
+            
+            spinner.removeFromSuperview()
         }
     }
     

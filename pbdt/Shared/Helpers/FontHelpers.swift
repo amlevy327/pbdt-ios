@@ -19,6 +19,14 @@ extension UIFont {
         return systemFont(ofSize: 14)
     }
     
+    class func streak() -> UIFont {
+        return systemFont(ofSize: 12)
+    }
+    
+    class func disclaimer() -> UIFont {
+        return systemFont(ofSize: 10)
+    }
+    
     // brand view
     
     class func brandViewLarge() -> UIFont {

@@ -68,6 +68,8 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         let nib = UINib(nibName: "AddDiaryEntryCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "AddDiaryEntryCell")
         
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        tableView.contentInset = insets
         tableView.tableFooterView = UIView()
     }
     
@@ -77,6 +79,9 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         newBtn.backgroundColor = UIColor.actionButtonBackground()
         newBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         newBtn.titleLabel?.font = UIFont.actionButtonText()
+        newBtn.layer.shadowColor = UIColor.brandGreyDark().cgColor
+        newBtn.layer.shadowOffset = ButtonConstants.shadowOffset
+        newBtn.layer.shadowOpacity = ButtonConstants.shadowOpacity
         let height = newBtn.frame.height
         newBtn.layer.cornerRadius = height / 2
     }
@@ -121,11 +126,11 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddDiaryEntryCell", for: indexPath) as! AddDiaryEntryCell
         
         let recipe = recipes[indexPath.row]
-        cell.nameLbl.text = recipe.name?.capitalized
+        cell.nameLbl.text = recipe.name
         
         //cell.isUserInteractionEnabled = false
         
-        //print("recipe \(recipe.name?.capitalized): ingredients.count = \(recipe.ingredient?.count)")
+        //print("recipe \(recipe.name?: ingredients.count = \(recipe.ingredient?.count)")
         
         return cell
     }
@@ -200,8 +205,12 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         do {
             print("fetchRecipes: request success")
             let fetchRequest = try context.fetch(fetch)
+            print("fetchRequest.count: \(fetchRequest.count)")
             self.recipes = fetchRequest
             self.recipes.sort(by: { $0.updatedAt!.compare($1.updatedAt! as Date) == ComparisonResult.orderedDescending })
+            
+            print("recipes.count: \(recipes.count)")
+            
             tableView.reloadData()
         } catch {
             print("Error fetching recipes: \(error)")
@@ -225,7 +234,7 @@ class RecipesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, D
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/recipes/\(id)"
+        let url = "\(baseUrl)/v1/recipes/\(id)"
         
         let params = ["recipe": [
             "id": id

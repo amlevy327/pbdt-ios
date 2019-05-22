@@ -7,6 +7,20 @@
 //
 
 import Foundation
+import NVActivityIndicatorView
+
+struct ActivityIndicatorConstants {
+    
+    static let type: NVActivityIndicatorType = .ballSpinFadeLoader
+    static let color: UIColor = UIColor.spinnerColor()
+    static let frame: CGRect = CGRect(x: 0, y: 0, width: 50, height: 50)
+}
+
+struct ButtonConstants {
+    
+    static let shadowOffset: CGSize = CGSize(width: 0, height: 4)
+    static let shadowOpacity:Float = Float(0.7)
+}
 
 struct UIMessages {
     

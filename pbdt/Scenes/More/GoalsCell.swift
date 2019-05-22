@@ -29,8 +29,13 @@ class GoalsCell: UITableViewCell {
         nameLbl.textColor = UIColor.brandBlack()
         
         goalTxt.font = UIFont.cellLarge()
-        goalTxt.textColor = UIColor.brandSecondary()
+        goalTxt.textColor = UIColor.brandPrimary()
         goalTxt.keyboardType = .decimalPad
+        goalTxt.layer.masksToBounds = true
+        let height = goalTxt.frame.height
+        goalTxt.layer.cornerRadius = height / 2
+        goalTxt.layer.borderColor = UIColor.brandPrimary().cgColor
+        goalTxt.layer.borderWidth = CGFloat(0.5)
         
         self.selectionStyle = .none
     }

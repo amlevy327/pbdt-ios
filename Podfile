@@ -11,6 +11,7 @@ target 'pbdt' do
   pod 'IQKeyboardManagerSwift'
   pod 'DZNEmptyDataSet'
   pod 'UICircularProgressRing'
+  pod 'NVActivityIndicatorView'
 
   target 'pbdtTests' do
     inherit! :search_paths
