@@ -9,15 +9,21 @@
 import UIKit
 import CoreData
 import DZNEmptyDataSet
+import IQKeyboardManagerSwift
 
-class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, UISearchBarDelegate {
 
     // MARK: - objects and vars
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControlView: SegmentedControlView!
     
+    var searchBar: UISearchBar!
+    var searchBarText = ""
+    
     var items: [Item]!
+    var itemsFiltered: [Item]!
     var recipes: [Recipe]!
+    var recipesFiltered: [Recipe]!
     
     // MARK: - functions
     
@@ -27,12 +33,36 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         fetchItems()
         fetchRecipes()
+        setupNavigation()
+        setupSearch()
         setupViews()
         setupTableView()
         setupNotfications()
     }
     
     // setups
+    
+    func setupNavigation() {
+        
+    }
+    
+    func setupSearch() {
+        
+        searchBar = UISearchBar()
+        
+        var textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.brandBlack()
+        textFieldInsideSearchBar?.font = UIFont.small()
+        
+        searchBar.delegate = self
+        searchBar.enablesReturnKeyAutomatically = false
+        searchBar.placeholder = "Search by name"
+        searchBar.sizeToFit()
+        
+        let searchBarContainer = SearchBarContainerView(customSearchBar: searchBar)
+        searchBarContainer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 30)
+        navigationItem.titleView = searchBarContainer
+    }
     
     func setupViews() {
         
@@ -84,9 +114,9 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
-            return items.count
+            return itemsFiltered.count
         case 1:
-            return recipes.count
+            return recipesFiltered.count
         default:
             print("d")
             return 0
@@ -103,11 +133,11 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
-            let item = items[indexPath.row]
-            cell.nameLbl.text = item.name?.capitalized
+            let item = itemsFiltered[indexPath.row]
+            cell.nameLbl.text = item.name
         case 1:
-            let recipe = recipes[indexPath.row]
-            cell.nameLbl.text = recipe.name?.capitalized
+            let recipe = recipesFiltered[indexPath.row]
+            cell.nameLbl.text = recipe.name
         default:
             print("d")
         }
@@ -121,14 +151,62 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
-            let item = items[indexPath.row]
+            let item = itemsFiltered[indexPath.row]
             presentItemUpdateDiaryEntryVC(item)
         case 1:
-            let recipe = recipes[indexPath.row]
+            let recipe = recipesFiltered[indexPath.row]
             presentRecipeUpdateDiaryEntryVC(recipe)
         default:
             print("d")
         }
+    }
+    
+    // search bar
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        print("searchText: \(searchText)")
+        
+        self.searchBarText = searchText
+        
+        guard !searchText.isEmpty else {
+            print("blank")
+            
+            switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
+            case 0:
+                itemsFiltered = items
+            case 1:
+                recipesFiltered = recipes
+            default:
+                print("d")
+            }
+            
+            tableView.reloadData()
+            return
+        }
+        
+        switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
+        case 0:
+            itemsFiltered = items.filter { $0.name!.lowercased().contains(searchText.lowercased()) }
+            print("itemsFiltered.count: \(itemsFiltered.count)")
+        case 1:
+            recipesFiltered = recipes.filter { $0.name!.lowercased().contains(searchText.lowercased()) }
+            print("recipesFiltered.count: \(recipesFiltered.count)")
+        default:
+            print("d")
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("searchBarSearchButtonClicked")
+        self.searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("searchBarCancelButtonClicked")
+        self.searchBar.endEditing(true)
     }
     
     // empty data set
@@ -136,9 +214,9 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         switch segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
-            return items.count == 0
+            return itemsFiltered.count == 0
         case 1:
-            return recipes.count == 0
+            return recipesFiltered.count == 0
         default:
             print("d")
             return false
@@ -200,7 +278,8 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             print("fetchItems: request success")
             let fetchRequest = try context.fetch(fetch)
             self.items = fetchRequest
-            self.items.sort(by: { $0.name!.compare($1.name! as String) == ComparisonResult.orderedDescending })
+            self.items.sort(by: { $0.name!.compare($1.name! as String) == ComparisonResult.orderedAscending })
+            self.itemsFiltered = items
             tableView.reloadData()
         } catch {
             print("Error fetching items: \(error)")
@@ -217,6 +296,7 @@ class AddDiaryEntryVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             let fetchRequest = try context.fetch(fetch)
             self.recipes = fetchRequest
             self.recipes.sort(by: { $0.updatedAt!.compare($1.updatedAt! as Date) == ComparisonResult.orderedDescending })
+            self.recipesFiltered = recipes
             tableView.reloadData()
         } catch {
             print("Error fetching recipes: \(error)")

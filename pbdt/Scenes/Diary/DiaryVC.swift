@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Alamofire
 import DZNEmptyDataSet
+import NVActivityIndicatorView
 
 class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -18,6 +19,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
     @IBOutlet weak var logBtn: UIButton!
     
     var navDateView = DateView()
+    var spinner : NVActivityIndicatorView!
     
     // MARK: - functions
     
@@ -29,8 +31,9 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         setupViews()
         setupTableView()
         setupButtons()
-        setupNotfications()
+        setupNotifications()
         setupNavigationBar()
+        setupSpinner()
     }
     
     // setups
@@ -66,6 +69,8 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         tableView.dataSource = self
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        tableView.contentInset = insets
         tableView.tableFooterView = UIView()
         appDelegate.loadFoods()
     }
@@ -76,14 +81,22 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         logBtn.backgroundColor = UIColor.actionButtonBackground()
         logBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         logBtn.titleLabel?.font = UIFont.actionButtonText()
+        logBtn.layer.shadowColor = UIColor.brandGreyDark().cgColor
+        logBtn.layer.shadowOffset = ButtonConstants.shadowOffset
+        logBtn.layer.shadowOpacity = ButtonConstants.shadowOpacity
         let height = logBtn.frame.height
         logBtn.layer.cornerRadius = height / 2
     }
     
-    func setupNotfications() {
+    func setupNotifications() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterDateChange), name: NSNotification.Name("DateChanged"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.updateAfterFoodModification), name: NSNotification.Name("FoodModification"), object: nil)
+    }
+    
+    func setupSpinner() {
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: ActivityIndicatorConstants.color, padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
     }
     
     // updates
@@ -115,6 +128,12 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         }
     }
     
+    // notifications
+    func postNotificationFoodModification() {
+        print("postNotificationFoodModification")
+        NotificationCenter.default.post(name: NSNotification.Name("FoodModification"), object: nil)
+    }
+    
     // table view
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -137,7 +156,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         //print("Entry: \(entry)")
         
         if let name = entry.name {
-            cell.nameLbl.text = "\(name.capitalized)"
+            cell.nameLbl.text = "\(name)"
         }
         
         if let variety = entry.variety {
@@ -145,16 +164,16 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
             let servingsT = entry.servingsT
             
             if servingsT == 1 {
-                cell.detailLbl.text = "\(variety.capitalized), \(servingsT) serving"
+                cell.detailLbl.text = "\(variety), \(servingsT) serving"
             } else {
-                cell.detailLbl.text = "\(variety.capitalized), \(servingsT) servings"
+                cell.detailLbl.text = "\(variety), \(servingsT) servings"
             }
             
             if servingsT.isInt() {
                 if servingsT == 1 {
-                    cell.detailLbl.text = "\(variety.capitalized), \(Int(servingsT)) serving"
+                    cell.detailLbl.text = "\(variety), \(Int(servingsT)) serving"
                 } else {
-                    cell.detailLbl.text = "\(variety.capitalized), \(Int(servingsT)) servings"
+                    cell.detailLbl.text = "\(variety), \(Int(servingsT)) servings"
                 }
             }
         }
@@ -218,6 +237,19 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
     
     // MARK: - actions
     
+    func startSpinner() {
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+    
     @IBAction func logBtn_clicked(_ sender: Any) {
         
         goToAddDiaryEntryVC()
@@ -243,12 +275,14 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
         
         print("deleteFood")
         
+        self.startSpinner()
+        
         let id = "\(food.objectId!)"
         
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/foods/\(id)"
+        let url = "\(baseUrl)/v1/foods/\(id)"
         
         let params = ["food": [
             "id": id
@@ -274,6 +308,7 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
                 do {
                     try context.delete(food)
                     try context.save()
+                    self.postNotificationFoodModification()
                     appDelegate.loadFoods()
                     self.tableView.reloadData()
                 } catch {
@@ -302,6 +337,8 @@ class DiaryVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZN
                 print("response failure: \(error)")
                 appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
+            
+            self.stopSpinner()
         }
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import NVActivityIndicatorView
 
 class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
 
@@ -22,6 +23,9 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var actionBtn: UIButton!
     @IBOutlet weak var dividerView: UIView!
+    
+    var toolbar: UIToolbar!
+    var spinner: NVActivityIndicatorView!
     
     var previousVc: String!
     
@@ -54,6 +58,8 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
         setupTextFields()
         setupTableView()
         setupButtons()
+        setupToolbar()
+        setupSpinner()
     }
     
     // setups
@@ -105,24 +111,24 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
         }
         
         amountsServingsInitial = [
-            sumBeans / servings_updated,
-            sumBerries / servings_updated,
-            sumOtherFruits / servings_updated,
-            sumCruciferousVegetables / servings_updated,
-            sumGreens / servings_updated,
-            sumOtherVegetables / servings_updated,
-            sumFlaxseeds / servings_updated,
-            sumNuts / servings_updated,
-            sumTurmeric / servings_updated,
-            sumWholeGrains / servings_updated,
-            sumOtherSeeds / servings_updated
+            (sumBeans / servings_updated).roundToPlaces(places: 1),
+            (sumBerries / servings_updated).roundToPlaces(places: 1),
+            (sumOtherFruits / servings_updated).roundToPlaces(places: 1),
+            (sumCruciferousVegetables / servings_updated).roundToPlaces(places: 1),
+            (sumGreens / servings_updated).roundToPlaces(places: 1),
+            (sumOtherVegetables / servings_updated).roundToPlaces(places: 1),
+            (sumFlaxseeds / servings_updated).roundToPlaces(places: 1),
+            (sumNuts / servings_updated).roundToPlaces(places: 1),
+            (sumTurmeric / servings_updated).roundToPlaces(places: 1),
+            (sumWholeGrains / servings_updated).roundToPlaces(places: 1),
+            (sumOtherSeeds / servings_updated).roundToPlaces(places: 1)
         ]
         
         amountsMacrosInitial = [
-            sumCals / servings_updated,
-            sumFat / servings_updated,
-            sumCarbs / servings_updated,
-            sumProtein / servings_updated
+            (sumCals / servings_updated).roundToPlaces(places: 1),
+            (sumFat / servings_updated).roundToPlaces(places: 1),
+            (sumCarbs / servings_updated).roundToPlaces(places: 1),
+            (sumProtein / servings_updated).roundToPlaces(places: 1)
         ]
         
         amountsServingsUpdated = amountsServingsInitial
@@ -149,19 +155,13 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
     
     func setupLabels() {
         
-        nameLbl.text = "Name:"
+        nameLbl.text = "Name"
         nameLbl.textColor = UIColor.brandBlack()
         nameLbl.font = UIFont.large()
         
-        totalServingsLbl.text = "Total Servings:"
+        totalServingsLbl.text = "Total Servings"
         totalServingsLbl.textColor = UIColor.brandBlack()
         totalServingsLbl.font = UIFont.large()
-        
-        /*
-        perServingLbl.text = "Per 1 serving:"
-        perServingLbl.textColor = UIColor.brandBlack()
-        perServingLbl.font = UIFont.large()
-        */
         
         let attributes : [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.font : UIFont.large(),
@@ -217,6 +217,8 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
         let nib = UINib(nibName: "UpdateDiaryEntryCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "UpdateDiaryEntryCell")
         
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        tableView.contentInset = insets
         tableView.tableFooterView = UIView()
     }
     
@@ -234,8 +236,40 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
         actionBtn.backgroundColor = UIColor.actionButtonBackground()
         actionBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         actionBtn.titleLabel?.font = UIFont.actionButtonText()
+        actionBtn.layer.shadowColor = UIColor.brandGreyDark().cgColor
+        actionBtn.layer.shadowOffset = ButtonConstants.shadowOffset
+        actionBtn.layer.shadowOpacity = ButtonConstants.shadowOpacity
         let height = actionBtn.frame.height
         actionBtn.layer.cornerRadius = height / 2
+    }
+    
+    func setupToolbar() {
+        
+        toolbar = UIToolbar()
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.isTranslucent = true
+        toolbar.isUserInteractionEnabled = true
+        toolbar.tintColor = UIColor.toolbarText()
+        toolbar.barTintColor = UIColor.toolbarBackground()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneClicked))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.sizeToFit()
+        
+        nameTxt.inputAccessoryView = toolbar
+        totalServingsTxt.inputAccessoryView = toolbar
+    }
+    
+    @objc func doneClicked() {
+        // end editing
+        view.endEditing(true)
+    }
+    
+    func setupSpinner() {
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: ActivityIndicatorConstants.color, padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
     }
     
     // notifications
@@ -277,18 +311,18 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
             
             cell.nameLbl.text = name
             cell.amountLbl.text = "\(amountServing)"
-            if amountServing.isInt() {
-                cell.amountLbl.text = "\(Int(amountServing))"
-            }
+//            if amountServing.isInt() {
+//                cell.amountLbl.text = "\(Int(amountServing))"
+//            }
         case 1:
             let name = namesMacros[indexPath.row]
             let amountServing = amountsMacrosUpdated[indexPath.row]
             
             cell.nameLbl.text = name
             cell.amountLbl.text = "\(amountServing)"
-            if amountServing.isInt() {
-                cell.amountLbl.text = "\(Int(amountServing))"
-            }
+//            if amountServing.isInt() {
+//                cell.amountLbl.text = "\(Int(amountServing))"
+//            }
         default:
             print("d")
         }
@@ -306,7 +340,7 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
             let textFieldText : NSString = (textField.text ?? "") as NSString
             let txtAfterUpdate = textFieldText.replacingCharacters(in: range, with: string) as NSString
             
-            self.servings_updated = (txtAfterUpdate.doubleValue).roundToPlaces(places: 2)
+            self.servings_updated = (txtAfterUpdate.doubleValue).roundToPlaces(places: 1)
             
             if txtAfterUpdate == "" {
                 amountsServingsUpdated = [
@@ -331,24 +365,24 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
                 ]
             } else {
                 amountsServingsUpdated = [
-                    ((amountsServingsInitial[0] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[1] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[2] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[3] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[4] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[5] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[6] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[7] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[8] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[9] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsServingsInitial[10] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2)
+                    ((amountsServingsInitial[0] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[1] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[2] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[3] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[4] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[5] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[6] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[7] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[8] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[9] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsServingsInitial[10] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1)
                 ]
                 
                 amountsMacrosUpdated = [
-                    ((amountsMacrosInitial[0] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsMacrosInitial[1] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsMacrosInitial[2] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2),
-                    ((amountsMacrosInitial[3] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 2)
+                    ((amountsMacrosInitial[0] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsMacrosInitial[1] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsMacrosInitial[2] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1),
+                    ((amountsMacrosInitial[3] * recipe.servings) / txtAfterUpdate.doubleValue).roundToPlaces(places: 1)
                 ]
             }
             
@@ -399,6 +433,20 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
     
     // MARK: - actions
     
+    func startSpinner() {
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+    
     @IBAction func actionBtn_clicked(_ sender: Any) {
         print("actionBtn_clicked")
         
@@ -414,6 +462,8 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
     }
     
     func updateRecipe() {
+        
+        self.startSpinner()
         
         let recipeId = "\(self.recipe.objectId!)"
         print("recipeId: \(recipeId)")
@@ -440,7 +490,7 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/recipes/\(recipeId)"
+        let url = "\(baseUrl)/v1/recipes/\(recipeId)"
         
         print("url: \(url)")
         
@@ -485,13 +535,15 @@ class ConfirmRecipeVC: UIViewController, UITextFieldDelegate, UITableViewDataSou
                     }
                     
                     self.postNotificationRecipeChange()
-                    appDelegate.showInfoView(message: UIMessages.kRecipeAdded, color: UIColor.popUpSuccess())
+                    appDelegate.showInfoView(message: UIMessages.kRecipeUpdated, color: UIColor.popUpSuccess())
                     self.popBack(toControllerType: RecipesVC.self)
                 }
             case .failure(let error):
                 print("response failure: \(error)")
                 appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
+            
+            self.stopSpinner()
         }
     }
     

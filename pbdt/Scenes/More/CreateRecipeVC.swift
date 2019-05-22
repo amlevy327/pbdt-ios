@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import NVActivityIndicatorView
 
 class CreateRecipeVC: UIViewController, UITextFieldDelegate {
 
@@ -17,6 +18,9 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var totalServingsLbl: UILabel!
     @IBOutlet weak var nameTxt: UITextField!
     @IBOutlet weak var totalServingsTxt: UITextField!
+    
+    var toolbar: UIToolbar!
+    var spinner: NVActivityIndicatorView!
     
     var recipe: Recipe!
     var recipeName: String!
@@ -37,7 +41,8 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
         setupViews()
         setupLabels()
         setupTextFields()
-
+        setupToolbar()
+        setupSpinner()
     }
     
     // setups
@@ -84,14 +89,38 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
         totalServingsTxt.borderStyle = .none
     }
     
+    func setupToolbar() {
+        
+        toolbar = UIToolbar()
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.isTranslucent = true
+        toolbar.isUserInteractionEnabled = true
+        toolbar.tintColor = UIColor.toolbarText()
+        toolbar.barTintColor = UIColor.toolbarBackground()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneClicked))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.sizeToFit()
+        
+        nameTxt.inputAccessoryView = toolbar
+        totalServingsTxt.inputAccessoryView = toolbar
+    }
+    
+    @objc func doneClicked() {
+        // end editing
+        view.endEditing(true)
+    }
+    
+    func setupSpinner() {
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: ActivityIndicatorConstants.color, padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+    }
+    
     // text fields
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        
-        if textField.text == "" {
-            appDelegate.showInfoView(message: UIMessages.kInputBlank, color: UIColor.popUpFailure())
-            return false
-        }
         
         switch textField.tag {
         case 0:
@@ -99,17 +128,6 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
             self.recipeName = "\(textField.text!)"
         case 1:
             print("1")
-            
-            if ("\(textField.text)").dotsCheck() {
-                appDelegate.showInfoView(message: UIMessages.kInputFormatIncorrect, color: UIColor.popUpFailure())
-                return false
-            }
-            
-            if textField.text == "0" || textField.text == "0.0" {
-                appDelegate.showInfoView(message: UIMessages.kInputZero, color: UIColor.popUpFailure())
-                return false
-            }
-            
             self.recipeTotalServings = "\(textField.text!)"
         default:
             print("d")
@@ -127,6 +145,19 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
     
     // MARK: - actions
     
+    func startSpinner() {
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+    
     @objc func nextBtn_clicked() {
         
         print("nextBtn_clicked")
@@ -139,6 +170,16 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
             return
         }
         
+        if ("\(totalServingsTxt.text)").dotsCheck() {
+            appDelegate.showInfoView(message: UIMessages.kInputFormatIncorrect, color: UIColor.popUpFailure())
+            return
+        }
+        
+        if (totalServingsTxt.text as! NSString).doubleValue.isInt() && (Int(totalServingsTxt.text!) == 0) {
+            appDelegate.showInfoView(message: UIMessages.kInputZero, color: UIColor.popUpFailure())
+            return
+        }
+        
         self.view.endEditing(true)
         
         createRecipe()
@@ -146,12 +187,14 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
     
     func createRecipe() {
         
+        self.startSpinner()
+        
         print("createRecipe")
         
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/recipes"
+        let url = "\(baseUrl)/v1/recipes"
         
         let params = ["recipe": [
             "name": "\(recipeName!)",
@@ -181,6 +224,8 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
                 print("response failure: \(error)")
                 appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
+            
+            self.stopSpinner()
         }
     }
     
@@ -190,6 +235,7 @@ class CreateRecipeVC: UIViewController, UITextFieldDelegate {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "UpdateRecipeVC") as! UpdateRecipeVC
         vc.recipe = self.recipe
+        vc.previousVc = "CreateRecipeVC"
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

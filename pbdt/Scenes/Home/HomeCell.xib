@@ -38,6 +38,15 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRs-dw-ep5">
+                        <rect key="frame" x="79" y="110" width="42" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="tp2-kS-3Yw"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <constraints>
@@ -46,6 +55,8 @@
                 <constraint firstItem="Yly-R0-sJM" firstAttribute="top" secondItem="IB0-5A-3RH" secondAttribute="bottom" constant="2" id="OZH-OM-OHG"/>
                 <constraint firstItem="IB0-5A-3RH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="X8d-Rr-lrh"/>
                 <constraint firstItem="IB0-5A-3RH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="hmP-pF-8gJ"/>
+                <constraint firstItem="YRs-dw-ep5" firstAttribute="top" secondItem="TV6-Ck-yc2" secondAttribute="bottom" id="jDs-pL-FIU"/>
+                <constraint firstItem="YRs-dw-ep5" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="mnw-AS-r89"/>
                 <constraint firstAttribute="trailing" secondItem="IB0-5A-3RH" secondAttribute="trailing" constant="8" id="pqH-XO-0M2"/>
                 <constraint firstAttribute="trailing" secondItem="Yly-R0-sJM" secondAttribute="trailing" constant="8" id="rSO-jL-s3g"/>
                 <constraint firstItem="Yly-R0-sJM" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="wYu-Pa-soI"/>
@@ -56,6 +67,7 @@
                 <outlet property="amountLbl" destination="TV6-Ck-yc2" id="RVa-tx-4CD"/>
                 <outlet property="circularProgressRing" destination="IB0-5A-3RH" id="CqX-IE-qV1"/>
                 <outlet property="nameLbl" destination="Yly-R0-sJM" id="Icx-51-EUF"/>
+                <outlet property="streakLbl" destination="YRs-dw-ep5" id="iQ7-Wk-MRY"/>
             </connections>
             <point key="canvasLocation" x="52.799999999999997" y="62.068965517241381"/>
         </collectionViewCell>

@@ -15,6 +15,7 @@ class HomeCell: UICollectionViewCell {
     @IBOutlet weak var circularProgressRing: UICircularProgressRing!
     @IBOutlet weak var amountLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
+    @IBOutlet weak var streakLbl: UILabel!
     
     // MARK: - functions
     
@@ -33,18 +34,24 @@ class HomeCell: UICollectionViewCell {
         circularProgressRing.innerRingColor = UIColor.brandPrimary()
         circularProgressRing.innerRingWidth = CGFloat(6)
         
-        //nameLbl.textColor = UIColor.brandPrimary()
         nameLbl.textColor = UIColor.brandBlack()
-        //nameLbl.textColor = UIColor.brandGreyDark()
         nameLbl.font = UIFont.large()
         
-        //self.layer.borderWidth = CGFloat(1)
-        //self.layer.borderColor = UIColor.brandPrimary().cgColor
+        streakLbl.textColor = UIColor.red
+        streakLbl.font = UIFont.streak()
     }
     
     override func prepareForReuse() {
+        //print("prepareForReuse: \(nameLbl.text)")
+        
         //circularProgressRing = nil
-        //circularProgressRing.maxValue = CGFloat(0)
-        circularProgressRing.resetProgress()
+        //circularProgressRing = UICircularProgressRing()
+        
+        //circularProgressRing.resetProgress()
+        
+        //circularProgressRing.value = CGFloat(0)
+        //circularProgressRing.resetProgress()
+        //circularProgressRing.maxValue = 10000
+        //circularProgressRing.value = 0
     }
 }

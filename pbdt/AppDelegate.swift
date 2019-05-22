@@ -10,8 +10,10 @@ import UIKit
 import CoreData
 import IQKeyboardManagerSwift
 
-let appDelegate : AppDelegate = UIApplication.shared.delegate as! AppDelegate
+let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 let context = appDelegate.persistentContainer.viewContext
+//let baseUrl: String = "http://localhost:3000"
+let baseUrl: String = "https://pbdt.herokuapp.com"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppearanceConfig.setupNavigationBar()
         AppearanceConfig.setupStatusBar()
         AppearanceConfig.setupTabBar()
-        AppearanceConfig.setupKeyboard()
+        //AppearanceConfig.setupKeyboard()
         
         return true
     }
@@ -157,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // if true
                 if finished {
                     
-                    UIView.animate(withDuration: 0.2, delay: 1, options: [.allowUserInteraction, .curveLinear], animations: {
+                    UIView.animate(withDuration: 0.2, delay: 2, options: [.allowUserInteraction, .curveLinear], animations: {
                         
                         // move errorView up
                         infoView.frame.origin.y = infoView_Y

@@ -10,16 +10,19 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UISearchBarDelegate {
 
     // MARK: - objects and vars
     @IBOutlet weak var tableView: UITableView!
     
+    var searchBar: UISearchBar!
+    var searchBarText = ""
+    
     var previousVc: String!
-    //var recipeType: String!
     
     var recipe: Recipe!
     var items: [Item]!
+    var itemsFiltered: [Item]!
     
     // MARK: - functions
     
@@ -30,6 +33,7 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         fetchItems()
         setupNavigationBar()
+        setupSearch()
         setupViews()
         setupTableView()
         setupNotfications()
@@ -41,6 +45,24 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let backItem = UIBarButtonItem()
         backItem.title = ""
         navigationItem.backBarButtonItem = backItem
+    }
+    
+    func setupSearch() {
+        
+        searchBar = UISearchBar()
+        
+        var textFieldInsideSearchBar = searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = UIColor.brandBlack()
+        textFieldInsideSearchBar?.font = UIFont.small()
+        
+        searchBar.delegate = self
+        searchBar.enablesReturnKeyAutomatically = false
+        searchBar.placeholder = "Search by name"
+        searchBar.sizeToFit()
+        
+        let searchBarContainer = SearchBarContainerView(customSearchBar: searchBar)
+        searchBarContainer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 30)
+        navigationItem.titleView = searchBarContainer
     }
     
     func setupViews() {
@@ -59,6 +81,9 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let nib = UINib(nibName: "AddDiaryEntryCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "AddDiaryEntryCell")
         
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        tableView.contentInset = insets
+        
         tableView.tableFooterView = UIView()
     }
     
@@ -69,14 +94,6 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     // updates
-    
-    /*
-    @objc func updateAfterIngredientModification() {
-        
-        print("updateAfterIngredientModification, AddIngredientVC")
-        navigationController?.popViewController(animated: true)
-    }
-    */
     
     @objc func updateAfterIngredientUpdateToExistingRecipe() {
         
@@ -91,7 +108,7 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return itemsFiltered.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -102,8 +119,8 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddDiaryEntryCell", for: indexPath) as! AddDiaryEntryCell
         
-        let item = items[indexPath.row]
-        cell.nameLbl.text = item.name?.capitalized
+        let item = itemsFiltered[indexPath.row]
+        cell.nameLbl.text = item.name
         
         return cell
     }
@@ -112,8 +129,40 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let item = items[indexPath.row]
+        let item = itemsFiltered[indexPath.row]
         presentItemUpdateDiaryEntryVC(item: item, recipeId: "\(recipe!.objectId)")
+    }
+    
+    // search bar
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        print("searchText: \(searchText)")
+        
+        self.searchBarText = searchText
+        
+        guard !searchText.isEmpty else {
+            print("blank")
+            
+            itemsFiltered = items
+            tableView.reloadData()
+            
+            return
+        }
+        
+        itemsFiltered = items.filter { $0.name!.lowercased().contains(searchText.lowercased()) }
+        print("itemsFiltered.count: \(itemsFiltered.count)")
+        tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("searchBarSearchButtonClicked")
+        self.searchBar.endEditing(true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("searchBarCancelButtonClicked")
+        self.searchBar.endEditing(true)
     }
     
     // empty data set
@@ -153,6 +202,8 @@ class AddIngredientVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             print("fetchItems: request success")
             let fetchRequest = try context.fetch(fetch)
             self.items = fetchRequest
+            self.items.sort(by: { $0.name!.compare($1.name! as String) == ComparisonResult.orderedAscending })
+            self.itemsFiltered = self.items
             tableView.reloadData()
         } catch {
             print("Error fetching items: \(error)")

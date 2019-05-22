@@ -51,6 +51,21 @@ extension UIColor {
         return UIColor.brandGreyDark()
     }
     
+    // toolbar
+    class func toolbarText() -> UIColor {
+        return UIColor.brandWhite()
+    }
+    
+    class func toolbarBackground() -> UIColor {
+        return UIColor.brandGreyDark()
+    }
+    
+    // spinner
+    
+    class func spinnerColor() -> UIColor {
+        return UIColor.brandPrimary()
+    }
+    
     // buttons
     
     class func actionButtonBackground() -> UIColor {
@@ -70,11 +85,11 @@ extension UIColor {
     }
     
     class func dateButtonText() -> UIColor {
-        return UIColor.brandSecondary()
+        return UIColor.brandPrimary()
     }
     
     class func dateButtonBorder() -> UIColor {
-        return UIColor.brandSecondary()
+        return UIColor.brandPrimary()
     }
     
     // cells

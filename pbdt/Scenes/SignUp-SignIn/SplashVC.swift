@@ -8,12 +8,13 @@
 
 import UIKit
 import CoreData
+import NVActivityIndicatorView
 
 class SplashVC: UIViewController {
 
     // MARK: - objects and vars
-    
     let onboarding = Onboarding()
+    var spinner: NVActivityIndicatorView!
     
     // MARK: - functions
     
@@ -22,6 +23,8 @@ class SplashVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupViews()
+        setupSpinner()
         checkForUser()
     }
     
@@ -32,7 +35,30 @@ class SplashVC: UIViewController {
         self.view.backgroundColor = UIColor.brandPrimary()
     }
     
+    func setupSpinner() {
+        
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: UIColor.brandWhite(), padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+        
+        startSpinner()
+    }
+    
     // MARK: - actions
+    
+    func startSpinner() {
+        
+        print("startSpinner")
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
     
     func checkForUser() {
         
@@ -45,10 +71,12 @@ class SplashVC: UIViewController {
             if fetchCheck.count > 0 {
                 
                 appDelegate.currentUser = fetchCheck.first
-                self.onboarding.loadItems()
+                self.onboarding.loadItems(spinner: self.spinner)
+                
             } else {
+                
                 let sb = UIStoryboard(name: "Main", bundle: nil)
-                let rvc = sb.instantiateViewController(withIdentifier: "RegistrationVC") as! RegistrationVC
+                let rvc = sb.instantiateViewController(withIdentifier: "RegistrationNC") as! RegistrationNC
                 
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 if let subs = appDelegate.window?.rootViewController?.view.subviews {
@@ -58,6 +86,8 @@ class SplashVC: UIViewController {
                 }
                 appDelegate.window?.rootViewController = rvc
             }
+            
+            //self.stopSpinner()
             
         } catch {
             print("error")

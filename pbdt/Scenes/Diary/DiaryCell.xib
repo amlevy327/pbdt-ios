@@ -19,32 +19,44 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mi9-es-Jxr">
-                        <rect key="frame" x="16" y="11" width="343" height="20"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEg-mc-gfU">
+                        <rect key="frame" x="16" y="16.5" width="343" height="42"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mi9-es-Jxr">
+                                <rect key="frame" x="0.0" y="0.0" width="343" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="FqT-2l-ArV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQa-9L-mxV">
+                                <rect key="frame" x="0.0" y="24" width="343" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="Kxp-lf-i8d"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="nfe-5u-LQK"/>
+                            <constraint firstItem="IQa-9L-mxV" firstAttribute="leading" secondItem="BEg-mc-gfU" secondAttribute="leading" id="0Fl-nn-iEl"/>
+                            <constraint firstAttribute="trailing" secondItem="IQa-9L-mxV" secondAttribute="trailing" id="D4b-ag-Jxl"/>
+                            <constraint firstItem="Mi9-es-Jxr" firstAttribute="top" secondItem="BEg-mc-gfU" secondAttribute="top" id="J9C-Ml-43r"/>
+                            <constraint firstItem="Mi9-es-Jxr" firstAttribute="leading" secondItem="BEg-mc-gfU" secondAttribute="leading" id="MAw-7R-f9S"/>
+                            <constraint firstAttribute="bottom" secondItem="IQa-9L-mxV" secondAttribute="bottom" id="caX-xi-9Wh"/>
+                            <constraint firstItem="IQa-9L-mxV" firstAttribute="top" secondItem="Mi9-es-Jxr" secondAttribute="bottom" constant="4" id="irH-PY-36Y"/>
+                            <constraint firstAttribute="trailing" secondItem="Mi9-es-Jxr" secondAttribute="trailing" id="jsi-Lz-WbN"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQa-9L-mxV">
-                        <rect key="frame" x="16" y="35" width="343" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="18" id="ON3-PX-JgX"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="Mi9-es-Jxr" secondAttribute="trailing" id="3je-0b-zqB"/>
-                    <constraint firstItem="IQa-9L-mxV" firstAttribute="trailing" secondItem="Mi9-es-Jxr" secondAttribute="trailing" id="7Ga-N4-WNG"/>
-                    <constraint firstItem="IQa-9L-mxV" firstAttribute="top" secondItem="Mi9-es-Jxr" secondAttribute="bottom" constant="4" id="9WY-F9-e5N"/>
-                    <constraint firstItem="IQa-9L-mxV" firstAttribute="leading" secondItem="Mi9-es-Jxr" secondAttribute="leading" id="Luh-Gr-FYL"/>
-                    <constraint firstItem="Mi9-es-Jxr" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="who-1l-YXY"/>
-                    <constraint firstItem="Mi9-es-Jxr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="zHV-3B-Xub"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="BEg-mc-gfU" secondAttribute="trailing" id="FMH-ZN-KUd"/>
+                    <constraint firstItem="BEg-mc-gfU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="JLg-Wy-jl5"/>
+                    <constraint firstItem="BEg-mc-gfU" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="b9o-fb-JZj"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

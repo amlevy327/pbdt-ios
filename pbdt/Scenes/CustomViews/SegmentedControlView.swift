@@ -77,12 +77,12 @@ class SegmentedControlView: UIView {
         let indicatorOptions = SegmentioIndicatorOptions(
             type: .bottom,
             ratio: 1,
-            height: 4,
+            height: 2,
             color: UIColor.brandPrimary())
         
-        let horizontalOptions = SegmentioHorizontalSeparatorOptions(type: .bottom, height: 0, color: UIColor.black)
+        let horizontalOptions = SegmentioHorizontalSeparatorOptions(type: .bottom, height: 1, color: UIColor.brandGreyLight())
         
-        let verticalOptions = SegmentioVerticalSeparatorOptions(ratio: 0, color: UIColor.black)
+        let verticalOptions = SegmentioVerticalSeparatorOptions(ratio: 0, color: UIColor.brandGreyLight())
         
         let segmentOptions = SegmentioOptions(
             backgroundColor: UIColor.white,
@@ -120,15 +120,41 @@ class SegmentedControlView: UIView {
         
         segmentedControl.valueDidChange = { segmentio, segmentIndex in
             
+            print("parentVc = \(self.parentVc)")
+            
             switch self.parentVc {
             case "HomeVC":
                 print("HomeVC")
-                self.homeVc.updateSummary()
+                self.homeVc.selectedSegmentedControlIndex = self.segmentedControl.selectedSegmentioIndex
+                print("index: \(self.segmentedControl.selectedSegmentioIndex)")
+                //self.homeVc.updateSummary()
+                //self.homeVc.amountsServings = []
+                self.homeVc.collectionView.reloadData()
             case "UpdateDiaryEntryVC":
                 print("UpdateDiaryEntryVC")
                 self.updateDiaryEntryVc.tableView.reloadData()
             case "AddDiaryEntryVC":
                 print("AddDiaryEntryVC")
+                
+                switch self.segmentedControl.selectedSegmentioIndex {
+                case 0:
+                    if self.addDiaryEntryVc.searchBarText == "" {
+                        self.addDiaryEntryVc.itemsFiltered = self.addDiaryEntryVc.items
+                    } else {
+                        self.addDiaryEntryVc.itemsFiltered = self.addDiaryEntryVc.items.filter { $0.name!.lowercased().contains(self.addDiaryEntryVc.searchBarText.lowercased()) }
+                    }
+                    print("addDiaryEntryVc.itemsFiltered.count: \(self.addDiaryEntryVc.itemsFiltered.count)")
+                case 1:
+                    if self.addDiaryEntryVc.searchBarText == "" {
+                        self.addDiaryEntryVc.recipesFiltered = self.addDiaryEntryVc.recipes
+                    } else {
+                        self.addDiaryEntryVc.recipesFiltered = self.addDiaryEntryVc.recipes.filter { $0.name!.lowercased().contains(self.addDiaryEntryVc.searchBarText.lowercased()) }
+                    }
+                    print("addDiaryEntryVc.recipesFiltered.count: \(self.addDiaryEntryVc.recipesFiltered.count)")
+                default:
+                    print("d")
+                }
+                
                 self.addDiaryEntryVc.tableView.reloadData()
             case "GoalsVC":
                 print("GoalsVC")

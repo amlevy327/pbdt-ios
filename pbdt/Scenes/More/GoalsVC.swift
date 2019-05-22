@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Alamofire
+import NVActivityIndicatorView
 
 class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
@@ -16,6 +17,9 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
     @IBOutlet weak var segmentedControlView: SegmentedControlView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var updateBtn: UIButton!
+    
+    var spinner: NVActivityIndicatorView!
+    var toolbar: UIToolbar!
     
     var namesServings: [String]!
     var goalsServings: [Double]!
@@ -30,10 +34,12 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         super.viewDidLoad()
         
         setInitialValues()
+        setupToolbar()
         setupViews()
         setupTableView()
         setupButtons()
         setupNavigationBar()
+        setupSpinner()
     }
     
     // setups
@@ -83,6 +89,9 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         let nib = UINib(nibName: "GoalsCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "GoalsCell")
         
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: 76, right: 0)
+        tableView.contentInset = insets
+        
         tableView.tableFooterView = UIView()
     }
     
@@ -92,6 +101,9 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         updateBtn.backgroundColor = UIColor.actionButtonBackground()
         updateBtn.setTitleColor(UIColor.actionButtonText(), for: .normal)
         updateBtn.titleLabel?.font = UIFont.actionButtonText()
+        updateBtn.layer.shadowColor = UIColor.brandGreyDark().cgColor
+        updateBtn.layer.shadowOffset = ButtonConstants.shadowOffset
+        updateBtn.layer.shadowOpacity = ButtonConstants.shadowOpacity
         let height = updateBtn.frame.height
         updateBtn.layer.cornerRadius = height / 2
     }
@@ -106,16 +118,40 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         self.navigationItem.rightBarButtonItem = defaultBtn
     }
     
+    func setupSpinner() {
+        spinner = NVActivityIndicatorView(frame: ActivityIndicatorConstants.frame, type: ActivityIndicatorConstants.type, color: ActivityIndicatorConstants.color, padding: nil)
+        spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+    }
+    
+    func setupToolbar() {
+        
+        toolbar = UIToolbar()
+        toolbar.barStyle = UIBarStyle.default
+        toolbar.isTranslucent = true
+        toolbar.isUserInteractionEnabled = true
+        toolbar.tintColor = UIColor.toolbarText()
+        toolbar.barTintColor = UIColor.toolbarBackground()
+        
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneClicked))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.sizeToFit()
+    }
+    
+    @objc func doneClicked() {
+        // end editing
+        view.endEditing(true)
+    }
+    
     // update
     
     @objc func setToDefaults() {
         
         print("setToDefaults")
         
-        
-        
-        let alert = UIAlertController(title: "Are you sure you want to set to default values?", message: "", preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "Defaults", style: .destructive, handler: { (action) in
+        let alert = UIAlertController(title: "Are you sure you want to restore default values?", message: "", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "Defaults", style: .default, handler: { (action) in
             print("Defaults tapped")
             
             self.goalsServings[0] = 3
@@ -137,7 +173,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
             
             self.updateUserGoals()
         })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
         alert.addAction(defaultAction)
         alert.addAction(cancelAction)
         
@@ -170,6 +206,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         let cell = tableView.dequeueReusableCell(withIdentifier: "GoalsCell", for: indexPath) as! GoalsCell
         
         cell.goalTxt.delegate = self
+        cell.goalTxt.inputAccessoryView = toolbar
         
         switch self.segmentedControlView.segmentedControl.selectedSegmentioIndex {
         case 0:
@@ -217,12 +254,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
             return false
         }
         
-        if textField.text == "0" || textField.text == "0.0" {
-            appDelegate.showInfoView(message: UIMessages.kInputZero, color: UIColor.popUpFailure())
-            return false
-        }
-        
-        let updatedGoal = ((textField.text! as NSString).doubleValue).roundToPlaces(places: 2)
+        let updatedGoal = ((textField.text! as NSString).doubleValue).roundToPlaces(places: 1)
         
         switch textField.tag {
             
@@ -271,11 +303,6 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        
-    }
-    
     // notifications
     
     func postNotificationUserGoalsModification() {
@@ -285,7 +312,22 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
     
     // MARK: - actions
     
+    func startSpinner() {
+        
+        self.view.addSubview(spinner)
+        spinner.startAnimating()
+        self.view.isUserInteractionEnabled = false
+    }
+    
+    func stopSpinner() {
+        self.view.isUserInteractionEnabled = true
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
+    }
+    
     func updateUserGoals() {
+        
+        self.startSpinner()
         
         //print("updateUserGoals: start")
         
@@ -309,7 +351,7 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
         let email = "\(appDelegate.currentUser.email!)"
         let authenticationToken = "\(appDelegate.currentUser.authenticationToken!)"
         
-        let url = "http://localhost:3000/v1/users/\(id)"
+        let url = "\(baseUrl)/v1/users/\(id)"
         let params = ["user": [
             "beans_g": beansG,
             "berries_g": berriesG,
@@ -354,6 +396,8 @@ class GoalsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIT
                 print("response failure: \(error)")
                 appDelegate.showInfoView(message: UIMessages.kErrorGeneral, color: UIColor.popUpFailure())
             }
+            
+            self.stopSpinner()
         }
     }
     
